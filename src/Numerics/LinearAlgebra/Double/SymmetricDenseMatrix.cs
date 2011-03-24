@@ -204,7 +204,6 @@ namespace MathNet.Numerics.LinearAlgebra.Double
             return new DenseVector(size);
         }
 
-        // TODO for IndexOf and At: Check if performance gain of having Upper-Triangle-, Lower-Triangle- and Diagonal-specific methods justify the extra code & risk. 
         #region IndexOf and At
         /// <summary>
         /// Retrieves the index of the requested element without range checking.

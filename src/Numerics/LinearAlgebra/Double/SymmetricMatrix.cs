@@ -283,11 +283,11 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         }
 
         /// <summary>
-        /// Populates a matrix with random elements.
+        /// Populates a symmetric matrix with random elements.
         /// </summary>
-        /// <param name="matrix">The matrix to populate.</param>
+        /// <param name="matrix">The symmetric matrix to populate.</param>
         /// <param name="distribution">Continuous Random Distribution to generate elements from.</param>
-        protected override void DoRandom(Matrix<double> matrix, IContinuousDistribution distribution)
+        protected virtual void DoRandom(SymmetricMatrix matrix, IContinuousDistribution distribution)
         {
             for (var i = 0; i < matrix.RowCount; i++)
             {
@@ -299,11 +299,11 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         }
 
         /// <summary>
-        /// Populates a matrix with random elements.
+        /// Populates a symmetric matrix with random elements.
         /// </summary>
-        /// <param name="matrix">The matrix to populate.</param>
+        /// <param name="matrix">The symmetric matrix to populate.</param>
         /// <param name="distribution">Continuous Random Distribution to generate elements from.</param>
-        protected override void DoRandom(Matrix<double> matrix, IDiscreteDistribution distribution)
+        protected virtual void DoRandom(SymmetricMatrix matrix, IDiscreteDistribution distribution)
         {
             for (var i = 0; i < matrix.RowCount; i++)
             {

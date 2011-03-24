@@ -236,7 +236,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         {
             for (var i = 0; i < matrix.RowCount; i++)
             {
-                for (var j = 0; j < matrix.ColumnCount; j++)
+                for (var j = i; j < matrix.ColumnCount; j++)
                 {
                     matrix.At(i, j, distribution.Sample());
                 }
@@ -252,7 +252,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         {
             for (var i = 0; i < matrix.RowCount; i++)
             {
-                for (var j = 0; j < matrix.ColumnCount; j++)
+                for (var j = i; j < matrix.ColumnCount; j++)
                 {
                     matrix.At(i, j, distribution.Sample());
                 }

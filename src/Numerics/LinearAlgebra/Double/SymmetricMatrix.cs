@@ -220,32 +220,11 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         {
             for (var row = 0; row < RowCount; row++)
             {
-                for (var column = 0; column < ColumnCount; column++)
+                for (var column = row; column < ColumnCount; column++)
                 {
                     result.At(row, column, At(row, column) % divisor);
                 }
             }
-        }
-
-        /// <summary>
-        /// Computes the trace of this matrix.
-        /// </summary>
-        /// <returns>The trace of this matrix</returns>
-        /// <exception cref="ArgumentException">If the matrix is not square</exception>
-        public override double Trace()
-        {
-            if (RowCount != ColumnCount)
-            {
-                throw new ArgumentException(Resources.ArgumentMatrixSquare);
-            }
-
-            var sum = 0.0;
-            for (var i = 0; i < RowCount; i++)
-            {
-                sum += At(i, i);
-            }
-
-            return sum;
         }
 
         /// <summary>

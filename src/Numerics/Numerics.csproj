@@ -216,6 +216,7 @@
     <Compile Include="LinearAlgebra\Double\Solvers\StopCriterium\IIterationStopCriterium.cs" />
     <Compile Include="LinearAlgebra\Double\SparseMatrix.cs" />
     <Compile Include="LinearAlgebra\Double\SymmetricDenseMatrix.cs" />
+    <Compile Include="LinearAlgebra\Double\SymmetricMatrix.cs" />
     <Compile Include="LinearAlgebra\Double\Vector.cs" />
     <Compile Include="LinearAlgebra\Generic\Common.cs" />
     <Compile Include="LinearAlgebra\IO\MatlabReader.cs" />

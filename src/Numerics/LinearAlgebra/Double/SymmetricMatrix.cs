@@ -32,26 +32,12 @@ namespace MathNet.Numerics.LinearAlgebra.Double
     using Properties;
 
     /// <summary>
-    /// <c>double</c> version of the <see cref="Matrix{T}"/> class.
+    /// Symmetric <c>double</c> version of the <see cref="Matrix{T}"/> class.
     /// </summary>
-    public abstract class SymmetricMatrix : Matrix<double>
+    public abstract class SymmetricMatrix : Matrix
     {
         /// <summary>
-        /// Initializes a new instance of the Matrix class.
-        /// </summary>
-        /// <param name="rows">
-        /// The number of rows.
-        /// </param>
-        /// <param name="columns">
-        /// The number of columns.
-        /// </param>
-        protected SymmetricMatrix(int rows, int columns)
-            : base(rows, columns)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the Matrix class.
+        /// Initializes a new instance of the <see cref="SymmetricMatrix"/> class.
         /// </summary>
         /// <param name="order">
         /// The order of the matrix.
@@ -61,39 +47,11 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         {
         }
 
-        /// <summary>Calculates the L1 norm.</summary>
-        /// <returns>The L1 norm of the matrix.</returns>
-        public override double L1Norm()
-        {
-            var norm = 0.0;
-            for (var j = 0; j < ColumnCount; j++)
-            {
-                var s = 0.0;
-                for (var i = 0; i < RowCount; i++)
-                {
-                    s += Math.Abs(At(i, j));
-                }
-
-                norm = Math.Max(norm, s);
-            }
-
-            return norm;
-        }
-
-        /// <summary>
-        /// Returns the conjugate transpose of this matrix.
-        /// </summary>        
-        /// <returns>The conjugate transpose of this matrix.</returns>
-        public override Matrix<double> ConjugateTranspose()
-        {
-            return Transpose();
-        }
-
         /// <summary>Calculates the Frobenius norm of this matrix.</summary>
         /// <returns>The Frobenius norm of this matrix.</returns>
         public override double FrobeniusNorm()
         {
-            var transpose = Transpose();
+            var transpose = this;
             var aat = this * transpose;
 
             var norm = 0.0;

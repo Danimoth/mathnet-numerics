@@ -113,7 +113,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
             {
                 for (var j = i; j < order; j++)
                 {
-                    AtUpper(i, j, array[i, j]);
+                    Data[IndexOfUpper(i, j)] = array[i, j];
                 }
             }
         }
@@ -146,7 +146,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
                 {
                     for (var j = i; j < order; j++)
                     {
-                        AtUpper(i, j, matrix.At(i, j));
+                        Data[IndexOfUpper(i, j)] = matrix[i, j];
                     }
                 }
             }

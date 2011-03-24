@@ -328,7 +328,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// <returns>
         /// The requested element from the upper triangle.
         /// </returns>
-        public double AtUpper(int row, int column)
+        public override double AtUpper(int row, int column)
         {
             return Data[IndexOfUpper(row, column)];
         }
@@ -348,7 +348,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// <param name="value">
         /// The value on the upper triangle to set the element to.
         /// </param>
-        public void AtUpper(int row, int column, double value)
+        public override void AtUpper(int row, int column, double value)
         {
             Data[IndexOfUpper(row, column)] = value;
         }
@@ -366,7 +366,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// <returns>
         /// The requested element from the lower triangle.
         /// </returns>
-        public double AtLower(int row, int column)
+        public override double AtLower(int row, int column)
         {
             return Data[IndexOfLower(row, column)];
         }
@@ -386,7 +386,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// <param name="value">
         /// The value on the lower triangle to set the element to.
         /// </param>
-        public void AtLower(int row, int column, double value)
+        public override void AtLower(int row, int column, double value)
         {
             Data[IndexOfLower(row, column)] = value;
         }
@@ -400,7 +400,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// <returns>
         /// The requested element.
         /// </returns>
-        public double AtDiagonal(int row)
+        public override double AtDiagonal(int row)
         {
             return Data[IndexOfDiagonal(row)];
         }
@@ -414,7 +414,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// <param name="value">
         /// The value to set the element to.
         /// </param>
-        public void AtDiagonal(int row, double value)
+        public override void AtDiagonal(int row, double value)
         {
             Data[IndexOfDiagonal(row)] = value;
         }

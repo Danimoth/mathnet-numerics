@@ -128,11 +128,11 @@ namespace MathNet.Numerics.LinearAlgebra.Double
             }
             else
             {
-                for (var i = 0; i < RowCount; i++)
+                for (var row = 0; row < RowCount; row++)
                 {
-                    for (var j = i; j < ColumnCount; j++)
+                    for (var column = row; column < ColumnCount; column++)
                     {
-                        result.At(i, j, At(i, j) + other.At(i, j));
+                        result.At(row, column, At(row, column) + other.At(row, column));
                     }
                 }
             }
@@ -155,11 +155,11 @@ namespace MathNet.Numerics.LinearAlgebra.Double
             }
             else
             {
-                for (var i = 0; i < RowCount; i++)
+                for (var row = 0; row < RowCount; row++)
                 {
-                    for (var j = i; j < ColumnCount; j++)
+                    for (var column = row; column < ColumnCount; column++)
                     {
-                        result.At(i, j, At(i, j) - other.At(i, j));
+                        result.At(row, column, At(row, column) - other.At(row, column));
                     }
                 }
             }
@@ -180,11 +180,11 @@ namespace MathNet.Numerics.LinearAlgebra.Double
             }
             else
             {
-                for (var i = 0; i < RowCount; i++)
+                for (var row = 0; row < RowCount; row++)
                 {
-                    for (var j = i; j < ColumnCount; j++)
+                    for (var column = row; column < ColumnCount; column++)
                     {
-                        result.At(i, j, At(i, j) * scalar);
+                        result.At(row, column, At(row, column) * scalar);
                     }
                 }
             }
@@ -224,11 +224,11 @@ namespace MathNet.Numerics.LinearAlgebra.Double
             }
             else
             {
-                for (var i = 0; i < RowCount; i++)
+                for (var row = 0; row < RowCount; row++)
                 {
-                    for (var j = i; j != ColumnCount; j++)
+                    for (var column = row; column != ColumnCount; column++)
                     {
-                        result[i, j] = -At(i, j);
+                        result[row, column] = -At(row, column);
                     }
                 }
             }
@@ -249,11 +249,11 @@ namespace MathNet.Numerics.LinearAlgebra.Double
             }
             else
             {
-                for (var j = 0; j < ColumnCount; j++)
+                for (var row = 0; row < RowCount; row++)
                 {
-                    for (var i = j; i < RowCount; i++)
+                    for (var column = row; column < ColumnCount; column++)
                     {
-                        result.At(i, j, At(i, j) * other.At(i, j));
+                        result.At(row, column, At(row, column) * other.At(row, column));
                     }
                 }
             }
@@ -274,11 +274,11 @@ namespace MathNet.Numerics.LinearAlgebra.Double
             }
             else
             {
-                for (var j = 0; j < ColumnCount; j++)
+                for (var row = 0; row < RowCount; row++)
                 {
-                    for (var i = j; i < RowCount; i++)
+                    for (var column = row; column < ColumnCount; column++)
                     {
-                        result.At(i, j, At(i, j) / other.At(i, j));
+                        result.At(row, column, At(row, column) / other.At(row, column));
                     }
                 }
             }
@@ -324,11 +324,11 @@ namespace MathNet.Numerics.LinearAlgebra.Double
             }
             else
             {
-                for (var i = 0; i < matrix.RowCount; i++)
+                for (var row = 0; row < matrix.RowCount; row++)
                 {
-                    for (var j = i; j < matrix.ColumnCount; j++)
+                    for (var column = row; column < matrix.ColumnCount; column++)
                     {
-                        matrix.At(i, j, distribution.Sample());
+                        matrix.At(row, column, distribution.Sample());
                     }
                 }
             }
@@ -349,11 +349,11 @@ namespace MathNet.Numerics.LinearAlgebra.Double
             }
             else
             {
-                for (var i = 0; i < matrix.RowCount; i++)
+                for (var row = 0; row < matrix.RowCount; row++)
                 {
-                    for (var j = i; j < matrix.ColumnCount; j++)
+                    for (var colunm = row; colunm < matrix.ColumnCount; colunm++)
                     {
-                        matrix.At(i, j, distribution.Sample());
+                        matrix.At(row, colunm, distribution.Sample());
                     }
                 }
             }

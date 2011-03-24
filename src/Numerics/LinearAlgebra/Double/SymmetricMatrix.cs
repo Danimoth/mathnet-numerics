@@ -222,7 +222,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
                 {
                     for (var column = row; column < ColumnCount; column++)
                     {
-                        result.At(row, column, At(row, column) + other.At(row, column));
+                        symmetricResult.AtUpper(row, column, At(row, column) + symmetricOther.AtUpper(row, column));
                     }
                 }
             }
@@ -249,7 +249,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
                 {
                     for (var column = row; column < ColumnCount; column++)
                     {
-                        result.At(row, column, At(row, column) - other.At(row, column));
+                        symmetricResult.AtUpper(row, column, At(row, column) - symmetricOther.AtUpper(row, column));
                     }
                 }
             }
@@ -274,7 +274,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
                 {
                     for (var column = row; column < ColumnCount; column++)
                     {
-                        result.At(row, column, At(row, column) * scalar);
+                        symmetricResult.AtUpper(row, column, At(row, column) * scalar);
                     }
                 }
             }
@@ -318,7 +318,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
                 {
                     for (var column = row; column != ColumnCount; column++)
                     {
-                        result[row, column] = -At(row, column);
+                        symmetricResult[row, column] = -AtUpper(row, column);
                     }
                 }
             }
@@ -343,7 +343,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
                 {
                     for (var column = row; column < ColumnCount; column++)
                     {
-                        result.At(row, column, At(row, column) * other.At(row, column));
+                        symmetricResult.AtUpper(row, column, At(row, column) * symmetricOther.AtUpper(row, column));
                     }
                 }
             }
@@ -368,7 +368,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
                 {
                     for (var column = row; column < ColumnCount; column++)
                     {
-                        result.At(row, column, At(row, column) / other.At(row, column));
+                        symmetricResult.AtUpper(row, column, At(row, column) / symmetricOther.AtUpper(row, column));
                     }
                 }
             }
@@ -393,7 +393,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
                 {
                     for (var column = row; column < ColumnCount; column++)
                     {
-                        result.At(row, column, At(row, column) % divisor);
+                        symmetricResult.AtUpper(row, column, At(row, column) % divisor);
                     }
                 }
             }
@@ -406,9 +406,9 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// <param name="distribution">Continuous Random Distribution to generate elements from.</param>
         protected override void DoRandom(Matrix<double> matrix, IContinuousDistribution distribution)
         {
-            var symmetricResult = matrix as SymmetricMatrix;
+            var symmetricMatrix = matrix as SymmetricMatrix;
 
-            if (symmetricResult == null)
+            if (symmetricMatrix == null)
             {
                 base.DoRandom(matrix, distribution);
             }
@@ -418,7 +418,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
                 {
                     for (var column = row; column < matrix.ColumnCount; column++)
                     {
-                        matrix.At(row, column, distribution.Sample());
+                        symmetricMatrix.AtUpper(row, column, distribution.Sample());
                     }
                 }
             }
@@ -431,9 +431,9 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// <param name="distribution">Continuous Random Distribution to generate elements from.</param>
         protected override void DoRandom(Matrix<double> matrix, IDiscreteDistribution distribution)
         {
-            var symmetricResult = matrix as SymmetricMatrix;
+            var symmetricMatrix = matrix as SymmetricMatrix;
 
-            if (symmetricResult == null)
+            if (symmetricMatrix == null)
             {
                 base.DoRandom(matrix, distribution);
             }
@@ -441,9 +441,9 @@ namespace MathNet.Numerics.LinearAlgebra.Double
             {
                 for (var row = 0; row < matrix.RowCount; row++)
                 {
-                    for (var colunm = row; colunm < matrix.ColumnCount; colunm++)
+                    for (var column = row; column < matrix.ColumnCount; column++)
                     {
-                        matrix.At(row, colunm, distribution.Sample());
+                        symmetricMatrix.AtUpper(row, column, distribution.Sample());
                     }
                 }
             }

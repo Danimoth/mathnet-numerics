@@ -790,9 +790,9 @@ namespace MathNet.Numerics.LinearAlgebra.Double
             }
             else
             {
-                for (var i = 0; i < Data.Length; i++)
+                for (var i = 0; i < denseMatrix.Data.Length; i++)
                 {
-                    Data[i] = distribution.Sample();
+                    denseMatrix.Data[i] = distribution.Sample();
                 }
             }
         }
@@ -812,9 +812,9 @@ namespace MathNet.Numerics.LinearAlgebra.Double
             }
             else
             {
-                for (var i = 0; i < Data.Length; i++)
+                for (var i = 0; i < denseMatrix.Data.Length; i++)
                 {
-                    Data[i] = distribution.Sample();
+                    denseMatrix.Data[i] = distribution.Sample();
                 }
             }
         }

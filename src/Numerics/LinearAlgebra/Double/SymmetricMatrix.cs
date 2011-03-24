@@ -172,11 +172,20 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// <param name="result">The matrix to store the result of the multiplication.</param>
         protected override void DoMultiply(double scalar, Matrix<double> result)
         {
-            for (var i = 0; i < RowCount; i++)
+            var symmetricResult = result as SymmetricMatrix;
+
+            if (symmetricResult == null)
             {
-                for (var j = i; j < ColumnCount; j++)
+                base.DoMultiply(scalar, result);
+            }
+            else
+            {
+                for (var i = 0; i < RowCount; i++)
                 {
-                    result.At(i, j, At(i, j) * scalar);
+                    for (var j = i; j < ColumnCount; j++)
+                    {
+                        result.At(i, j, At(i, j) * scalar);
+                    }
                 }
             }
         }
@@ -207,11 +216,20 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// <param name="result">The result of the negation.</param>
         protected override void DoNegate(Matrix<double> result)
         {
-            for (var i = 0; i < RowCount; i++)
+            var symmetricResult = result as SymmetricMatrix;
+
+            if (symmetricResult == null)
             {
-                for (var j = i; j != ColumnCount; j++)
+                base.DoNegate(result);
+            }
+            else
+            {
+                for (var i = 0; i < RowCount; i++)
                 {
-                    result[i, j] = -At(i, j);
+                    for (var j = i; j != ColumnCount; j++)
+                    {
+                        result[i, j] = -At(i, j);
+                    }
                 }
             }
         }
@@ -273,11 +291,20 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// <param name="result">Matrix to store the results in.</param>
         protected override void DoModulus(double divisor, Matrix<double> result)
         {
-            for (var row = 0; row < RowCount; row++)
+            var symmetricResult = result as SymmetricMatrix;
+
+            if (symmetricResult == null)
             {
-                for (var column = row; column < ColumnCount; column++)
+                base.DoModulus(divisor, result);
+            }
+            else
+            {
+                for (var row = 0; row < RowCount; row++)
                 {
-                    result.At(row, column, At(row, column) % divisor);
+                    for (var column = row; column < ColumnCount; column++)
+                    {
+                        result.At(row, column, At(row, column) % divisor);
+                    }
                 }
             }
         }

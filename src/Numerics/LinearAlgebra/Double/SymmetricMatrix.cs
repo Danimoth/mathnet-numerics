@@ -154,7 +154,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         {
             for (var i = 0; i < RowCount; i++)
             {
-                for (var j = 0; j != ColumnCount; j++)
+                for (var j = i; j != ColumnCount; j++)
                 {
                     result[i, j] = -At(i, j);
                 }

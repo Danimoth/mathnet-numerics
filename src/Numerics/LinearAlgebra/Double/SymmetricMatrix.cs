@@ -168,11 +168,20 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// <param name="result">The matrix to store the result of the pointwise multiplication.</param>
         protected override void DoPointwiseMultiply(Matrix<double> other, Matrix<double> result)
         {
-            for (var j = 0; j < ColumnCount; j++)
+            var symmetricOther = other as SymmetricMatrix;
+            var symmetricResult = result as SymmetricMatrix;
+            if (symmetricOther == null || symmetricResult == null)
             {
-                for (var i = 0; i < RowCount; i++)
+                base.DoPointwiseMultiply(other, result);
+            }
+            else
+            {
+                for (var j = 0; j < ColumnCount; j++)
                 {
-                    result.At(i, j, At(i, j) * other.At(i, j));
+                    for (var i = j; i < RowCount; i++)
+                    {
+                        result.At(i, j, At(i, j) * other.At(i, j));
+                    }
                 }
             }
         }
@@ -184,11 +193,20 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// <param name="result">The matrix to store the result of the pointwise division.</param>
         protected override void DoPointwiseDivide(Matrix<double> other, Matrix<double> result)
         {
-            for (var j = 0; j < ColumnCount; j++)
+            var symmetricOther = other as SymmetricMatrix;
+            var symmetricResult = result as SymmetricMatrix;
+            if (symmetricOther == null || symmetricResult == null)
             {
-                for (var i = 0; i < RowCount; i++)
+                base.DoPointwiseDivide(other, result);
+            }
+            else
+            {
+                for (var j = 0; j < ColumnCount; j++)
                 {
-                    result.At(i, j, At(i, j) / other.At(i, j));
+                    for (var i = j; i < RowCount; i++)
+                    {
+                        result.At(i, j, At(i, j) / other.At(i, j));
+                    }
                 }
             }
         }

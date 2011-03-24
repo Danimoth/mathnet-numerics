@@ -781,7 +781,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// </summary>
         /// <param name="matrix">The symmetric matrix to populate.</param>
         /// <param name="distribution">Continuous Random Distribution to generate elements from.</param>
-        protected override void DoRandom(SymmetricMatrix matrix, IContinuousDistribution distribution)
+        protected override void DoRandom(Matrix<double> matrix, IContinuousDistribution distribution)
         {
             var denseMatrix = matrix as SymmetricDenseMatrix;
 
@@ -803,7 +803,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// </summary>
         /// <param name="matrix">The symmetric matrix to populate.</param>
         /// <param name="distribution">Continuous Random Distribution to generate elements from.</param>
-        protected override void DoRandom(SymmetricMatrix matrix, IDiscreteDistribution distribution)
+        protected override void DoRandom(Matrix<double> matrix, IDiscreteDistribution distribution)
         {
             var denseMatrix = matrix as SymmetricDenseMatrix;
 

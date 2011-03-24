@@ -310,33 +310,51 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         }
 
         /// <summary>
-        /// Populates a symmetric matrix with random elements.
+        /// Populates a matrix with random elements.
         /// </summary>
-        /// <param name="matrix">The symmetric matrix to populate.</param>
+        /// <param name="matrix">The matrix to populate.</param>
         /// <param name="distribution">Continuous Random Distribution to generate elements from.</param>
-        protected virtual void DoRandom(SymmetricMatrix matrix, IContinuousDistribution distribution)
+        protected override void DoRandom(Matrix<double> matrix, IContinuousDistribution distribution)
         {
-            for (var i = 0; i < matrix.RowCount; i++)
+            var symmetricResult = matrix as SymmetricMatrix;
+
+            if (symmetricResult == null)
             {
-                for (var j = i; j < matrix.ColumnCount; j++)
+                base.DoRandom(matrix, distribution);
+            }
+            else
+            {
+                for (var i = 0; i < matrix.RowCount; i++)
                 {
-                    matrix.At(i, j, distribution.Sample());
+                    for (var j = i; j < matrix.ColumnCount; j++)
+                    {
+                        matrix.At(i, j, distribution.Sample());
+                    }
                 }
             }
         }
 
         /// <summary>
-        /// Populates a symmetric matrix with random elements.
+        /// Populates a matrix with random elements.
         /// </summary>
-        /// <param name="matrix">The symmetric matrix to populate.</param>
+        /// <param name="matrix">The matrix to populate.</param>
         /// <param name="distribution">Continuous Random Distribution to generate elements from.</param>
-        protected virtual void DoRandom(SymmetricMatrix matrix, IDiscreteDistribution distribution)
+        protected override void DoRandom(Matrix<double> matrix, IDiscreteDistribution distribution)
         {
-            for (var i = 0; i < matrix.RowCount; i++)
+            var symmetricResult = matrix as SymmetricMatrix;
+
+            if (symmetricResult == null)
             {
-                for (var j = i; j < matrix.ColumnCount; j++)
+                base.DoRandom(matrix, distribution);
+            }
+            else
+            {
+                for (var i = 0; i < matrix.RowCount; i++)
                 {
-                    matrix.At(i, j, distribution.Sample());
+                    for (var j = i; j < matrix.ColumnCount; j++)
+                    {
+                        matrix.At(i, j, distribution.Sample());
+                    }
                 }
             }
         }

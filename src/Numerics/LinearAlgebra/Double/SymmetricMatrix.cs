@@ -136,23 +136,13 @@ namespace MathNet.Numerics.LinearAlgebra.Double
             for (var i = 0; i < RowCount; i++)
             {
                 var s = 0.0;
-                for (var j = 0; j != ColumnCount; j++)
+                for (var j = i; j != ColumnCount; j++)
                 {
                     s += At(i, j) * rightSide[j];
                 }
 
                 result[i] = s;
             }
-        }
-
-        /// <summary>
-        /// Divides each element of the matrix by a scalar and places results into the result matrix.
-        /// </summary>
-        /// <param name="scalar">The scalar to divide the matrix with.</param>
-        /// <param name="result">The matrix to store the result of the division.</param>
-        protected override void DoDivide(double scalar, Matrix<double> result)
-        {
-            DoMultiply(1.0 / scalar, result);
         }
 
         /// <summary>

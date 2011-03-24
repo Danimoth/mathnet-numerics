@@ -104,6 +104,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
             {
                 throw new ArgumentException(Resources.ArgumentArrayWrongLength);
             }
+
             Data = array;
         }
 
@@ -241,6 +242,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
             {
                 throw new ArgumentException(Resources.ArgumentMatrixSquare);
             }
+
             return new SymmetricDenseMatrix(numberOfRows, numberOfColumns);
         }
 
@@ -256,7 +258,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
             return new DenseVector(size);
         }
 
-        //TODO for IndexOf and At: Check if performance gain of having Upper-Triangle-, Lower-Triangle- and Diagonal-specific methods justify the extra code & risk. 
+        // TODO for IndexOf and At: Check if performance gain of having Upper-Triangle-, Lower-Triangle- and Diagonal-specific methods justify the extra code & risk. 
         #region IndexOf and At
         /// <summary>
         /// Retrieves the index of the requested element without range checking.
@@ -294,7 +296,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// </returns>
         public static int IndexOfLower(int row, int column)
         {
-            return column + (row * (row - 1)) / 2;
+            return column + ((row * (row - 1)) / 2);
         }
 
         /// <summary>
@@ -314,7 +316,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// </returns>
         public static int IndexOfUpper(int row, int column)
         {
-            return row + (column * (column - 1)) / 2;
+            return row + ((column * (column - 1)) / 2);
         }
 
         /// <summary>
@@ -521,6 +523,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
             {
                 m.Data[IndexOfDiagonal(i)] = 1.0;
             }
+
             return m;
         }
 

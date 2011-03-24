@@ -119,48 +119,10 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         {
             for (var i = 0; i < RowCount; i++)
             {
-                for (var j = 0; j < ColumnCount; j++)
+                for (var j = i; j < ColumnCount; j++)
                 {
                     result.At(i, j, At(i, j) * scalar);
                 }
-            }
-        }
-
-        /// <summary>
-        /// Multiplies this matrix with a vector and places the results into the result vector.
-        /// </summary>
-        /// <param name="rightSide">The vector to multiply with.</param>
-        /// <param name="result">The result of the multiplication.</param>
-        protected override void DoMultiply(Vector<double> rightSide, Vector<double> result)
-        {
-            for (var i = 0; i < RowCount; i++)
-            {
-                var s = 0.0;
-                for (var j = i; j != ColumnCount; j++)
-                {
-                    s += At(i, j) * rightSide[j];
-                }
-
-                result[i] = s;
-            }
-        }
-
-        /// <summary>
-        /// Left multiply a matrix with a vector ( = vector * matrix ) and place the result in the result vector.
-        /// </summary>
-        /// <param name="leftSide">The vector to multiply with.</param>
-        /// <param name="result">The result of the multiplication.</param>
-        protected override void DoLeftMultiply(Vector<double> leftSide, Vector<double> result)
-        {
-            for (var j = 0; j < ColumnCount; j++)
-            {
-                var s = 0.0;
-                for (var i = 0; i != leftSide.Count; i++)
-                {
-                    s += leftSide[i] * At(i, j);
-                }
-
-                result[j] = s;
             }
         }
 

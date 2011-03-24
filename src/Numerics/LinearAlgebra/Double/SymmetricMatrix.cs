@@ -48,12 +48,67 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="SymmetricMatrix"/> class.
+        /// </summary>
+        /// <param name="rows">
+        /// The number of rows.
+        /// </param>
+        /// <param name="columns">
+        /// The number of columns.
+        /// </param>
+        /// <exception cref="ArgumentException">
+        /// If <paramref name="rows"/> not equal to <paramref name="columns"/>.
+        /// </exception>
+        protected SymmetricMatrix(int rows, int columns)
+            : this(rows)
+        {
+            if (rows != columns)
+            {
+                throw new ArgumentException(Resources.ArgumentMatrixSquare);
+            }
+        }
+
+        /// <summary>
         /// Returns the transpose of this matrix. The transpose is equal and this method returns a reference to this matrix. 
         /// </summary>        
         /// <returns>The transpose of this matrix.</returns>
         public override sealed Matrix<double> Transpose()
         {
             return this;
+        }
+
+        /// <summary>
+        /// Returns a value indicating whether the array is symmetric.  
+        /// </summary>
+        /// <param name="array">The array to check for symmetry. </param>
+        /// <returns>True is array is symmetric, false if not symmetric. </returns>
+        public static bool CheckIfSymmetric(double[,] array)
+        {
+            var rows = array.GetLength(0);
+            var columns = array.GetLength(1);
+
+            if (rows != columns)
+            {
+                return false;
+            }
+
+            for (var row = 0; row < rows; row++)
+            {
+                for (var column = 0; column < columns; column++)
+                {
+                    if (column >= row)
+                    {
+                        continue;
+                    }
+
+                    if (!array[row, column].Equals(array[column, row]))
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
         }
 
         /// <summary>

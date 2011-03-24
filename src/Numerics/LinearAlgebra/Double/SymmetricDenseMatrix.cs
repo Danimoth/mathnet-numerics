@@ -36,7 +36,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
     /// A Symmetric Matrix class with dense storage. The underlying storage is a one dimensional array in column-major order.
     /// The Upper Triangle is stored(it is equal to the Lower Triangle)
     /// </summary>
-    public class SymmetricDenseMatrix : Matrix
+    public class SymmetricDenseMatrix : SymmetricMatrix
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SymmetricDenseMatrix"/> class. This matrix is square with a given size.
@@ -49,27 +49,6 @@ namespace MathNet.Numerics.LinearAlgebra.Double
             : base(order)
         {
             Data = new double[order * (order + 1) / 2];
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SymmetricDenseMatrix"/> class.
-        /// </summary>
-        /// <param name="rows">
-        /// The number of rows.
-        /// </param>
-        /// <param name="columns">
-        /// The number of columns.
-        /// </param>
-        /// <exception cref="ArgumentException">
-        /// If <paramref name="rows"/> not equal to <paramref name="columns"/>.
-        /// </exception>
-        private SymmetricDenseMatrix(int rows, int columns)
-            : this(rows)
-        {
-            if (rows != columns)
-            {
-                throw new ArgumentException(Resources.ArgumentMatrixSquare);
-            }
         }
 
         /// <summary>
@@ -120,7 +99,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// If <paramref name="array"/> is not a symmetric array.
         /// </exception>
         public SymmetricDenseMatrix(double[,] array)
-            : this(array.GetLength(0), array.GetLength(1))
+            : base(array.GetLength(0), array.GetLength(1))
         {
             if (!CheckIfSymmetric(array))
             {
@@ -150,7 +129,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// If <paramref name="matrix"/> is not a symmetric matrix.
         /// </exception>
         public SymmetricDenseMatrix(Matrix<double> matrix)
-            : this(matrix.RowCount, matrix.ColumnCount)
+            : base(matrix.RowCount, matrix.ColumnCount)
         {
             int order = matrix.RowCount;
             var symmetricMatrix = matrix as SymmetricDenseMatrix;
@@ -174,40 +153,6 @@ namespace MathNet.Numerics.LinearAlgebra.Double
             {
                 matrix.CopyTo(this);
             }
-        }
-
-        /// <summary>
-        /// Returns a value indicating whether the array is symmetric.  
-        /// </summary>
-        /// <param name="array">The array to check for symmetry. </param>
-        /// <returns>True is array is symmetric, false if not symmetric. </returns>
-        public static bool CheckIfSymmetric(double[,] array)
-        {
-            var rows = array.GetLength(0);
-            var columns = array.GetLength(1);
-
-            if (rows != columns)
-            {
-                return false;
-            }
-
-            for (var row = 0; row < rows; row++)
-            {
-                for (var column = 0; column < columns; column++)
-                {
-                    if (column >= row)
-                    {
-                        continue;
-                    }
-
-                    if (!array[row, column].Equals(array[column, row]))
-                    {
-                        return false;
-                    }
-                }
-            }
-
-            return true;
         }
 
         /// <summary>
@@ -713,26 +658,6 @@ namespace MathNet.Numerics.LinearAlgebra.Double
                                   0.0,
                                   denseResult.Data);
             }
-        }
-
-        /// <summary>
-        /// Multiplies the transpose of this matrix with a vector and places the results into the result vector.
-        /// </summary>
-        /// <param name="rightSide">The vector to multiply with.</param>
-        /// <param name="result">The result of the multiplication.</param>
-        protected override void DoTransposeThisAndMultiply(Vector<double> rightSide, Vector<double> result)
-        {
-            DoMultiply(rightSide, result);
-        }
-
-        /// <summary>
-        /// Multiplies the transpose of this matrix with another matrix and places the results into the result matrix.
-        /// </summary>
-        /// <param name="other">The matrix to multiply with.</param>
-        /// <param name="result">The result of the multiplication.</param>
-        protected override void DoTransposeThisAndMultiply(Matrix<double> other, Matrix<double> result)
-        {
-            DoMultiply(other, result);
         }
 
         /// <summary>

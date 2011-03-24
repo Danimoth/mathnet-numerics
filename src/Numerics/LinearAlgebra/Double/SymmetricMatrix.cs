@@ -65,11 +65,20 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// <exception cref="ArgumentOutOfRangeException">If the two matrices don't have the same dimensions.</exception>
         protected override void DoAdd(Matrix<double> other, Matrix<double> result)
         {
-            for (var i = 0; i < RowCount; i++)
+            var symmetricOther = other as SymmetricMatrix;
+            var symmetricResult = result as SymmetricMatrix;
+            if (symmetricOther == null || symmetricResult == null)
             {
-                for (var j = 0; j < ColumnCount; j++)
+                base.DoAdd(other, result);
+            }
+            else
+            {
+                for (var i = 0; i < RowCount; i++)
                 {
-                    result.At(i, j, At(i, j) + other.At(i, j));
+                    for (var j = i; j < ColumnCount; j++)
+                    {
+                        result.At(i, j, At(i, j) + other.At(i, j));
+                    }
                 }
             }
         }
@@ -83,11 +92,20 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// <exception cref="ArgumentOutOfRangeException">If the two matrices don't have the same dimensions.</exception>
         protected override void DoSubtract(Matrix<double> other, Matrix<double> result)
         {
-            for (var i = 0; i < RowCount; i++)
+            var symmetricOther = other as SymmetricMatrix;
+            var symmetricResult = result as SymmetricMatrix;
+            if (symmetricOther == null || symmetricResult == null)
             {
-                for (var j = 0; j < ColumnCount; j++)
+                base.DoSubtract(other, result);
+            }
+            else
+            {
+                for (var i = 0; i < RowCount; i++)
                 {
-                    result.At(i, j, At(i, j) - other.At(i, j));
+                    for (var j = i; j < ColumnCount; j++)
+                    {
+                        result.At(i, j, At(i, j) - other.At(i, j));
+                    }
                 }
             }
         }

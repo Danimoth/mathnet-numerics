@@ -109,11 +109,11 @@ namespace MathNet.Numerics.LinearAlgebra.Double
 
             int order = array.GetLength(0);
             Data = new double[order * (order + 1) / 2];
-            for (var i = 0; i < order; i++)
+            for (var row = 0; row < order; row++)
             {
-                for (var j = i; j < order; j++)
+                for (var column = row; column < order; column++)
                 {
-                    Data[IndexOfUpper(i, j)] = array[i, j];
+                    Data[IndexOfUpper(row, column)] = array[row, column];
                 }
             }
         }
@@ -142,11 +142,11 @@ namespace MathNet.Numerics.LinearAlgebra.Double
 
             if (symmetricMatrix == null)
             {
-                for (var i = 0; i < order; i++)
+                for (var row = 0; row < order; row++)
                 {
-                    for (var j = i; j < order; j++)
+                    for (var column = row; column < order; column++)
                     {
-                        Data[IndexOfUpper(i, j)] = matrix[i, j];
+                        Data[IndexOfUpper(row, column)] = matrix[row, column];
                     }
                 }
             }

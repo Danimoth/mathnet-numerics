@@ -480,15 +480,6 @@ namespace MathNet.Numerics.LinearAlgebra.Double
             Array.Clear(Data, 0, Data.Length);
         }
 
-        /// <summary>
-        /// Returns the transpose of this matrix. The transpose is equal and this method returns a reference to this matrix. 
-        /// </summary>        
-        /// <returns>The transpose of this matrix.</returns>
-        public override Matrix<double> Transpose()
-        {
-            return this;
-        }
-
         /// <summary>Calculates the L1 norm.</summary>
         /// <returns>The L1 norm of the matrix.</returns>
         public override double L1Norm()

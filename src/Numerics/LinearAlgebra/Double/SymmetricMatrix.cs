@@ -1,4 +1,4 @@
-﻿// <copyright file="Matrix.cs" company="Math.NET">
+﻿// <copyright file="SymmetricMatrix.cs" company="Math.NET">
 // Math.NET Numerics, part of the Math.NET Project
 // http://numerics.mathdotnet.com
 // http://github.com/mathnet/mathnet-numerics
@@ -47,41 +47,13 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         {
         }
 
-        /// <summary>Calculates the Frobenius norm of this matrix.</summary>
-        /// <returns>The Frobenius norm of this matrix.</returns>
-        public override double FrobeniusNorm()
+        /// <summary>
+        /// Returns the transpose of this matrix. The transpose is equal and this method returns a reference to this matrix. 
+        /// </summary>        
+        /// <returns>The transpose of this matrix.</returns>
+        public override sealed Matrix<double> Transpose()
         {
-            var transpose = this;
-            var aat = this * transpose;
-
-            var norm = 0.0;
-            for (var i = 0; i < RowCount; i++)
-            {
-                norm += Math.Abs(aat.At(i, i));
-            }
-
-            norm = Math.Sqrt(norm);
-
-            return norm;
-        }
-
-        /// <summary>Calculates the infinity norm of this matrix.</summary>
-        /// <returns>The infinity norm of this matrix.</returns>   
-        public override double InfinityNorm()
-        {
-            var norm = 0.0;
-            for (var i = 0; i < RowCount; i++)
-            {
-                var s = 0.0;
-                for (var j = 0; j < ColumnCount; j++)
-                {
-                    s += Math.Abs(At(i, j));
-                }
-
-                norm = Math.Max(norm, s);
-            }
-
-            return norm;
+            return this;
         }
 
         /// <summary>

@@ -28,6 +28,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
 {
     using System;
     using Algorithms.LinearAlgebra;
+    using Distributions;
     using Generic;
     using Properties;
     using Threading;
@@ -773,6 +774,50 @@ namespace MathNet.Numerics.LinearAlgebra.Double
             }
 
             return sum;
+        }
+
+        /// <summary>
+        /// Populates a symmetric matrix with random elements.
+        /// </summary>
+        /// <param name="matrix">The symmetric matrix to populate.</param>
+        /// <param name="distribution">Continuous Random Distribution to generate elements from.</param>
+        protected override void DoRandom(SymmetricMatrix matrix, IContinuousDistribution distribution)
+        {
+            var denseMatrix = matrix as SymmetricDenseMatrix;
+
+            if (denseMatrix == null)
+            {
+                base.DoRandom(matrix, distribution);
+            }
+            else
+            {
+                for (var i = 0; i < Data.Length; i++)
+                {
+                    Data[i] = distribution.Sample();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Populates a symmetric matrix with random elements.
+        /// </summary>
+        /// <param name="matrix">The symmetric matrix to populate.</param>
+        /// <param name="distribution">Continuous Random Distribution to generate elements from.</param>
+        protected override void DoRandom(SymmetricMatrix matrix, IDiscreteDistribution distribution)
+        {
+            var denseMatrix = matrix as SymmetricDenseMatrix;
+
+            if (denseMatrix == null)
+            {
+                base.DoRandom(matrix, distribution);
+            }
+            else
+            {
+                for (var i = 0; i < Data.Length; i++)
+                {
+                    Data[i] = distribution.Sample();
+                }
+            }
         }
 
         /// <summary>

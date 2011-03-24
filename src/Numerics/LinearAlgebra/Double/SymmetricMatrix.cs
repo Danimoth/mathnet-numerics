@@ -127,28 +127,6 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         }
 
         /// <summary>
-        /// Multiplies this matrix with another matrix and places the results into the result matrix.
-        /// </summary>
-        /// <param name="other">The matrix to multiply with.</param>
-        /// <param name="result">The result of the multiplication.</param>
-        protected override void DoMultiply(Matrix<double> other, Matrix<double> result)
-        {
-            for (var j = 0; j < RowCount; j++)
-            {
-                for (var i = 0; i != other.ColumnCount; i++)
-                {
-                    var s = 0.0;
-                    for (var l = 0; l < ColumnCount; l++)
-                    {
-                        s += At(j, l) * other.At(l, i);
-                    }
-
-                    result.At(j, i, s);
-                }
-            }
-        }
-
-        /// <summary>
         /// Multiplies this matrix with transpose of another matrix and places the results into the result matrix.
         /// </summary>
         /// <param name="other">The matrix to multiply with.</param>

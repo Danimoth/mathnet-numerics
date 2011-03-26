@@ -40,6 +40,13 @@ namespace MathNet.Numerics.LinearAlgebra.Double
     public class SymmetricDenseMatrix : SymmetricMatrix
     {
         /// <summary>
+        /// Number of rows or columns.
+        /// </summary>
+        /// <remarks>Using this instead of the RowCount property to speed up calculating
+        /// a matrix index in the data array.</remarks>
+        private readonly int _order;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="SymmetricDenseMatrix"/> class. This matrix is square with a given size.
         /// </summary>
         /// <param name="order">The size of the square matrix.</param>
@@ -49,6 +56,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         public SymmetricDenseMatrix(int order)
             : base(order)
         {
+            _order = order;
             Data = new double[order * (order + 1) / 2];
         }
 
@@ -85,6 +93,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
                 throw new ArgumentException(Resources.ArgumentArrayWrongLength);
             }
 
+            _order = order;
             Data = array;
         }
 
@@ -107,7 +116,9 @@ namespace MathNet.Numerics.LinearAlgebra.Double
                 throw new ArgumentException(Resources.ArgumentMatrixSymmetric);
             }
 
-            int order = array.GetLength(0);
+            var order = array.GetLength(0);
+            _order = order;
+
             Data = new double[order * (order + 1) / 2];
             for (var row = 0; row < order; row++)
             {
@@ -132,7 +143,9 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         public SymmetricDenseMatrix(Matrix<double> matrix)
             : base(matrix.RowCount, matrix.ColumnCount)
         {
-            int order = matrix.RowCount;
+            var order = matrix.RowCount;
+            _order = order;
+
             var symmetricMatrix = matrix as SymmetricDenseMatrix;
 
             if (!matrix.IsSymmetric)
@@ -204,7 +217,52 @@ namespace MathNet.Numerics.LinearAlgebra.Double
             return new DenseVector(size);
         }
 
-        #region IndexOf and At
+        #region this[x,y], IndexOf and At
+        /// <summary>
+        /// Gets or sets the value at the given row and column.
+        /// </summary>
+        /// <param name="row">
+        /// The row of the element.
+        /// </param>
+        /// <param name="column">
+        /// The column of the element.
+        /// </param>
+        /// <value>The value to get or set.</value>
+        /// <remarks>This method is ranged checked. <see cref="At(int,int)"/> and <see cref="At(int,int,double)"/>
+        /// to get and set values without range checking.</remarks>
+        public override double this[int row, int column]
+        {
+            get
+            {
+                if (row < 0 || row >= _order)
+                {
+                    throw new ArgumentOutOfRangeException("row");
+                }
+
+                if (column < 0 || column >= _order)
+                {
+                    throw new ArgumentOutOfRangeException("column");
+                }
+
+                return Data[IndexOf(row, column)];
+            }
+
+            set
+            {
+                if (row < 0 || row >= _order)
+                {
+                    throw new ArgumentOutOfRangeException("row");
+                }
+
+                if (column < 0 || column >= _order)
+                {
+                    throw new ArgumentOutOfRangeException("column");
+                }
+
+                Data[IndexOf(row, column)] = value;
+            }
+        }
+        
         /// <summary>
         /// Retrieves the index of the requested element without range checking.
         /// </summary>
@@ -219,8 +277,8 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// </returns>
         public static int IndexOf(int row, int column)
         {
-            int r = Math.Min(row, column);
-            int c = Math.Max(row, column);
+            var r = Math.Min(row, column);
+            var c = Math.Max(row, column);
             return IndexOfUpper(r, c);
         }
 

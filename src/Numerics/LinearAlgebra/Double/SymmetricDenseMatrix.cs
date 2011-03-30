@@ -27,7 +27,6 @@
 namespace MathNet.Numerics.LinearAlgebra.Double
 {
     using System;
-    using Algorithms.LinearAlgebra;
     using Distributions;
     using Generic;
     using Properties;

@@ -582,19 +582,8 @@ namespace MathNet.Numerics.LinearAlgebra.Double
             }
             else
             {
-                throw new NotImplementedException();
-                Control.LinearAlgebraProvider.MatrixMultiplyWithUpdate(
-                    Algorithms.LinearAlgebra.Transpose.DontTranspose,
-                    Algorithms.LinearAlgebra.Transpose.DontTranspose,
-                    1.0,
-                    Data,
-                    RowCount,
-                    ColumnCount,
-                    denseRight.Data,
-                    denseRight.Count,
-                    1,
-                    0.0,
-                    denseResult.Data);
+                // TODO: Change this when symmetric methods are implemented in the Linear Algebra Providers. 
+                base.DoMultiply(rightSide, result);
             }
         }
 
@@ -614,19 +603,8 @@ namespace MathNet.Numerics.LinearAlgebra.Double
             }
             else
             {
-                throw new NotImplementedException();
-                Control.LinearAlgebraProvider.MatrixMultiplyWithUpdate(
-                    Algorithms.LinearAlgebra.Transpose.DontTranspose,
-                    Algorithms.LinearAlgebra.Transpose.DontTranspose,
-                    1.0,
-                    denseLeft.Data,
-                    1,
-                    denseLeft.Count,
-                    Data,
-                    RowCount,
-                    ColumnCount,
-                    0.0,
-                    denseResult.Data);
+                // TODO: Change this when symmetric methods are implemented in the Linear Algebra Providers.
+                base.DoLeftMultiply(leftSide, result);
             }
         }
 
@@ -646,19 +624,8 @@ namespace MathNet.Numerics.LinearAlgebra.Double
             }
             else
             {
-                throw new NotImplementedException();
-                Control.LinearAlgebraProvider.MatrixMultiplyWithUpdate(
-                                  Algorithms.LinearAlgebra.Transpose.DontTranspose,
-                                  Algorithms.LinearAlgebra.Transpose.DontTranspose,
-                                  1.0,
-                                  Data,
-                                  RowCount,
-                                  ColumnCount,
-                                  denseOther.Data,
-                                  denseOther.RowCount,
-                                  denseOther.ColumnCount,
-                                  0.0,
-                                  denseResult.Data);
+                // TODO: Change this when symmetric methods are implemented in the Linear Algebra Providers.
+                base.DoMultiply(other, result);
             }
         }
 
@@ -678,19 +645,8 @@ namespace MathNet.Numerics.LinearAlgebra.Double
             }
             else
             {
-                throw new NotImplementedException();
-                Control.LinearAlgebraProvider.MatrixMultiplyWithUpdate(
-                                  Algorithms.LinearAlgebra.Transpose.DontTranspose,
-                                  Algorithms.LinearAlgebra.Transpose.Transpose,
-                                  1.0,
-                                  Data,
-                                  RowCount,
-                                  ColumnCount,
-                                  denseOther.Data,
-                                  denseOther.RowCount,
-                                  denseOther.ColumnCount,
-                                  0.0,
-                                  denseResult.Data);
+                // TODO: Change this when symmetric methods are implemented in the Linear Algebra Providers.
+                base.DoTransposeAndMultiply(other, result);
             }
         }
 

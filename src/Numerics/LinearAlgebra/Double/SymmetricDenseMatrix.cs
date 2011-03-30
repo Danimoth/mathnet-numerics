@@ -484,31 +484,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         {
             Array.Clear(Data, 0, Data.Length);
         }
-
-        /// <summary>Calculates the L1 norm.</summary>
-        /// <returns>The L1 norm of the matrix.</returns>
-        public override double L1Norm()
-        {
-            throw new NotImplementedException();
-            return Control.LinearAlgebraProvider.MatrixNorm(Norm.OneNorm, RowCount, ColumnCount, Data);
-        }
-
-        /// <summary>Calculates the Frobenius norm of this matrix.</summary>
-        /// <returns>The Frobenius norm of this matrix.</returns>
-        public override double FrobeniusNorm()
-        {
-            throw new NotImplementedException();
-            return Control.LinearAlgebraProvider.MatrixNorm(Norm.FrobeniusNorm, RowCount, ColumnCount, Data);
-        }
-
-        /// <summary>Calculates the infinity norm of this matrix.</summary>
-        /// <returns>The infinity norm of this matrix.</returns>  
-        public override double InfinityNorm()
-        {
-            throw new NotImplementedException();
-            return Control.LinearAlgebraProvider.MatrixNorm(Norm.InfinityNorm, RowCount, ColumnCount, Data);
-        }
-
+     
         #region Static constructors for special matrices.
 
         /// <summary>

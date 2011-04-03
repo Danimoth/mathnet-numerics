@@ -35,7 +35,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double
     /// <summary>
     /// Abstract class with the common set of matrix tests for symmetric matrices
     /// </summary>
-    public abstract partial class SymmetricMatrixTests : MatrixTests
+    public abstract partial class SymmetricMatrixTests
     {
 
     }

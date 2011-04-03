@@ -42,7 +42,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double
         /// </summary>
         /// <param name="scalar">Scalar value.</param>
         [Test]
-        public void CanMultiplyWithScalar([Values(0, 1, 2.2)] double scalar)
+        public virtual void CanMultiplyWithScalar([Values(0, 1, 2.2)] double scalar)
         {
             var matrix = TestMatrices["Singular3x3"];
             var clone = matrix.Clone();

@@ -37,6 +37,25 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double
     /// </summary>
     public abstract partial class SymmetricMatrixTests
     {
+        /// <summary>
+        /// Can multiply with a scalar.
+        /// </summary>
+        /// <param name="scalar">Scalar value.</param>
+        [Test]
+        public override void CanMultiplyWithScalar([Values(0, 1, 2.2)] double scalar)
+        {
+            var matrix = TestMatrices["Symmetric3x3"];
+            var clone = matrix.Clone();
+            clone = clone.Multiply(scalar);
 
+            for (var i = 0; i < matrix.RowCount; i++)
+            {
+                for (var j = i; j < matrix.ColumnCount; j++)
+                {
+                    Assert.AreEqual(matrix[i, j] * scalar, clone[i, j]);
+                    Assert.AreEqual(matrix[i, j], matrix[j, i]);
+                }
+            }
+        }
     }
 }

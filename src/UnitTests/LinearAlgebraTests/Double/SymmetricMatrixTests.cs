@@ -50,5 +50,25 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double
 
             Assert.AreSame(matrix, transpose);
         }
+
+        /// <summary>
+        /// Can check if a [,] array is symmetric. 
+        /// </summary>
+        /// <param name="name">Matrix name.</param>
+        [Test, Sequential]
+        public void CanCheckIfSymmetric([Values("Singular3x3", "Square3x3", "Square4x4", "Tall3x2", "Wide2x3", "Symmetric3x3")] string name)
+        {
+            var matrix = CreateMatrix(TestData2D[name]);
+            var transpose = matrix.Trace();
+
+            if (matrix.Equals(transpose))
+            {
+                Assert.IsTrue(SymmetricMatrix.CheckIfSymmetric(TestData2D[name]));
+            }
+            else
+            {
+                Assert.IsFalse(SymmetricMatrix.CheckIfSymmetric(TestData2D[name]));
+            }
+        }
     }
 }

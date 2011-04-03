@@ -32,7 +32,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
     using Properties;
 
     /// <summary>
-    /// Symmetric <c>double</c> version of the <see cref="Matrix{T}"/> class.
+    /// Symmetric <c>double</c> version of the <see cref="Matrix"/> class.
     /// </summary>
     public abstract class SymmetricMatrix : Matrix
     {

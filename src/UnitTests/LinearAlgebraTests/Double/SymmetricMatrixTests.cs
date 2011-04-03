@@ -38,6 +38,17 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double
     [TestFixture]
     public abstract partial class SymmetricMatrixTests : MatrixTests
     {
+        /// <summary>
+        /// Can transpose a matrix.
+        /// </summary>
+        /// <param name="name">Matrix name.</param>
+        [Test, Sequential]
+        public override sealed void CanTransposeMatrix([Values("Symmetric3x3")] string name)
+        {
+            var matrix = CreateMatrix(TestData2D[name]);
+            var transpose = matrix.Transpose();
 
+            Assert.AreSame(matrix, transpose);
+        }
     }
 }

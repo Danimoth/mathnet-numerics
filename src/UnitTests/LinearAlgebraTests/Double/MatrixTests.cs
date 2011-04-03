@@ -824,7 +824,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double
         /// </summary>
         /// <param name="name">Matrix name.</param>
         [Test, Sequential]
-        public void CanTransposeMatrix([Values("Singular3x3", "Square3x3", "Square4x4", "Tall3x2", "Wide2x3")] string name)
+        public virtual void CanTransposeMatrix([Values("Singular3x3", "Square3x3", "Square4x4", "Tall3x2", "Wide2x3")] string name)
         {
             var matrix = CreateMatrix(TestData2D[name]);
             var transpose = matrix.Transpose();

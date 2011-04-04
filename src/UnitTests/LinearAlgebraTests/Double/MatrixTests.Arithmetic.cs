@@ -721,7 +721,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double
         /// Can multiply transposed matrix with a vector into result when updating input argument.
         /// </summary>
         [Test]
-        public void CanTransposeThisAndMultiplyWithVectorIntoResultWhenUpdatingInputArgument()
+        public virtual void CanTransposeThisAndMultiplyWithVectorIntoResultWhenUpdatingInputArgument()
         {
             var matrix = TestMatrices["Singular3x3"];
             var x = new DenseVector(new[] { 1.0, 2.0, 3.0 });

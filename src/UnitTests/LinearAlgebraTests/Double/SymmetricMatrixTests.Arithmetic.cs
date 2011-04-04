@@ -38,6 +38,8 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double
     /// </summary>
     public abstract partial class SymmetricMatrixTests
     {
+        // TODO: Many methods here are the same with the base methods except the test matrices. 
+
         /// <summary>
         /// Setup test matrices.
         /// </summary>
@@ -140,13 +142,14 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double
             var matrix = TestMatrices["Symmetric3x3"];
             var x = new DenseVector(new[] { 1.0, 2.0, 3.0 });
             var y = matrix.TransposeThisAndMultiply(x);
-            var z = matrix.Multiply(x);
 
             Assert.AreEqual(matrix.ColumnCount, y.Count);
 
             for (var j = 0; j < matrix.ColumnCount; j++)
             {
-                Assert.AreEqual(y[j], z[j]);
+                var ar = matrix.Column(j);
+                var dot = ar * x;
+                Assert.AreEqual(dot, y[j]);
             }
         }
 
@@ -160,11 +163,34 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double
             var x = new DenseVector(new[] { 1.0, 2.0, 3.0 });
             var y = new DenseVector(3);
             matrix.TransposeThisAndMultiply(x, y);
-            var z = matrix.Multiply(x);
 
             for (var j = 0; j < matrix.ColumnCount; j++)
             {
-                Assert.AreEqual(y[j], z[j]);
+                var ar = matrix.Column(j);
+                var dot = ar * x;
+                Assert.AreEqual(dot, y[j]);
+            }
+        }
+
+        /// <summary>
+        /// Can multiply transposed matrix with a vector into result when updating input argument.
+        /// </summary>
+        [Test]
+        public override void CanTransposeThisAndMultiplyWithVectorIntoResultWhenUpdatingInputArgument()
+        {
+            var matrix = TestMatrices["Symmetric3x3"];
+            var x = new DenseVector(new[] { 1.0, 2.0, 3.0 });
+            var y = x;
+            matrix.TransposeThisAndMultiply(x, x);
+
+            Assert.AreSame(y, x);
+
+            y = new DenseVector(new[] { 1.0, 2.0, 3.0 });
+            for (var j = 0; j < matrix.ColumnCount; j++)
+            {
+                var ar = matrix.Column(j);
+                var dot = ar * y;
+                Assert.AreEqual(dot, x[j]);
             }
         }
     }

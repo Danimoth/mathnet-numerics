@@ -33,9 +33,10 @@ namespace MathNet.Numerics.LinearAlgebra.Double
     using Threading;
 
     /// <summary>
-    /// A Symmetric Matrix class with dense storage. The underlying storage is a one dimensional array in column-major order.
-    /// The Upper Triangle is stored(it is equal to the Lower Triangle)
+    /// A Symmetric Matrix class with dense storage. 
     /// </summary>
+    /// <remarks> The underlying storage is a one dimensional array in column-major order.
+    /// The Upper Triangle is stored(it is equal to the Lower Triangle) </remarks>
     public class SymmetricDenseMatrix : SymmetricMatrix
     {
         /// <summary>
@@ -60,12 +61,38 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="SymmetricDenseMatrix"/> class.
+        /// </summary>
+        /// <param name="rows">
+        /// The number of rows.
+        /// </param>
+        /// <param name="columns">
+        /// The number of columns.
+        /// </param>
+        /// /// <exception cref="ArgumentException">
+        /// If <paramref name="rows"/> not equal to <paramref name="columns"/>.
+        /// </exception>
+        public SymmetricDenseMatrix(int rows, int columns)
+            : base(rows, columns)
+        {
+            _order = rows;
+            Data = new double[rows * (rows + 1) / 2];
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="SymmetricDenseMatrix"/> class with all entries set to a particular value.
         /// </summary>
-        /// <param name="order">The size of the square matrix.</param>
+        /// <param name="rows">
+        /// The number of rows.
+        /// </param>
+        /// <param name="columns">
+        /// The number of columns.
+        /// </param>
         /// <param name="value">The value which we assign to each element of the matrix.</param>
-        public SymmetricDenseMatrix(int order, double value)
-            : this(order)
+        /// <remarks> Forcing user to input (int, int, double) because only asking (int, double) would 
+        /// create a signature easily confused with (int, int) which is already used </remarks>
+        public SymmetricDenseMatrix(int rows, int columns, double value)
+            : this(rows, columns)
         {
             for (var i = 0; i < Data.Length; i++)
             {

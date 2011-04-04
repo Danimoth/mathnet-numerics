@@ -43,7 +43,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double
         /// </summary>
         /// <param name="name">Matrix name.</param>
         [Test, Sequential]
-        public override sealed void CanTransposeMatrix([Values("Symmetric2x2", "Symmetric3x3", "Symmetric4x4")] string name)
+        public override sealed void CanTransposeMatrix([Values("Singular3x3", "Square3x3", "Square4x4")] string name)
         {
             var matrix = CreateMatrix(TestData2D[name]);
             var transpose = matrix.Transpose();
@@ -56,7 +56,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double
         /// </summary>
         /// <param name="name">Matrix name.</param>
         [Test, Sequential]
-        public void CanCheckIfSymmetric([Values("Singular3x3", "Square3x3", "Square4x4", "Tall3x2", "Wide2x3", "Symmetric2x2", "Symmetric3x3", "Symmetric4x4")] string name)
+        public void CanCheckIfSymmetric([Values("Singular3x3", "Square3x3", "Square4x4", "Tall3x2", "Wide2x3")] string name)
         {
             var matrix = CreateMatrix(TestData2D[name]);
             var transpose = matrix.Trace();

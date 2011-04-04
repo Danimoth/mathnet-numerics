@@ -682,7 +682,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double
         /// Can multiply transposed matrix with a vector.
         /// </summary>
         [Test]
-        public void CanTransposeThisAndMultiplyWithVector()
+        public virtual void CanTransposeThisAndMultiplyWithVector()
         {
             var matrix = TestMatrices["Singular3x3"];
             var x = new DenseVector(new[] { 1.0, 2.0, 3.0 });
@@ -702,7 +702,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double
         /// Can multiply transposed matrix with a vector into a result.
         /// </summary>
         [Test]
-        public void CanTransposeThisAndMultiplyWithVectorIntoResult()
+        public virtual void CanTransposeThisAndMultiplyWithVectorIntoResult()
         {
             var matrix = TestMatrices["Singular3x3"];
             var x = new DenseVector(new[] { 1.0, 2.0, 3.0 });

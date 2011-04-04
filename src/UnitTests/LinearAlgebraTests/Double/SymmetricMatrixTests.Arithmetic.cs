@@ -130,5 +130,42 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double
                 }
             }
         }
+
+        /// <summary>
+        /// Can multiply transposed matrix with a vector.
+        /// </summary>
+        [Test]
+        public override void CanTransposeThisAndMultiplyWithVector()
+        {
+            var matrix = TestMatrices["Symmetric3x3"];
+            var x = new DenseVector(new[] { 1.0, 2.0, 3.0 });
+            var y = matrix.TransposeThisAndMultiply(x);
+            var z = matrix.Multiply(x);
+
+            Assert.AreEqual(matrix.ColumnCount, y.Count);
+
+            for (var j = 0; j < matrix.ColumnCount; j++)
+            {
+                Assert.AreEqual(y[j], z[j]);
+            }
+        }
+
+        /// <summary>
+        /// Can multiply transposed matrix with a vector into a result.
+        /// </summary>
+        [Test]
+        public override void CanTransposeThisAndMultiplyWithVectorIntoResult()
+        {
+            var matrix = TestMatrices["Symmetric3x3"];
+            var x = new DenseVector(new[] { 1.0, 2.0, 3.0 });
+            var y = new DenseVector(3);
+            matrix.TransposeThisAndMultiply(x, y);
+            var z = matrix.Multiply(x);
+
+            for (var j = 0; j < matrix.ColumnCount; j++)
+            {
+                Assert.AreEqual(y[j], z[j]);
+            }
+        }
     }
 }

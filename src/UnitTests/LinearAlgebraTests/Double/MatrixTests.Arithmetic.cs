@@ -259,7 +259,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double
         /// <param name="mtxA">Matrix A name.</param>
         /// <param name="mtxB">Matrix B name.</param>
         [Test, Sequential]
-        public virtual void CanAddMatrix([Values("Singular3x3", "Singular4x4")] string mtxA, [Values("Square3x3", "Square4x4")] string mtxB)
+        public void CanAddMatrix([Values("Singular3x3", "Singular4x4")] string mtxA, [Values("Square3x3", "Square4x4")] string mtxB)
         {
             var matrixA = TestMatrices[mtxA];
             var matrixB = TestMatrices[mtxB];
@@ -379,7 +379,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double
         /// <param name="mtxA">Matrix A name.</param>
         /// <param name="mtxB">Matrix B name.</param>
         [Test, Sequential]
-        public virtual void CanSubtractMatrix([Values("Singular3x3", "Singular4x4")] string mtxA, [Values("Square3x3", "Square4x4")] string mtxB)
+        public void CanSubtractMatrix([Values("Singular3x3", "Singular4x4")] string mtxA, [Values("Square3x3", "Square4x4")] string mtxB)
         {
             var matrixA = TestMatrices[mtxA];
             var matrixB = TestMatrices[mtxB];

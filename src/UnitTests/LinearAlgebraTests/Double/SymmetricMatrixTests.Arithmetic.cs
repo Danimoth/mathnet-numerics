@@ -38,8 +38,6 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double
     /// </summary>
     public abstract partial class SymmetricMatrixTests
     {
-        // TODO: Many methods here are the same with the base methods except the test matrices. 
-
         /// <summary>
         /// Setup test matrices. 
         /// Singular and Square matrices are overriden here with symmetric ones so that calls to base methods work as intended. 
@@ -68,14 +66,13 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double
         }
 
         /// <summary>
-        /// Can add a matrix.
+        /// Can add a non-symmetric matrix to this symmetric matrix.
         /// </summary>
         /// <param name="mtxA">Matrix A name.</param>
         /// <param name="mtxB">Matrix B name.</param>
         [Test, Sequential]
-        public override void CanAddMatrix([Values("Symmetric4x4", "Symmetric4x4")] string mtxA, [Values("Symmetric4x4", "Square4x4")] string mtxB)
+        public void CanAddNonSymmetricMatrix([Values("Square3x3", "Square4x4")] string mtxA, [Values("NonSymmetric3x3", "NonSymmetric4x4")] string mtxB)
         {
-            // TODO: This is the same code as the base class. Only the test values are changed. Can this be done with base calls?
             var matrixA = TestMatrices[mtxA];
             var matrixB = TestMatrices[mtxB];
 
@@ -91,14 +88,13 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double
         }
 
         /// <summary>
-        /// Can subtract a matrix.
+        /// Can subtract a non-symmetric matrix from this symmetric matrix.
         /// </summary>
         /// <param name="mtxA">Matrix A name.</param>
         /// <param name="mtxB">Matrix B name.</param>
         [Test, Sequential]
-        public override void CanSubtractMatrix([Values("Symmetric4x4", "Symmetric4x4")] string mtxA, [Values("Symmetric4x4", "Square4x4")] string mtxB)
+        public void CanSubtractNonSymmetricMatrix([Values("Square3x3", "Square4x4")] string mtxA, [Values("NonSymmetric3x3", "NonSymmetric4x4")] string mtxB)
         {
-            // TODO: This is the same code as the base class. Only the test values are changed. Can this be done with base calls?
             var matrixA = TestMatrices[mtxA];
             var matrixB = TestMatrices[mtxB];
 

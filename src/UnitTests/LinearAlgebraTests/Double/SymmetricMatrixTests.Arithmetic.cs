@@ -68,27 +68,6 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double
         }
 
         /// <summary>
-        /// Can multiply with a scalar.
-        /// </summary>
-        /// <param name="scalar">Scalar value.</param>
-        [Test]
-        public override void CanMultiplyWithScalar([Values(0, 1, 2.2)] double scalar)
-        {
-            var matrix = TestMatrices["Symmetric3x3"];
-            var clone = matrix.Clone();
-            clone = clone.Multiply(scalar);
-
-            for (var i = 0; i < matrix.RowCount; i++)
-            {
-                for (var j = i; j < matrix.ColumnCount; j++)
-                {
-                    Assert.AreEqual(matrix[i, j] * scalar, clone[i, j]);
-                    Assert.AreEqual(clone[i, j], clone[j, i]);
-                }
-            }
-        }
-
-        /// <summary>
         /// Can add a matrix.
         /// </summary>
         /// <param name="mtxA">Matrix A name.</param>
@@ -131,67 +110,6 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double
                 {
                     Assert.AreEqual(matrix[i, j], matrixA[i, j] - matrixB[i, j]);
                 }
-            }
-        }
-
-        /// <summary>
-        /// Can multiply transposed matrix with a vector.
-        /// </summary>
-        [Test]
-        public override void CanTransposeThisAndMultiplyWithVector()
-        {
-            var matrix = TestMatrices["Symmetric3x3"];
-            var x = new DenseVector(new[] { 1.0, 2.0, 3.0 });
-            var y = matrix.TransposeThisAndMultiply(x);
-
-            Assert.AreEqual(matrix.ColumnCount, y.Count);
-
-            for (var j = 0; j < matrix.ColumnCount; j++)
-            {
-                var ar = matrix.Column(j);
-                var dot = ar * x;
-                Assert.AreEqual(dot, y[j]);
-            }
-        }
-
-        /// <summary>
-        /// Can multiply transposed matrix with a vector into a result.
-        /// </summary>
-        [Test]
-        public override void CanTransposeThisAndMultiplyWithVectorIntoResult()
-        {
-            var matrix = TestMatrices["Symmetric3x3"];
-            var x = new DenseVector(new[] { 1.0, 2.0, 3.0 });
-            var y = new DenseVector(3);
-            matrix.TransposeThisAndMultiply(x, y);
-
-            for (var j = 0; j < matrix.ColumnCount; j++)
-            {
-                var ar = matrix.Column(j);
-                var dot = ar * x;
-                Assert.AreEqual(dot, y[j]);
-            }
-        }
-
-        /// <summary>
-        /// Can multiply transposed matrix with a vector into result when updating input argument.
-        /// </summary>
-        [Test]
-        public override void CanTransposeThisAndMultiplyWithVectorIntoResultWhenUpdatingInputArgument()
-        {
-            var matrix = TestMatrices["Symmetric3x3"];
-            var x = new DenseVector(new[] { 1.0, 2.0, 3.0 });
-            var y = x;
-            matrix.TransposeThisAndMultiply(x, x);
-
-            Assert.AreSame(y, x);
-
-            y = new DenseVector(new[] { 1.0, 2.0, 3.0 });
-            for (var j = 0; j < matrix.ColumnCount; j++)
-            {
-                var ar = matrix.Column(j);
-                var dot = ar * y;
-                Assert.AreEqual(dot, x[j]);
             }
         }
     }

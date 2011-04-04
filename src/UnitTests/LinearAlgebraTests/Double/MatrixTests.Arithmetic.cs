@@ -42,7 +42,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double
         /// </summary>
         /// <param name="scalar">Scalar value.</param>
         [Test]
-        public virtual void CanMultiplyWithScalar([Values(0, 1, 2.2)] double scalar)
+        public void CanMultiplyWithScalar([Values(0, 1, 2.2)] double scalar)
         {
             var matrix = TestMatrices["Singular3x3"];
             var clone = matrix.Clone();
@@ -682,7 +682,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double
         /// Can multiply transposed matrix with a vector.
         /// </summary>
         [Test]
-        public virtual void CanTransposeThisAndMultiplyWithVector()
+        public void CanTransposeThisAndMultiplyWithVector()
         {
             var matrix = TestMatrices["Singular3x3"];
             var x = new DenseVector(new[] { 1.0, 2.0, 3.0 });
@@ -702,7 +702,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double
         /// Can multiply transposed matrix with a vector into a result.
         /// </summary>
         [Test]
-        public virtual void CanTransposeThisAndMultiplyWithVectorIntoResult()
+        public void CanTransposeThisAndMultiplyWithVectorIntoResult()
         {
             var matrix = TestMatrices["Singular3x3"];
             var x = new DenseVector(new[] { 1.0, 2.0, 3.0 });
@@ -721,7 +721,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double
         /// Can multiply transposed matrix with a vector into result when updating input argument.
         /// </summary>
         [Test]
-        public virtual void CanTransposeThisAndMultiplyWithVectorIntoResultWhenUpdatingInputArgument()
+        public void CanTransposeThisAndMultiplyWithVectorIntoResultWhenUpdatingInputArgument()
         {
             var matrix = TestMatrices["Singular3x3"];
             var x = new DenseVector(new[] { 1.0, 2.0, 3.0 });

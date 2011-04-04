@@ -41,22 +41,23 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double
         // TODO: Many methods here are the same with the base methods except the test matrices. 
 
         /// <summary>
-        /// Setup test matrices.
+        /// Setup test matrices. 
+        /// Singular and Square matrices are overriden here with symmetric ones so that calls to base methods work as intended. 
+        /// Additional NonSymmetric matrices are defined for some tests. 
         /// </summary>
         [SetUp]
         public override void SetupMatrices()
         {
             TestData2D = new Dictionary<string, double[,]>
                          {
-                             { "Singular3x3", new[,] { { 1.0, 1.0, 2.0 }, { 1.0, 1.0, 2.0 }, { 1.0, 1.0, 2.0 } } }, 
-                             { "Square3x3", new[,] { { -1.1, -2.2, -3.3 }, { 0.0, 1.1, 2.2 }, { -4.4, 5.5, 6.6 } } }, 
-                             { "Square4x4", new[,] { { -1.1, -2.2, -3.3, -4.4 }, { 0.0, 1.1, 2.2, 3.3 }, { 1.0, 2.1, 6.2, 4.3 }, { -4.4, 5.5, 6.6, -7.7 } } }, 
-                             { "Singular4x4", new[,] { { -1.1, -2.2, -3.3, -4.4 }, { -1.1, -2.2, -3.3, -4.4 }, { -1.1, -2.2, -3.3, -4.4 }, { -1.1, -2.2, -3.3, -4.4 } } }, 
+                             { "Singular3x3", new[,] { { 1.0, 2.0, 3.0 }, { 2.0, 0.0, 0.0 }, { 3.0, 0.0, 0.0 } } }, 
+                             { "Square3x3", new[,] { { 1.0, 2.0, 3.0 }, { 2.0, 2.0, 0.0 }, { 3.0, 0.0, 3.0 } } }, 
+                             { "Square4x4", new[,] { { 1.1, 2.0, -3.0, 4.4 }, { 2.0, 5.0, -6.0, 7.0 }, { -3.0, -6.0, 8.0, 9.0 }, { 4.4, 7.0, 9.0, 10.0 } } }, 
+                             { "Singular4x4", new[,] { { 1.0, 2.0, 0.0, 4.0 }, { 2.0, 5.0, 0.0, 7.0 }, { 0.0, 0.0, 0.0, 0.0 }, { 4.0, 7.0, 0.0, 10.0 } } }, 
                              { "Tall3x2", new[,] { { -1.1, -2.2 }, { 0.0, 1.1 }, { -4.4, 5.5 } } }, 
                              { "Wide2x3", new[,] { { -1.1, -2.2, -3.3 }, { 0.0, 1.1, 2.2 } } }, 
-                             { "Symmetric2x2", new[,] { { -1.1, -2.2 }, { -2.2, 3.3 } } }, 
-                             { "Symmetric3x3", new[,] { { 1.0, 2.0, 3.0 }, { 2.0, 2.0, 0.0 }, { 3.0, 0.0, 3.0 } } },
-                             { "Symmetric4x4", new[,] { { 1.0, 2.0, -3.0, 4.0 }, { 2.0, 5.0, -6.0, 7.0 }, { -3.0, -6.0, 8.0, 9.0 }, { 4.0, 7.0, 9.0, 10.0 } } }
+                             { "NonSymmetric3x3", new[,] { { -1.1, -2.2, -3.3 }, { 0.0, 1.1, 2.2 }, { -4.4, 5.5, 6.6 } } },
+                             { "NonSymmetric4x4", new[,] { { -1.1, -2.2, -3.3, -4.4 }, { 0.0, 1.1, 2.2, 3.3 }, { 1.0, 2.1, 6.2, 4.3 }, { -4.4, 5.5, 6.6, -7.7 } } }
                          };
 
             TestMatrices = new Dictionary<string, Matrix>();

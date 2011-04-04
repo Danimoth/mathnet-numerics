@@ -106,5 +106,27 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double
                 }
             }
         }
+
+        /// <summary>
+        /// Can subtract a matrix.
+        /// </summary>
+        /// <param name="mtxA">Matrix A name.</param>
+        /// <param name="mtxB">Matrix B name.</param>
+        [Test, Sequential]
+        public override void CanSubtractMatrix([Values("Symmetric4x4", "Symmetric4x4")] string mtxA, [Values("Symmetric4x4", "Square4x4")] string mtxB)
+        {
+            var matrixA = TestMatrices[mtxA];
+            var matrixB = TestMatrices[mtxB];
+
+            var matrix = matrixA.Clone();
+            matrix = matrix.Subtract(matrixB);
+            for (var i = 0; i < matrix.RowCount; i++)
+            {
+                for (var j = 0; j < matrix.ColumnCount; j++)
+                {
+                    Assert.AreEqual(matrix[i, j], matrixA[i, j] - matrixB[i, j]);
+                }
+            }
+        }
     }
 }

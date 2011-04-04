@@ -1,4 +1,4 @@
-﻿// <copyright file="DenseMatrixTests.cs" company="Math.NET">
+﻿// <copyright file="SymmetricDenseMatrixTests.cs" company="Math.NET">
 // Math.NET Numerics, part of the Math.NET Project
 // http://numerics.mathdotnet.com
 // http://github.com/mathnet/mathnet-numerics
@@ -44,7 +44,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double
         /// <returns>A matrix with the given dimensions.</returns>
         protected override Matrix CreateMatrix(int rows, int columns)
         {
-            return new SymmetricDenseMatrix(rows, columns);
+            return new DenseMatrix(rows, columns);
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double
         /// <returns>A matrix with the given values.</returns>
         protected override Matrix CreateMatrix(double[,] data)
         {
-            return new SymmetricDenseMatrix(data);
+            return SymmetricMatrix.CheckIfSymmetric(data) ? (Matrix)new SymmetricDenseMatrix(data) : new DenseMatrix(data);
         }
 
         /// <summary>

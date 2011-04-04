@@ -80,7 +80,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double
                 for (var j = i; j < matrix.ColumnCount; j++)
                 {
                     Assert.AreEqual(matrix[i, j] * scalar, clone[i, j]);
-                    Assert.AreEqual(matrix[i, j], matrix[j, i]);
+                    Assert.AreEqual(clone[i, j], clone[j, i]);
                 }
             }
         }

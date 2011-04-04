@@ -530,6 +530,7 @@
     <Compile Include="LinearAlgebraTests\Double\Solvers\StopCriterium\ResidualStopCriteriumTest.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="LinearAlgebraTests\Double\SymmetricDenseMatrixTests.cs" />
     <Compile Include="LinearAlgebraTests\Double\SymmetricMatrixTests.Arithmetic.cs" />
     <Compile Include="LinearAlgebraTests\Double\SymmetricMatrixTests.cs" />
     <Compile Include="LinearAlgebraTests\Double\SparseMatrixTests.cs">

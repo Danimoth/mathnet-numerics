@@ -93,6 +93,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double
         [Test, Sequential]
         public override void CanAddMatrix([Values("Symmetric4x4", "Symmetric4x4")] string mtxA, [Values("Symmetric4x4", "Square4x4")] string mtxB)
         {
+            // TODO: This is the same code as the base class. Only the test values are changed. Can this be done with base calls?
             var matrixA = TestMatrices[mtxA];
             var matrixB = TestMatrices[mtxB];
 
@@ -115,6 +116,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double
         [Test, Sequential]
         public override void CanSubtractMatrix([Values("Symmetric4x4", "Symmetric4x4")] string mtxA, [Values("Symmetric4x4", "Square4x4")] string mtxB)
         {
+            // TODO: This is the same code as the base class. Only the test values are changed. Can this be done with base calls?
             var matrixA = TestMatrices[mtxA];
             var matrixB = TestMatrices[mtxB];
 

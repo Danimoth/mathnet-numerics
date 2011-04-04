@@ -108,5 +108,77 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double
                 }
             }
         }
+
+        /// <summary>
+        /// Can compute Frobenius norm.
+        /// </summary>
+        public override void CanComputeFrobeniusNorm()
+        {
+            var matrix = TestMatrices["Square3x3"];
+            var denseMatrix = new DenseMatrix(TestData2D["Square3x3"]);
+            AssertHelpers.AlmostEqual(denseMatrix.FrobeniusNorm(), matrix.FrobeniusNorm(), 14);
+
+            matrix = TestMatrices["Wide2x3"];
+            denseMatrix = new DenseMatrix(TestData2D["Wide2x3"]);
+            AssertHelpers.AlmostEqual(denseMatrix.FrobeniusNorm(), matrix.FrobeniusNorm(), 14);
+
+            matrix = TestMatrices["Tall3x2"];
+            denseMatrix = new DenseMatrix(TestData2D["Tall3x2"]);
+            AssertHelpers.AlmostEqual(denseMatrix.FrobeniusNorm(), matrix.FrobeniusNorm(), 14);
+        }
+
+        /// <summary>
+        /// Can compute Infinity norm.
+        /// </summary>
+        public override void CanComputeInfinityNorm()
+        {
+            var matrix = TestMatrices["Square3x3"];
+            var denseMatrix = new DenseMatrix(TestData2D["Square3x3"]);
+            AssertHelpers.AlmostEqual(denseMatrix.InfinityNorm(), matrix.InfinityNorm(), 14);
+
+            matrix = TestMatrices["Wide2x3"];
+            denseMatrix = new DenseMatrix(TestData2D["Wide2x3"]);
+            AssertHelpers.AlmostEqual(denseMatrix.InfinityNorm(), matrix.InfinityNorm(), 14);
+
+            matrix = TestMatrices["Tall3x2"];
+            denseMatrix = new DenseMatrix(TestData2D["Tall3x2"]);
+            AssertHelpers.AlmostEqual(denseMatrix.InfinityNorm(), matrix.InfinityNorm(), 14);
+        }
+
+        /// <summary>
+        /// Can compute L1 norm.
+        /// </summary>
+        public override void CanComputeL1Norm()
+        {
+            var matrix = TestMatrices["Square3x3"];
+            var denseMatrix = new DenseMatrix(TestData2D["Square3x3"]);
+            AssertHelpers.AlmostEqual(denseMatrix.L1Norm(), matrix.L1Norm(), 14);
+
+            matrix = TestMatrices["Wide2x3"];
+            denseMatrix = new DenseMatrix(TestData2D["Wide2x3"]);
+            AssertHelpers.AlmostEqual(denseMatrix.L1Norm(), matrix.L1Norm(), 14);
+
+            matrix = TestMatrices["Tall3x2"];
+            denseMatrix = new DenseMatrix(TestData2D["Tall3x2"]);
+            AssertHelpers.AlmostEqual(denseMatrix.L1Norm(), matrix.L1Norm(), 14);
+        }
+
+        /// <summary>
+        /// Can compute L2 norm.
+        /// </summary>
+        public override void CanComputeL2Norm()
+        {
+            var matrix = TestMatrices["Square3x3"];
+            var denseMatrix = new DenseMatrix(TestData2D["Square3x3"]);
+            AssertHelpers.AlmostEqual(denseMatrix.L2Norm(), matrix.L2Norm(), 14);
+
+            matrix = TestMatrices["Wide2x3"];
+            denseMatrix = new DenseMatrix(TestData2D["Wide2x3"]);
+            AssertHelpers.AlmostEqual(denseMatrix.L2Norm(), matrix.L2Norm(), 14);
+
+            matrix = TestMatrices["Tall3x2"];
+            denseMatrix = new DenseMatrix(TestData2D["Tall3x2"]);
+            AssertHelpers.AlmostEqual(denseMatrix.L2Norm(), matrix.L2Norm(), 14);
+        }
     }
 }

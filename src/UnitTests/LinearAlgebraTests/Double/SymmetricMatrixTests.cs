@@ -35,40 +35,31 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double
     /// <summary>
     /// Abstract class with the common set of matrix tests for symmetric matrices
     /// </summary>
-    [TestFixture]
     public abstract partial class SymmetricMatrixTests : MatrixTests
     {
         /// <summary>
         /// Can transpose a matrix.
         /// </summary>
         /// <param name="name">Matrix name.</param>
-        [Test, Sequential]
-        public override sealed void CanTransposeMatrix([Values("Singular3x3", "Square3x3", "Square4x4")] string name)
+        public override sealed void CanTransposeMatrix(string name)
         {
             var matrix = CreateMatrix(TestData2D[name]);
             var transpose = matrix.Transpose();
 
-            Assert.AreSame(matrix, transpose);
+            if (matrix is SymmetricMatrix)
+            {
+                Assert.AreSame(matrix, transpose);
+            }
         }
 
         /// <summary>
         /// Can check if a [,] array is symmetric. 
         /// </summary>
-        /// <param name="name">Matrix name.</param>
-        [Test, Sequential]
-        public void CanCheckIfSymmetric([Values("Singular3x3", "Square3x3", "Square4x4", "Tall3x2", "Wide2x3")] string name)
+        [Test]
+        public void CanCheckIfSymmetric()
         {
-            var matrix = CreateMatrix(TestData2D[name]);
-            var transpose = matrix.Trace();
-
-            if (matrix.Equals(transpose))
-            {
-                Assert.IsTrue(SymmetricMatrix.CheckIfSymmetric(TestData2D[name]));
-            }
-            else
-            {
-                Assert.IsFalse(SymmetricMatrix.CheckIfSymmetric(TestData2D[name]));
-            }
+            Assert.IsTrue(SymmetricMatrix.CheckIfSymmetric(TestData2D["Square3x3"]));
+            Assert.IsFalse(SymmetricMatrix.CheckIfSymmetric(TestData2D["NonSymmetric3x3"]));
         }
     }
 }

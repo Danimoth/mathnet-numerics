@@ -206,7 +206,8 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         }
 
         /// <summary>
-        /// Creates a <c>SymmetricDenseMatrix</c> for the given number of rows and columns.
+        /// Creates a <c>SymmetricDenseMatrix</c> for the given number of rows and columns. 
+        /// If rows and columns are not equal, returns a <c>DenseMatrix</c> instead. 
         /// </summary>
         /// <param name="numberOfRows">
         /// The number of rows.
@@ -215,17 +216,17 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// The number of columns.
         /// </param>
         /// <returns>
-        /// A <c>SymmetricDenseMatrix</c> with the given dimensions.
+        /// A <c>DenseMatrix</c> or <c>SymmetricDenseMatrix</c> with the given dimensions.
         /// </returns>
         /// /// <exception cref="ArgumentException">
-        /// If <paramref name="numberOfRows"/> is no equal to <paramref name="numberOfColumns"/>. 
+        /// If <paramref name="numberOfRows"/> is not equal to <paramref name="numberOfColumns"/>. 
         /// Symmetric arrays are always square
         /// </exception>
         public override Matrix<double> CreateMatrix(int numberOfRows, int numberOfColumns)
         {
             if (numberOfRows != numberOfColumns)
             {
-                throw new ArgumentException(Resources.ArgumentMatrixSquare);
+                return new DenseMatrix(numberOfRows, numberOfColumns);
             }
 
             return new SymmetricDenseMatrix(numberOfRows, numberOfColumns);

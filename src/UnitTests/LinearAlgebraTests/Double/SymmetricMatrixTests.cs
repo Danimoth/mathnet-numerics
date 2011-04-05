@@ -41,15 +41,12 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double
         /// Can transpose a matrix.
         /// </summary>
         /// <param name="name">Matrix name.</param>
-        public override sealed void CanTransposeMatrix(string name)
+        [Test, Sequential]
+        public override sealed void CanTransposeMatrix([Values("Square3x3", "Square4x4")] string name)
         {
             var matrix = CreateMatrix(TestData2D[name]);
             var transpose = matrix.Transpose();
-
-            if (matrix is SymmetricMatrix)
-            {
-                Assert.AreSame(matrix, transpose);
-            }
+            Assert.AreSame(matrix, transpose);
         }
 
         /// <summary>

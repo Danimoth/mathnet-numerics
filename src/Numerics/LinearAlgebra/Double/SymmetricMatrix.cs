@@ -34,6 +34,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
     /// <summary>
     /// Symmetric <c>double</c> version of the <see cref="Matrix"/> class.
     /// </summary>
+    [Serializable]
     public abstract class SymmetricMatrix : Matrix
     {
         /// <summary>

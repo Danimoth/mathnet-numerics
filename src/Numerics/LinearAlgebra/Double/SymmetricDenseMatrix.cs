@@ -37,6 +37,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
     /// </summary>
     /// <remarks> The underlying storage is a one dimensional array in column-major order.
     /// The Upper Triangle is stored(it is equal to the Lower Triangle) </remarks>
+    [Serializable]
     public class SymmetricDenseMatrix : SymmetricMatrix
     {
         /// <summary>

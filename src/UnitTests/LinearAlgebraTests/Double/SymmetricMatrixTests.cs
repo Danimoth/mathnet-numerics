@@ -50,10 +50,23 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double
         }
 
         /// <summary>
+        /// Can check if a matrix is symmetric.
+        /// </summary>
+        [Test]
+        public override void CanCheckIfMatrixIsSymmetric()
+        {
+            var matrix = TestMatrices["Square3x3"];
+            Assert.IsTrue(matrix.IsSymmetric);
+
+            matrix = TestMatrices["NonSymmetric3x3"];
+            Assert.IsFalse(matrix.IsSymmetric);
+        }
+
+        /// <summary>
         /// Can check if a [,] array is symmetric. 
         /// </summary>
         [Test]
-        public void CanCheckIfSymmetric()
+        public void CanCheckIfArrayIsSymmetric()
         {
             Assert.IsTrue(SymmetricMatrix.CheckIfSymmetric(TestData2D["Square3x3"]));
             Assert.IsFalse(SymmetricMatrix.CheckIfSymmetric(TestData2D["NonSymmetric3x3"]));

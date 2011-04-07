@@ -375,6 +375,17 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         }
 
         /// <summary>
+        /// Gets a value indicating whether this matrix is symmetric.
+        /// </summary>
+        public override bool IsSymmetric
+        {
+            get
+            {
+                return true;
+            }
+        }
+
+        /// <summary>
         /// Computes the modulus for each element of the matrix.
         /// </summary>
         /// <param name="divisor">The divisor to use.</param>

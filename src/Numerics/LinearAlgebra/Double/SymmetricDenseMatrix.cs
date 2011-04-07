@@ -439,7 +439,8 @@ namespace MathNet.Numerics.LinearAlgebra.Double
 
         /// <summary>
         /// Retrieves the requested element without range checking. 
-        /// This method assumes that you request an element from the lower triangle (row more than or equal to column).  
+        /// CAUTION:
+        /// This method assumes that you request an element from the lower triangle (row greater than or equal to column).  
         /// </summary>
         /// <param name="row">
         /// The row of the element. Must be more than or equal to column. 
@@ -458,7 +459,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// <summary>
         /// Sets the value of the given element.
         /// CAUTION:
-        /// This method assumes that you set an element from the lower triangle (row more than or equal to column).
+        /// This method assumes that you set an element from the lower triangle (row greater than or equal to column).
         /// If not, the result is completely wrong. 
         /// </summary>
         /// <param name="row">
@@ -733,6 +734,80 @@ namespace MathNet.Numerics.LinearAlgebra.Double
             {
                 Control.LinearAlgebraProvider.PointWiseDivideArrays(Data, denseOther.Data, denseResult.Data);
             }
+        }
+
+        /// <summary>
+        /// Returns a new matrix containing the lower triangle of this matrix.
+        /// </summary>
+        /// <returns>The lower triangle of this matrix.</returns>  
+        public override Matrix<double> LowerTriangle()
+        {
+            var ret = new DenseMatrix(_order);
+            for (var row = 0; row < _order; row++)
+            {
+                for (var column = 0; column <= row; column++)
+                {
+                    ret[row, column] = AtLower(row, column);
+                }
+            }
+
+            return ret;
+        }
+
+        /// <summary>
+        /// Returns a new matrix containing the lower triangle of this matrix. The new matrix
+        /// does not contain the diagonal elements of this matrix.
+        /// </summary>
+        /// <returns>The lower triangle of this matrix.</returns>
+        public override Matrix<double> StrictlyLowerTriangle()
+        {
+            var ret = new DenseMatrix(_order);
+            for (var row = 0; row < _order; row++)
+            {
+                for (var column = 0; column < row; column++)
+                {
+                    ret[row, column] = AtLower(row, column);
+                }
+            }
+
+            return ret;
+        }
+
+        /// <summary>
+        /// Returns a new matrix containing the upper triangle of this matrix.
+        /// </summary>
+        /// <returns>The upper triangle of this matrix.</returns>   
+        public override Matrix<double> UpperTriangle()
+        {
+            var ret = new DenseMatrix(_order);
+            for (var row = 0; row < _order; row++)
+            {
+                for (var column = row; column < _order; column++)
+                {
+                    ret[row, column] = AtUpper(row, column);
+                }
+            }
+
+            return ret;
+        }
+        
+        /// <summary>
+        /// Returns a new matrix containing the upper triangle of this matrix. The new matrix
+        /// does not contain the diagonal elements of this matrix.
+        /// </summary>
+        /// <returns>The upper triangle of this matrix.</returns>
+        public override Matrix<double> StrictlyUpperTriangle()
+        {
+            var ret = new DenseMatrix(_order);
+            for (var row = 0; row < _order; row++)
+            {
+                for (var column = row + 1; column < _order; column++)
+                {
+                    ret[row, column] = AtUpper(row, column);
+                }
+            }
+
+            return ret;
         }
 
         /// <summary>

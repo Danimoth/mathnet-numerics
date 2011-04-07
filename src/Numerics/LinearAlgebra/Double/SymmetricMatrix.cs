@@ -105,7 +105,8 @@ namespace MathNet.Numerics.LinearAlgebra.Double
 
         /// <summary>
         /// Retrieves the requested element without range checking. 
-        /// This method assumes that you request an element from the lower triangle (row more than or equal to column).  
+        /// CAUTION:
+        /// This method assumes that you request an element from the lower triangle (row greater than or equal to column).  
         /// </summary>
         /// <param name="row">
         /// The row of the element. Must be more than or equal to column. 
@@ -121,7 +122,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// <summary>
         /// Sets the value of the given element.
         /// CAUTION:
-        /// This method assumes that you set an element from the lower triangle (row more than or equal to column).
+        /// This method assumes that you set an element from the lower triangle (row greater than or equal to column).
         /// If not, the result is completely wrong. 
         /// </summary>
         /// <param name="row">

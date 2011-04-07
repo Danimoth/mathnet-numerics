@@ -1801,8 +1801,8 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double
         {
             var matrix = TestMatrices["Symmetric3x3"];
             Assert.IsTrue(matrix.IsSymmetric);
-            
-            matrix = TestMatrices["Square3x3"];
+
+            matrix = TestMatrices["NonSymmetric3x3"];
             Assert.IsFalse(matrix.IsSymmetric);
         }
 

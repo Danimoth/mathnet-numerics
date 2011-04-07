@@ -326,7 +326,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// </returns>
         public static int IndexOfLower(int row, int column)
         {
-            return column + ((row * (row - 1)) / 2);
+            return column + ((row * (row + 1)) / 2);
         }
 
         /// <summary>
@@ -346,7 +346,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// </returns>
         public static int IndexOfUpper(int row, int column)
         {
-            return row + ((column * (column - 1)) / 2);
+            return row + ((column * (column + 1)) / 2);
         }
 
         /// <summary>
@@ -360,7 +360,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// </returns>
         public static int IndexOfDiagonal(int row)
         {
-            return (row * (row + 1)) / 2;
+            return (row * (row + 3)) / 2;
         }
 
         /// <summary>

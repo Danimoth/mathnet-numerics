@@ -77,5 +77,71 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Double
         {
             return new DenseVector(data);
         }
+
+        /// <summary>
+        /// Can find the Index of an element. 
+        /// </summary>
+        [Test]
+        public void CanIndexOf()
+        {
+            var matrix = TestData2D["IndexTester4x4"];
+            Assert.IsTrue(SymmetricMatrix.CheckIfSymmetric(matrix));
+
+            for (var row = 0; row < matrix.GetLength(0); row++)
+            {
+                for (var column = 0; column < matrix.GetLength(1); column++)
+                {
+                    Assert.AreEqual(matrix[row, column], SymmetricDenseMatrix.IndexOf(row, column));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Can find the Index of an element in the upper triangle. 
+        /// </summary>
+        [Test]
+        public void CanIndexOfUpper()
+        {
+            var matrix = TestData2D["IndexTester4x4"];
+
+            for (var row = 0; row < matrix.GetLength(0); row++)
+            {
+                for (var column = row; column < matrix.GetLength(1); column++)
+                {
+                    Assert.AreEqual(matrix[row, column], SymmetricDenseMatrix.IndexOfUpper(row, column));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Can find the Index of an element in the lower triangle. 
+        /// </summary>
+        [Test]
+        public void CanIndexOfLower()
+        {
+            var matrix = TestData2D["IndexTester4x4"];
+
+            for (var row = 0; row < matrix.GetLength(0); row++)
+            {
+                for (var column = 0; column <= row; column++)
+                {
+                    Assert.AreEqual(matrix[row, column], SymmetricDenseMatrix.IndexOfLower(row, column));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Can find the Index of an element in the diagonal. 
+        /// </summary>
+        [Test]
+        public void CanIndexOfDiagonal()
+        {
+            var matrix = TestData2D["IndexTester4x4"];
+
+            for (var i = 0; i < matrix.GetLength(0); i++)
+            {
+                Assert.AreEqual(matrix[i, i], SymmetricDenseMatrix.IndexOfDiagonal(i));
+            }
+        }
     }
 }

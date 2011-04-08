@@ -470,11 +470,12 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
         public virtual Matrix<T> LowerTriangle()
         {
             var ret = CreateMatrix(RowCount, ColumnCount);
-            for (var j = 0; j < ColumnCount; j++) 
+
+            for (var row = 0; row < RowCount; row++)
             {
-                for (var i = j; i < RowCount; i++)
+                for (var column = 0; column <= row && column < ColumnCount; column++) 
                 {
-                    ret.At(i, j, At(i, j));
+                    ret.At(row, column, At(row, column));
                 }
             }
 
@@ -499,11 +500,11 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
                 throw new ArgumentException(Resources.ArgumentMatrixDimensions, "result");
             }
 
-            for (var j = 0; j < ColumnCount; j++)
+            for (var row = 0; row < RowCount; row++)
             {
-                for (var i = 0; i < RowCount; i++)
+                for (var column = 0; column < ColumnCount; column++)
                 {
-                    result.At(i, j, i >= j ? At(i, j) : default(T));
+                    result.At(row, column, row >= column ? At(row, column) : default(T));
                 }
             }
         }
@@ -516,16 +517,11 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
         {
             var ret = CreateMatrix(RowCount, ColumnCount);
 
-            for (var j = 0; j < ColumnCount; j++)
+            for (var row = 0; row < RowCount; row++)
             {
+                for (var column = row; column < ColumnCount; column++)
                 {
-                    for (var i = 0; i < RowCount; i++)
-                    {
-                        if (i <= j)
-                        {
-                            ret.At(i, j, At(i, j));
-                        }
-                    }
+                    ret.At(row, column, At(row, column));
                 }
             }
 
@@ -550,11 +546,11 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
                 throw new ArgumentException(Resources.ArgumentMatrixDimensions, "result");
             }
 
-            for (var j = 0; j < ColumnCount; j++)
+            for (var row = 0; row < RowCount; row++)
             {
-                for (var i = 0; i < RowCount; i++)
+                for (var column = 0; column < ColumnCount; column++)
                 {
-                    result.At(i, j, i <= j ? At(i, j) : default(T));
+                    result.At(row, column, row <= column ? At(row, column) : default(T));
                 }
             }
         }
@@ -750,14 +746,11 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
         {
             var result = CreateMatrix(RowCount, ColumnCount);
 
-            for (var i = 0; i < RowCount; i++)
+            for (var row = 0; row < RowCount; row++)
             {
-                for (var j = 0; j < ColumnCount; j++)
+                for (var column = 0; column < row; column++)
                 {
-                    if (i > j)
-                    {
-                        result.At(i, j, At(i, j));
-                    }
+                    result.At(row, column, At(row, column));
                 }
             }
 
@@ -782,11 +775,11 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
                 throw new ArgumentException(Resources.ArgumentMatrixDimensions, "result");
             }
 
-            for (var i = 0; i < RowCount; i++)
+            for (var row = 0; row < RowCount; row++)
             {
-                for (var j = 0; j < ColumnCount; j++)
+                for (var column = 0; column < ColumnCount; column++)
                 {
-                    result.At(i, j, i > j ? At(i, j) : default(T));
+                    result.At(row, column, row > column ? At(row, column) : default(T));
                 }
             }
         }
@@ -800,14 +793,11 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
         {
             var result = CreateMatrix(RowCount, ColumnCount);
 
-            for (var i = 0; i < RowCount; i++)
+            for (var row = 0; row < RowCount; row++)
             {
-                for (var j = 0; j < ColumnCount; j++)
+                for (var column = row + 1; column < ColumnCount; column++)
                 {
-                    if (i < j)
-                    {
-                        result.At(i, j, At(i, j));
-                    }
+                    result.At(row, column, At(row, column));
                 }
             }
 
@@ -832,11 +822,11 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
                 throw new ArgumentException(Resources.ArgumentMatrixDimensions, "result");
             }
 
-            for (var i = 0; i < RowCount; i++)
+            for (var row = 0; row < RowCount; row++)
             {
-                for (var j = 0; j < ColumnCount; j++)
+                for (var column = 0; column < ColumnCount; column++)
                 {
-                    result.At(i, j, i < j ? At(i, j) : default(T));
+                    result.At(row, column, row < column ? At(row, column) : default(T));
                 }
             }
         }

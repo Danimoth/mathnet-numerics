@@ -33,6 +33,7 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
     /// This variation stores the upper triangle of a matrix (row less than or equal to column). 
     /// </summary>
     /// <typeparam name="T">Supported data types are <c>double</c>, <c>single</c>, <see cref="Complex"/>, and <see cref="Complex32"/>.</typeparam>
+    /// <remarks> Upper version features faster indexing than the Lower version. </remarks>
     public class PackedStorageUpper<T> : PackedStorage<T>
         where T : struct, IEquatable<T>, IFormattable
     {

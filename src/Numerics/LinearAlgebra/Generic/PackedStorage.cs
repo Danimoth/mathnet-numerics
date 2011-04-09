@@ -55,7 +55,7 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
         }
 
         /// <summary>
-        /// Initializes a new instance of the PackedStorage class.
+        /// Initializes a new instance of the <see cref="PackedStorage{T}"/> class. 
         /// </summary>
         /// <param name="order">
         /// The order of the matrix.
@@ -77,7 +77,9 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
         /// <param name="order">
         /// The number of rows or columns. 
         /// </param>
-        /// <param name="value">The value which we assign to each element of the matrix.</param>
+        /// <param name="value">
+        /// The value which we assign to each element of the matrix.
+        /// </param>
         protected PackedStorage(int order, T value)
             : this(order)
         {

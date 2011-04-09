@@ -81,7 +81,7 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
         /// The column of the element.
         /// </param>
         /// <value>The value to get or set.</value>
-        /// <remarks>This method is ranged checked. <see cref="At(int,int)"/> and <see cref="At(int,int,double)"/>
+        /// <remarks>This method is ranged checked. <see cref="At(int,int)"/> and <see cref="At(int,int,T)"/>
         /// to get and set values without range checking.</remarks>
         public T this[int row, int column]
         {

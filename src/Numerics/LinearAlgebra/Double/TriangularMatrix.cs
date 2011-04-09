@@ -30,6 +30,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
 
     /// <summary>
     /// Abstract class for square triangular matrices. 
+    /// A triangular matrix has elements on the diagonal and above or below it. 
     /// </summary>
     public abstract class TriangularMatrix : SquareMatrix
     {

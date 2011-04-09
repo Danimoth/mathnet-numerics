@@ -72,6 +72,22 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="PackedStorage{T}"/> class with all entries set to a particular value.
+        /// </summary>
+        /// <param name="order">
+        /// The number of rows or columns. 
+        /// </param>
+        /// <param name="value">The value which we assign to each element of the matrix.</param>
+        protected PackedStorage(int order, T value)
+            : this(order)
+        {
+            for (var i = 0; i < Data.Length; i++)
+            {
+                Data[i] = value;
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the value at the given row and column.
         /// </summary>
         /// <param name="row">

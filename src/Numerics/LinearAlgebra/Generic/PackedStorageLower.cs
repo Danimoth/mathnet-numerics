@@ -48,6 +48,18 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="PackedStorageLower{T}"/> class with all entries set to a particular value.
+        /// </summary>
+        /// <param name="order">
+        /// The number of rows or columns. 
+        /// </param>
+        /// <param name="value">The value which we assign to each element of the matrix.</param>
+        public PackedStorageLower(int order, T value)
+            : base(order, value)
+        {
+        }
+
+        /// <summary>
         /// Retrieves the index of the requested element without range checking.
         /// </summary>
         /// <param name="row">

@@ -45,13 +45,13 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
         protected readonly int Order;
 
         /// <summary>
-        /// Gets the matrix's data.
+        /// Gets or sets the raw data.
         /// </summary>
-        /// <value>The matrix's data.</value>
+        /// <value>The raw data.</value>
         public T[] Data
         {
             get;
-            private set;
+            set;
         }
 
         /// <summary>

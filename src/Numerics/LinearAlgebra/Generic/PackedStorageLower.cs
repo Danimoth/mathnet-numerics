@@ -45,5 +45,78 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
         public PackedStorageLower(int order) : base(order)
         {
         }
+
+        /// <summary>
+        /// Retrieves the index of the requested element without range checking.
+        /// </summary>
+        /// <param name="row">
+        /// The row of the element. 
+        /// </param>
+        /// <param name="column">
+        /// The column of the element. 
+        /// </param>
+        /// <returns>
+        /// The requested index. 
+        /// </returns>
+        public override int IndexOf(int row, int column)
+        {
+            var r = Math.Max(row, column);
+            var c = Math.Min(row, column);
+            return IndexOfLower(r, c);
+        }
+
+        /// <summary>
+        /// Retrieves the index of the requested element without range checking. 
+        /// CAUTION:
+        /// This method assumes (for performance) that you request an index from the upper triangle (row less than or equal column). 
+        /// If not, the index is completely wrong.
+        /// </summary>
+        /// <param name="row">
+        /// The row of the element. Must be less than or equal to column.
+        /// </param>
+        /// <param name="column">
+        /// The column of the element. Must be more than or equal to row.
+        /// </param>
+        /// <returns>
+        /// The requested index. 
+        /// </returns>
+        public override int IndexOfLower(int row, int column)
+        {
+            return row + ((((2 * Order) - column - 1) * column) / 2);
+        }
+
+        /// <summary>
+        /// Retrieves the index of the requested element without range checking. 
+        /// CAUTION:
+        /// This method assumes (for performance) that you request an index from the upper triangle (row less than or equal column). 
+        /// If not, the index is completely wrong.  
+        /// </summary>
+        /// <param name="row">
+        /// The row of the element. Must be less than or equal to column.
+        /// </param>
+        /// <param name="column">
+        /// The column of the element. Must be more than or equal to row.
+        /// </param>
+        /// <returns>
+        /// The requested index. 
+        /// </returns>
+        public override int IndexOfUpper(int row, int column)
+        {
+            return IndexOfLower(column, row);
+        }
+
+        /// <summary>
+        /// Retrieves the index of the requested element without range checking.
+        /// </summary>
+        /// <param name="row">
+        /// The row=column of the diagonal element. 
+        /// </param>
+        /// <returns>
+        /// The requested index. 
+        /// </returns>
+        public override int IndexOfDiagonal(int row)
+        {
+            return (((2 * Order) - row + 1) * row) / 2;
+        }
     }
 }

@@ -69,5 +69,64 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
             Order = order;
             Data = new T[order * (order + 1) / 2];
         }
+
+        /// <summary>
+        /// Retrieves the index of the requested element without range checking.
+        /// </summary>
+        /// <param name="row">
+        /// The row of the element. 
+        /// </param>
+        /// <param name="column">
+        /// The column of the element. 
+        /// </param>
+        /// <returns>
+        /// The requested index. 
+        /// </returns>
+        public abstract int IndexOf(int row, int column);
+
+        /// <summary>
+        /// Retrieves the index of the requested element without range checking. 
+        /// CAUTION:
+        /// This method assumes (for performance) that you request an index from the upper triangle (row less than or equal column). 
+        /// If not, the index is completely wrong.
+        /// </summary>
+        /// <param name="row">
+        /// The row of the element. Must be less than or equal to column.
+        /// </param>
+        /// <param name="column">
+        /// The column of the element. Must be more than or equal to row.
+        /// </param>
+        /// <returns>
+        /// The requested index. 
+        /// </returns>
+        public abstract int IndexOfLower(int row, int column);
+
+        /// <summary>
+        /// Retrieves the index of the requested element without range checking. 
+        /// CAUTION:
+        /// This method assumes (for performance) that you request an index from the upper triangle (row less than or equal column). 
+        /// If not, the index is completely wrong.  
+        /// </summary>
+        /// <param name="row">
+        /// The row of the element. Must be less than or equal to column.
+        /// </param>
+        /// <param name="column">
+        /// The column of the element. Must be more than or equal to row.
+        /// </param>
+        /// <returns>
+        /// The requested index. 
+        /// </returns>
+        public abstract int IndexOfUpper(int row, int column);
+
+        /// <summary>
+        /// Retrieves the index of the requested element without range checking.
+        /// </summary>
+        /// <param name="row">
+        /// The row=column of the diagonal element. 
+        /// </param>
+        /// <returns>
+        /// The requested index. 
+        /// </returns>
+        public abstract int IndexOfDiagonal(int row);
     }
 }

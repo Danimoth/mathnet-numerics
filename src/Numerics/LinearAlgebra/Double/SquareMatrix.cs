@@ -27,6 +27,7 @@
 namespace MathNet.Numerics.LinearAlgebra.Double
 {
     using System;
+    using Properties;
 
     /// <summary>
     /// Abstract class for square matrices
@@ -43,8 +44,16 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// <param name="columns">
         /// The number of columns.
         /// </param>
-        protected SquareMatrix(int rows, int columns) : base(rows, columns)
+        /// <exception cref="ArgumentException">
+        /// If <paramref name="rows"/> not equal to <paramref name="columns"/>.
+        /// </exception>
+        protected SquareMatrix(int rows, int columns) 
+            : base(rows, columns)
         {
+            if (rows != columns)
+            {
+                throw new ArgumentException(Resources.ArgumentMatrixSquare);
+            }
         }
 
         /// <summary>
@@ -53,7 +62,8 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// <param name="order">
         /// The order of the matrix.
         /// </param>
-        protected SquareMatrix(int order) : base(order)
+        protected SquareMatrix(int order) 
+            : base(order)
         {
         }
     }

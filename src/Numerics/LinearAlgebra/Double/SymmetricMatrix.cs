@@ -35,7 +35,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
     /// Symmetric <c>double</c> version of the <see cref="Matrix"/> class.
     /// </summary>
     [Serializable]
-    public abstract class SymmetricMatrix : Matrix
+    public abstract class SymmetricMatrix : SquareMatrix
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SymmetricMatrix"/> class.
@@ -61,12 +61,8 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// If <paramref name="rows"/> not equal to <paramref name="columns"/>.
         /// </exception>
         protected SymmetricMatrix(int rows, int columns)
-            : this(rows)
+            : base(rows, columns)
         {
-            if (rows != columns)
-            {
-                throw new ArgumentException(Resources.ArgumentMatrixSquare);
-            }
         }
 
         #region Extra accessors for Symmetric Matrices. Used for efficiency. 

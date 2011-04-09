@@ -1,4 +1,4 @@
-﻿// <copyright file="PackedStorage.cs" company="Math.NET">
+﻿// <copyright file="PackedStorageLower.cs" company="Math.NET">
 // Math.NET Numerics, part of the Math.NET Project
 // http://numerics.mathdotnet.com
 // http://github.com/mathnet/mathnet-numerics
@@ -27,47 +27,23 @@
 namespace MathNet.Numerics.LinearAlgebra.Generic
 {
     using System;
-    using Properties;
 
     /// <summary>
-    /// Column-Wise packing for Symmetric, Hermitian or Triangular square matrices.  
+    /// Column-Wise packing for Symmetric, Hermitian or Triangular square matrices. 
+    /// This variation stores the lower triangle of a matrix (row greater than or equal to column). 
     /// </summary>
     /// <typeparam name="T">Supported data types are <c>double</c>, <c>single</c>, <see cref="Complex"/>, and <see cref="Complex32"/>.</typeparam>
-    public abstract class PackedStorage<T>
+    public class PackedStorageLower<T> : PackedStorage<T>
         where T : struct, IEquatable<T>, IFormattable
     {
         /// <summary>
-        /// Number of rows or columns.
-        /// </summary>
-        /// <remarks>Using this instead of a property to speed up calculating 
-        /// a matrix index in the data array.</remarks>
-        protected readonly int Order;
-
-        /// <summary>
-        /// Gets the matrix's data.
-        /// </summary>
-        /// <value>The matrix's data.</value>
-        public T[] Data
-        {
-            get;
-            private set;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the PackedStorage class.
+        /// Initializes a new instance of the PackedStorageLower class.
         /// </summary>
         /// <param name="order">
         /// The order of the matrix.
         /// </param>
-        protected PackedStorage(int order)
+        public PackedStorageLower(int order) : base(order)
         {
-            if (order <= 0)
-            {
-                throw new ArgumentOutOfRangeException(Resources.MatrixRowsOrColumnsMustBePositive);
-            }
-
-            Order = order;
-            Data = new T[order * (order + 1) / 2];
         }
     }
 }

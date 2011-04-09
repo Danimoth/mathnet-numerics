@@ -324,6 +324,7 @@
     <Compile Include="LinearAlgebra\Double\Solvers\Preconditioners\IPreConditioner.cs" />
     <Compile Include="LinearAlgebra\Double\Solvers\StopCriterium\IIterationStopCriterium.cs" />
     <Compile Include="LinearAlgebra\Double\SparseMatrix.cs" />
+    <Compile Include="LinearAlgebra\Double\SquareMatrix.cs" />
     <Compile Include="LinearAlgebra\Double\SymmetricDenseMatrix.cs" />
     <Compile Include="LinearAlgebra\Double\SymmetricMatrix.cs" />
     <Compile Include="LinearAlgebra\Double\Vector.cs" />

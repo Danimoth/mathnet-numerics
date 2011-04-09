@@ -1,4 +1,4 @@
-﻿// <copyright file="SquareMatrix.cs" company="Math.NET">
+﻿// <copyright file="TriangularMatrix.cs" company="Math.NET">
 // Math.NET Numerics, part of the Math.NET Project
 // http://numerics.mathdotnet.com
 // http://github.com/mathnet/mathnet-numerics
@@ -27,16 +27,14 @@
 namespace MathNet.Numerics.LinearAlgebra.Double
 {
     using System;
-    using Properties;
 
     /// <summary>
-    /// Abstract class for square matrices. 
+    /// Abstract class for square triangular matrices. 
     /// </summary>
-    [Serializable]
-    public abstract class SquareMatrix : Matrix
+    public abstract class TriangularMatrix : SquareMatrix
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="SquareMatrix"/> class.
+        /// Initializes a new instance of the <see cref="TriangularMatrix"/> class.
         /// </summary>
         /// <param name="rows">
         /// The number of rows.
@@ -47,22 +45,18 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// <exception cref="ArgumentException">
         /// If <paramref name="rows"/> not equal to <paramref name="columns"/>.
         /// </exception>
-        protected SquareMatrix(int rows, int columns) 
+        protected TriangularMatrix(int rows, int columns) 
             : base(rows, columns)
         {
-            if (rows != columns)
-            {
-                throw new ArgumentException(Resources.ArgumentMatrixSquare);
-            }
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SquareMatrix"/> class.
+        /// Initializes a new instance of the <see cref="TriangularMatrix"/> class.
         /// </summary>
         /// <param name="order">
         /// The order of the matrix.
         /// </param>
-        protected SquareMatrix(int order) 
+        protected TriangularMatrix(int order) 
             : base(order)
         {
         }

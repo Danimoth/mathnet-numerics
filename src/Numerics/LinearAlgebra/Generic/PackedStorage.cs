@@ -74,7 +74,7 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
         }
 
         /// <summary>
-        /// Retrieves the index of the requested element without range checking.
+        /// Retrieves the index of the requested element without parameter checking.
         /// </summary>
         /// <param name="row">
         /// The row of the element. 
@@ -88,7 +88,7 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
         public abstract int IndexOf(int row, int column);
 
         /// <summary>
-        /// Retrieves the index of the requested element without range checking.
+        /// Retrieves the index of the requested diagonal element without parameter checking.
         /// </summary>
         /// <param name="row">
         /// The row=column of the diagonal element. 

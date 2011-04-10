@@ -44,7 +44,7 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
         }
         
         /// <summary>
-        /// Retrieves the index of the requested element without range checking. Row must be greater than or equal to column. 
+        /// Retrieves the index of the requested element without parameter checking. Row must be greater than or equal to column. 
         /// </summary>
         /// <param name="row">
         /// The row of the element. 
@@ -61,7 +61,7 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
         }
 
         /// <summary>
-        /// Retrieves the index of the requested element without range checking.
+        /// Retrieves the index of the requested diagonal element without parameter checking.
         /// </summary>
         /// <param name="row">
         /// The row=column of the diagonal element. 

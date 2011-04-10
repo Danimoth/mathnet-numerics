@@ -67,7 +67,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// Gets or sets the matrix's data in indexed format.
         /// </summary>
         /// <value>The matrix's indexed data.</value>
-        public PackedStorage<double> Indexer
+        public PackedStorage Indexer
         {
             get;
             protected set;

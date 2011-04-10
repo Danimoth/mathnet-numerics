@@ -50,7 +50,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         public SymmetricDenseMatrix(int order)
             : base(order)
         {
-            Indexer = new PackedStorageUpper<double>(order);
+            Indexer = new PackedStorageUpper(order);
             Data = new double[Indexer.PackedDataSize];
         }
 
@@ -69,7 +69,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         public SymmetricDenseMatrix(int rows, int columns)
             : base(rows, columns)
         {
-            Indexer = new PackedStorageUpper<double>(rows);
+            Indexer = new PackedStorageUpper(rows);
             Data = new double[Indexer.PackedDataSize];
         }
 
@@ -130,7 +130,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
                 throw new ArgumentException(Resources.ArgumentMatrixSymmetric);
             }
 
-            Indexer = new PackedStorageUpper<double>(Order);
+            Indexer = new PackedStorageUpper(Order);
             for (var row = 0; row < Order; row++)
             {
                 for (var column = row; column < Order; column++)
@@ -181,7 +181,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// Gets the matrix's data in indexed format.
         /// </summary>
         /// <value>The matrix's indexed data.</value>
-        public PackedStorageUpper<double> Indexer
+        public PackedStorageUpper Indexer
         {
             get;
             private set;

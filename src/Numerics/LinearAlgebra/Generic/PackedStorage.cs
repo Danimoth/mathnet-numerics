@@ -217,10 +217,7 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
         /// <returns>
         /// The requested element from the upper triangle.
         /// </returns>
-        public T AtUpper(int row, int column)
-        {
-            return Data[IndexOfUpper(row, column)];
-        }
+        public abstract T AtUpper(int row, int column);
 
         /// <summary>
         /// Sets the value of the given element.
@@ -237,10 +234,7 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
         /// <param name="value">
         /// The value on the upper triangle to set the element to.
         /// </param>
-        public void AtUpper(int row, int column, T value)
-        {
-            Data[IndexOfUpper(row, column)] = value;
-        }
+        public abstract void AtUpper(int row, int column, T value);
 
         /// <summary>
         /// Retrieves the requested element without range checking. 
@@ -256,10 +250,7 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
         /// <returns>
         /// The requested element from the lower triangle.
         /// </returns>
-        public T AtLower(int row, int column)
-        {
-            return Data[IndexOfLower(row, column)];
-        }
+        public abstract T AtLower(int row, int column);
 
         /// <summary>
         /// Sets the value of the given element.
@@ -276,10 +267,7 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
         /// <param name="value">
         /// The value on the lower triangle to set the element to.
         /// </param>
-        public void AtLower(int row, int column, T value)
-        {
-            Data[IndexOfLower(row, column)] = value;
-        }
+        public abstract void AtLower(int row, int column, T value);
 
         /// <summary>
         /// Retrieves the requested element without range checking.
@@ -323,41 +311,7 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
         /// <returns>
         /// The requested index. 
         /// </returns>
-        public abstract int IndexOf(int row, int column);
-
-        /// <summary>
-        /// Retrieves the index of the requested element without range checking. 
-        ///   CAUTION:
-        ///   This method assumes (for performance) that you request an index from the upper triangle (row less than or equal column). 
-        ///   If not, the index is completely wrong.
-        /// </summary>
-        /// <param name="row">
-        /// The row of the element. Must be less than or equal to column.
-        /// </param>
-        /// <param name="column">
-        /// The column of the element. Must be more than or equal to row.
-        /// </param>
-        /// <returns>
-        /// The requested index. 
-        /// </returns>
-        public abstract int IndexOfLower(int row, int column);
-
-        /// <summary>
-        /// Retrieves the index of the requested element without range checking. 
-        ///   CAUTION:
-        ///   This method assumes (for performance) that you request an index from the upper triangle (row less than or equal column). 
-        ///   If not, the index is completely wrong.
-        /// </summary>
-        /// <param name="row">
-        /// The row of the element. Must be less than or equal to column.
-        /// </param>
-        /// <param name="column">
-        /// The column of the element. Must be more than or equal to row.
-        /// </param>
-        /// <returns>
-        /// The requested index. 
-        /// </returns>
-        public abstract int IndexOfUpper(int row, int column);
+        protected abstract int IndexOf(int row, int column);
 
         /// <summary>
         /// Retrieves the index of the requested element without range checking.
@@ -368,6 +322,6 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
         /// <returns>
         /// The requested index. 
         /// </returns>
-        public abstract int IndexOfDiagonal(int row);
+        protected abstract int IndexOfDiagonal(int row);
     }
 }

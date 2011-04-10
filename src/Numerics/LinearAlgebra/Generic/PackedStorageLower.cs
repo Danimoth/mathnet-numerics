@@ -76,6 +76,92 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
         }
 
         /// <summary>
+        /// Retrieves the requested element without range checking. 
+        ///   CAUTION:
+        ///   This method assumes that you request an element from the upper triangle (row less than or equal to column).  
+        ///   If not, the result is completely wrong.
+        /// </summary>
+        /// <param name="row">
+        /// The row of the element. Must be less than or equal to column. 
+        /// </param>
+        /// <param name="column">
+        /// The column of the element. Must be more than or equal to row. 
+        /// </param>
+        /// <returns>
+        /// The requested element from the upper triangle.
+        /// </returns>
+        public override T AtUpper(int row, int column)
+        {
+            return row == column ? Data[IndexOfDiagonal(row)] : default(T);
+        }
+
+        /// <summary>
+        /// Sets the value of the given element.
+        ///   CAUTION:
+        ///   This method assumes that you set an element from the upper triangle (row less than or equal to column).
+        ///   If not, the result is completely wrong.
+        /// </summary>
+        /// <param name="row">
+        /// The row of the element. Must be less than or equal to column.
+        /// </param>
+        /// <param name="column">
+        /// The column of the element. Must be more than or equal to row. 
+        /// </param>
+        /// <param name="value">
+        /// The value on the upper triangle to set the element to.
+        /// </param>
+        public override void AtUpper(int row, int column, T value)
+        {
+            if (row == column)
+            {
+                Data[IndexOfDiagonal(row)] = value;
+            }
+            else
+            {
+                throw new InvalidOperationException("Cannot write in the upper triangle of a lower triangle matrix");
+            }
+        }
+
+        /// <summary>
+        /// Retrieves the requested element without range checking. 
+        ///   CAUTION:
+        ///   This method assumes that you request an element from the lower triangle (row greater than or equal to column).
+        /// </summary>
+        /// <param name="row">
+        /// The row of the element. Must be more than or equal to column. 
+        /// </param>
+        /// <param name="column">
+        /// The column of the element. Must be less than or equal to row. 
+        /// </param>
+        /// <returns>
+        /// The requested element from the lower triangle.
+        /// </returns>
+        public override T AtLower(int row, int column)
+        {
+            return Data[IndexOfLower(row, column)];
+        }
+
+        /// <summary>
+        /// Sets the value of the given element.
+        ///   CAUTION:
+        ///   This method assumes that you set an element from the lower triangle (row greater than or equal to column).
+        ///   If not, the result is completely wrong.
+        /// </summary>
+        /// <param name="row">
+        /// The row of the element. Must be more than or equal to column
+        /// </param>
+        /// <param name="column">
+        /// The column of the element. Must be less than or equal to row. 
+        /// </param>
+        /// <param name="value">
+        /// The value on the lower triangle to set the element to.
+        /// </param>
+        public override void AtLower(int row, int column, T value)
+        {
+            Data[IndexOfLower(row, column)] = value;
+        }
+
+        /// <summary>
         /// Retrieves the index of the requested element without range checking.
         /// </summary>
         /// <param name="row">
@@ -87,11 +173,9 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
         /// <returns>
         /// The requested index. 
         /// </returns>
-        public override int IndexOf(int row, int column)
+        protected override int IndexOf(int row, int column)
         {
-            var r = Math.Max(row, column);
-            var c = Math.Min(row, column);
-            return IndexOfLower(r, c);
+            return IndexOfLower(row, column);
         }
 
         /// <summary>
@@ -109,29 +193,9 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
         /// <returns>
         /// The requested index. 
         /// </returns>
-        public override int IndexOfLower(int row, int column)
+        private int IndexOfLower(int row, int column)
         {
             return row + ((((2 * Order) - column - 1) * column) / 2);
-        }
-
-        /// <summary>
-        /// Retrieves the index of the requested element without range checking. 
-        /// CAUTION:
-        /// This method assumes (for performance) that you request an index from the upper triangle (row less than or equal column). 
-        /// If not, the index is completely wrong.  
-        /// </summary>
-        /// <param name="row">
-        /// The row of the element. Must be less than or equal to column.
-        /// </param>
-        /// <param name="column">
-        /// The column of the element. Must be more than or equal to row.
-        /// </param>
-        /// <returns>
-        /// The requested index. 
-        /// </returns>
-        public override int IndexOfUpper(int row, int column)
-        {
-            return IndexOfLower(column, row);
         }
 
         /// <summary>
@@ -143,7 +207,7 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
         /// <returns>
         /// The requested index. 
         /// </returns>
-        public override int IndexOfDiagonal(int row)
+        protected override int IndexOfDiagonal(int row)
         {
             return (((2 * Order) - row + 1) * row) / 2;
         }

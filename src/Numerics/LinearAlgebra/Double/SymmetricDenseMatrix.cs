@@ -266,7 +266,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
                     throw new ArgumentOutOfRangeException("column");
                 }
 
-                return DataIndexed.At(row, column);
+                return At(row, column);
             }
 
             set
@@ -281,7 +281,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
                     throw new ArgumentOutOfRangeException("column");
                 }
 
-                DataIndexed.At(row, column, value);
+                At(row, column, value);
             }
         }
 
@@ -299,7 +299,9 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// </returns>
         public override double At(int row, int column)
         {
-            return DataIndexed.At(row, column);
+            var r = Math.Min(row, column);
+            var c = Math.Max(row, column);
+            return DataIndexed.At(r, c);
         }
 
         /// <summary>
@@ -316,7 +318,9 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// </param>
         public override void At(int row, int column, double value)
         {
-            DataIndexed.At(row, column, value);
+            var r = Math.Min(row, column);
+            var c = Math.Max(row, column);
+            DataIndexed.At(r, c, value);
         }
 
         /// <summary>
@@ -375,7 +379,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// </returns>
         public override double AtLower(int row, int column)
         {
-            return DataIndexed.AtLower(row, column);
+            return DataIndexed.AtUpper(column, row);
         }
 
         /// <summary>
@@ -395,7 +399,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// </param>
         public override void AtLower(int row, int column, double value)
         {
-            DataIndexed.AtLower(row, column, value);
+            DataIndexed.AtUpper(column, row, value);
         }
 
         /// <summary>

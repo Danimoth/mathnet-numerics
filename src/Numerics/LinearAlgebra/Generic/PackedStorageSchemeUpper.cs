@@ -1,4 +1,4 @@
-﻿// <copyright file="PackedStorageLower.cs" company="Math.NET">
+﻿// <copyright file="PackedStorageUpper.cs" company="Math.NET">
 // Math.NET Numerics, part of the Math.NET Project
 // http://numerics.mathdotnet.com
 // http://github.com/mathnet/mathnet-numerics
@@ -30,20 +30,21 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
 
     /// <summary>
     /// A class for managing indexing when using Packed Storage scheme, which is a column-Wise packing scheme for Symmetric, Hermitian or Triangular square matrices. 
-    ///   This variation provides indexes for storing the lower triangle of a matrix (row less than or equal to column).
+    ///   This variation provides indexes for storing the upper triangle of a matrix (row less than or equal to column).
     /// </summary>
     /// <remarks>
     /// Upper version features faster indexing than the Lower version.
     /// </remarks>
-    public class PackedStorageLower : PackedStorage
+    public class PackedStorageSchemeUpper : PackedStorageScheme
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PackedStorageLower"/> class.
+        /// Initializes a new instance of the <see cref="PackedStorageSchemeUpper"/> class.
         /// </summary>
         /// <param name="order">
         /// The order of the matrix.
         /// </param>
-        public PackedStorageLower(int order) : base(order)
+        public PackedStorageSchemeUpper(int order)
+            : base(order)
         {
         }
 
@@ -73,9 +74,9 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
                     throw new ArgumentOutOfRangeException("column");
                 }
 
-                if (row < column)
+                if (row > column)
                 {
-                    throw new ArgumentException("Row must be greater than or equal to column");
+                    throw new ArgumentException("Row must be less than or equal to column");
                 }
 
                 return IndexOf(row, column);
@@ -83,7 +84,7 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
         }
 
         /// <summary>
-        /// Retrieves the index of the requested element without parameter checking. Row must be greater than or equal to column.
+        /// Retrieves the index of the requested element without parameter checking. Row must be less than or equal to column.
         /// </summary>
         /// <param name="row">
         /// The row of the element. 
@@ -96,7 +97,7 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
         /// </returns>
         public override int IndexOf(int row, int column)
         {
-            return row + ((((2 * Order) - column - 1) * column) / 2);
+            return row + ((column * (column + 1)) / 2);
         }
 
         /// <summary>
@@ -110,7 +111,7 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
         /// </returns>
         public override int IndexOfDiagonal(int row)
         {
-            return (((2 * Order) - row + 1) * row) / 2;
+            return (row * (row + 3)) / 2;
         }
     }
 }

@@ -67,20 +67,20 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// Gets or sets the matrix's data in indexed format.
         /// </summary>
         /// <value>The matrix's indexed data.</value>
-        public PackedStorage Indexer
+        public PackedStorageScheme Indexer
         {
             get;
             protected set;
         }
 
         /// <summary>
-        /// Gets the matrix's data in array format. 
+        /// Gets or sets the matrix's data in array format. 
         /// </summary>
         /// <value>The matrix's raw data.</value>
         public double[] Data
         {
             get;
-            private set;
+            protected set;
         }
 
         #region IExtraAccessors<T> Members

@@ -26,6 +26,8 @@
 
 namespace MathNet.Numerics.LinearAlgebra.Generic
 {
+    using System;
+
     /// <summary>
     /// A class for managing indexing when using Packed Storage scheme, which is a column-Wise packing scheme for Symmetric, Hermitian or Triangular square matrices. 
     /// This variation provides indexes for storing the lower triangle of a matrix (row less than or equal to column). 
@@ -42,7 +44,42 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
         public PackedStorageLower(int order) : base(order)
         {
         }
-        
+
+        /// <summary>
+        /// Gets the index of the given element.
+        /// </summary>
+        /// <param name="row">
+        /// The row of the element.
+        /// </param>
+        /// <param name="column">
+        /// The column of the element.
+        /// </param>
+        /// <remarks>
+        /// This method is parameter checked. <see cref="IndexOf(int,int)"/> and <see cref="IndexOfDiagonal(int)"/> to get values without parameter checking.
+        /// </remarks>
+        public override int this[int row, int column]
+        {
+            get
+            {
+                if (row < 0 || row >= Order)
+                {
+                    throw new ArgumentOutOfRangeException("row");
+                }
+
+                if (column < 0 || column >= Order)
+                {
+                    throw new ArgumentOutOfRangeException("column");
+                }
+
+                if (row < column)
+                {
+                    throw new ArgumentException("Row must be greater than or equal to column");
+                }
+
+                return IndexOf(row, column);
+            }
+        }
+
         /// <summary>
         /// Retrieves the index of the requested element without parameter checking. Row must be greater than or equal to column. 
         /// </summary>

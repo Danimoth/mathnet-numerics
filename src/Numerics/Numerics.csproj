@@ -330,6 +330,7 @@
     <Compile Include="LinearAlgebra\Double\TriangularMatrix.cs" />
     <Compile Include="LinearAlgebra\Double\Vector.cs" />
     <Compile Include="LinearAlgebra\Generic\Common.cs" />
+    <Compile Include="LinearAlgebra\Generic\IExtraAccessors.cs" />
     <Compile Include="LinearAlgebra\Generic\PackedStorage.cs" />
     <Compile Include="LinearAlgebra\Generic\PackedStorageLower.cs" />
     <Compile Include="LinearAlgebra\Generic\PackedStorageUpper.cs" />

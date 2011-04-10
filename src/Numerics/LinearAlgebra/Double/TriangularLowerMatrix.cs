@@ -31,7 +31,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
 
     /// <summary>
     /// Class for lower triangular swaure matrices. 
-    /// A lower triangular matrix has elements on the diagonal and below it. 
+    ///   A lower triangular matrix has elements on the diagonal and below it.
     /// </summary>
     public class TriangularLowerMatrix : TriangularMatrix
     {
@@ -68,8 +68,9 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// <summary>
         ///   Gets a value indicating whether this matrix is symmetric.
         /// </summary>
-        /// <remarks> A lower triangular matrix will only by symmetric if all values of the stricly lower triangle are zero, 
-        /// since by definition all values in the strictly upper triangle are zero. Hence, it will also be a diagonal matrix. 
+        /// <remarks>
+        ///   A lower triangular matrix will only by symmetric if all values of the stricly lower triangle are zero, 
+        ///   since by definition all values in the strictly upper triangle are zero. Hence, it will also be a diagonal matrix.
         /// </remarks>
         public override bool IsSymmetric
         {
@@ -89,8 +90,6 @@ namespace MathNet.Numerics.LinearAlgebra.Double
                 return true;
             }
         }
-
-        #region Overrides of Matrix<double>
 
         /// <summary>
         /// Retrieves the requested element without range checking.
@@ -196,7 +195,5 @@ namespace MathNet.Numerics.LinearAlgebra.Double
 
             return new TriangularLowerMatrix(numberOfRows, numberOfColumns);
         }
-
-        #endregion
     }
 }

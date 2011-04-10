@@ -31,7 +31,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
 
     /// <summary>
     /// Class for upper triangular square matrices. 
-    /// An upper triangular matrix has elements on the diagonal and above it. 
+    ///   An upper triangular matrix has elements on the diagonal and above it.
     /// </summary>
     public class TriangularUpperMatrix : TriangularMatrix
     {
@@ -68,8 +68,9 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// <summary>
         ///   Gets a value indicating whether this matrix is symmetric.
         /// </summary>
-        /// <remarks> An upper triangular matrix will only by symmetric if all values of the stricly upper triangle are zero, 
-        /// since by definition all values in the strictly lower triangle are zero. Hence, it will also be a diagonal matrix. 
+        /// <remarks>
+        ///   An upper triangular matrix will only by symmetric if all values of the stricly upper triangle are zero, 
+        ///   since by definition all values in the strictly lower triangle are zero. Hence, it will also be a diagonal matrix.
         /// </remarks>
         public override bool IsSymmetric
         {
@@ -89,8 +90,6 @@ namespace MathNet.Numerics.LinearAlgebra.Double
                 return true;
             }
         }
-
-        #region Overrides of Matrix<double>
 
         /// <summary>
         /// Retrieves the requested element without range checking.
@@ -201,7 +200,9 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// <summary>
         /// Creates a Vector with a the given dimension.
         /// </summary>
-        /// <param name="size">The size of the vector.</param>
+        /// <param name="size">
+        /// The size of the vector.
+        /// </param>
         /// <returns>
         /// A Vector with the given dimension.
         /// </returns>
@@ -212,7 +213,5 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         {
             throw new NotImplementedException();
         }
-
-        #endregion
     }
 }

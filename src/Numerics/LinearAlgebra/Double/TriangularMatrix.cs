@@ -31,7 +31,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
 
     /// <summary>
     /// Abstract class for square triangular matrices. 
-    /// A triangular matrix has elements on the diagonal and above or below it. 
+    ///   A triangular matrix has elements on the diagonal and above or below it.
     /// </summary>
     public abstract class TriangularMatrix : SquareMatrix, IExtraAccessors<double>
     {
@@ -47,7 +47,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// <exception cref="ArgumentException">
         /// If <paramref name="rows"/> not equal to <paramref name="columns"/>.
         /// </exception>
-        protected TriangularMatrix(int rows, int columns) 
+        protected TriangularMatrix(int rows, int columns)
             : base(rows, columns)
         {
         }
@@ -58,28 +58,13 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// <param name="order">
         /// The order of the matrix.
         /// </param>
-        protected TriangularMatrix(int order) 
+        protected TriangularMatrix(int order)
             : base(order)
         {
         }
 
         /// <summary>
-        /// Creates a Vector with a the given dimension.
-        /// </summary>
-        /// <param name="size">The size of the vector.</param>
-        /// <returns>
-        /// A Vector with the given dimension.
-        /// </returns>
-        /// <remarks>
-        /// Creates a vector of the same type as the current matrix.
-        /// </remarks>
-        public override Vector<double> CreateVector(int size)
-        {
-            return new DenseVector(size);
-        }
-
-        /// <summary>
-        /// Gets or sets the matrix's data in indexed format.
+        ///   Gets or sets the matrix's data in indexed format.
         /// </summary>
         /// <value>The matrix's indexed data.</value>
         public PackedStorageScheme Indexer
@@ -89,7 +74,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         }
 
         /// <summary>
-        /// Gets or sets the matrix's data in array format. 
+        ///   Gets or sets the matrix's data in array format.
         /// </summary>
         /// <value>The matrix's raw data.</value>
         public double[] Data
@@ -98,7 +83,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
             protected set;
         }
 
-        #region IExtraAccessors<T> Members
+        #region IExtraAccessors<double> Members
 
         /// <summary>
         /// Retrieves the requested element without range checking. 
@@ -122,9 +107,9 @@ namespace MathNet.Numerics.LinearAlgebra.Double
 
         /// <summary>
         /// Sets the value of the given element.
-        /// CAUTION:
-        /// This method assumes that you set an element from the upper triangle (row less than or equal to column).
-        /// If not, the result is completely wrong. 
+        ///   CAUTION:
+        ///   This method assumes that you set an element from the upper triangle (row less than or equal to column).
+        ///   If not, the result is completely wrong.
         /// </summary>
         /// <param name="row">
         /// The row of the element. Must be less than or equal to column.
@@ -161,9 +146,9 @@ namespace MathNet.Numerics.LinearAlgebra.Double
 
         /// <summary>
         /// Sets the value of the given element.
-        /// CAUTION:
-        /// This method assumes that you set an element from the lower triangle (row greater than or equal to column).
-        /// If not, the result is completely wrong. 
+        ///   CAUTION:
+        ///   This method assumes that you set an element from the lower triangle (row greater than or equal to column).
+        ///   If not, the result is completely wrong.
         /// </summary>
         /// <param name="row">
         /// The row of the element. Must be more than or equal to column
@@ -208,5 +193,22 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         }
 
         #endregion
+
+        /// <summary>
+        /// Creates a Vector with a the given dimension.
+        /// </summary>
+        /// <param name="size">
+        /// The size of the vector.
+        /// </param>
+        /// <returns>
+        /// A Vector with the given dimension.
+        /// </returns>
+        /// <remarks>
+        /// Creates a vector of the same type as the current matrix.
+        /// </remarks>
+        public override Vector<double> CreateVector(int size)
+        {
+            return new DenseVector(size);
+        }
     }
 }

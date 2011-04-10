@@ -147,7 +147,7 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
                     throw new ArgumentOutOfRangeException("column");
                 }
 
-                return Data[IndexOf(row, column)];
+                return At(row, column);
             }
 
             set
@@ -162,7 +162,7 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
                     throw new ArgumentOutOfRangeException("column");
                 }
 
-                Data[IndexOf(row, column)] = value;
+                At(row, column, value);
             }
         }
 

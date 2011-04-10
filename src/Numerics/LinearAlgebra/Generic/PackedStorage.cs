@@ -90,6 +90,26 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="PackedStorage{T}"/> class from a proper one-dimensional array. This constructor
+        /// will reference the one dimensional array and not copy it.
+        /// </summary>
+        /// <param name="order">The size of the square matrix.</param>
+        /// <param name="array"> The one dimensional array to create this matrix from.  </param>
+        /// <exception cref="ArgumentException">
+        /// If <paramref name="array"/> does not represent a packed array.
+        /// </exception>
+        protected PackedStorage(int order, T[] array)
+            : this(order)
+        {
+            if (array.Length != (order * (order + 1) / 2))
+            {
+                throw new ArgumentException(Resources.ArgumentArrayWrongLength);
+            }
+
+            Data = array;
+        }
+
+        /// <summary>
         /// Gets or sets the value at the given row and column.
         /// </summary>
         /// <param name="row">

@@ -58,7 +58,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
             : base(order)
         {
             _order = order;
-            Data = new double[order * (order + 1) / 2];
+            DataIndexed = new PackedStorageUpper<double>(order);
         }
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
             : base(rows, columns)
         {
             _order = rows;
-            Data = new double[rows * (rows + 1) / 2];
+            DataIndexed = new PackedStorageUpper<double>(rows);
         }
 
         /// <summary>
@@ -93,12 +93,10 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// <remarks> Forcing user to input (int, int, double) because only asking (int, double) would 
         /// create a signature easily confused with (int, int) which is already used </remarks>
         public SymmetricDenseMatrix(int rows, int columns, double value)
-            : this(rows, columns)
+            : base(rows, columns)
         {
-            for (var i = 0; i < Data.Length; i++)
-            {
-                Data[i] = value;
-            }
+            _order = rows;
+            DataIndexed = new PackedStorageUpper<double>(rows, value);
         }
 
         /// <summary>
@@ -110,18 +108,14 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// The one dimensional array to create this matrix from. Column-major and row-major order is identical on a symmetric matrix: http://en.wikipedia.org/wiki/Row-major_order 
         /// </param>
         /// <exception cref="ArgumentException">
-        /// If <paramref name="array"/> does not represent a symmetric array.
+        /// If <paramref name="array"/> does not represent a packed array.
         /// </exception>
         public SymmetricDenseMatrix(int order, double[] array)
             : base(order)
         {
-            if (array.Length != (order * (order + 1) / 2))
-            {
-                throw new ArgumentException(Resources.ArgumentArrayWrongLength);
-            }
-
             _order = order;
-            Data = array;
+            DataIndexed = new PackedStorageUpper<double>(order);
+            DataRaw = array;
         }
 
         /// <summary>
@@ -146,19 +140,19 @@ namespace MathNet.Numerics.LinearAlgebra.Double
             var order = array.GetLength(0);
             _order = order;
 
-            Data = new double[order * (order + 1) / 2];
+            DataIndexed = new PackedStorageUpper<double>(order);
             for (var row = 0; row < order; row++)
             {
                 for (var column = row; column < order; column++)
                 {
-                    Data[IndexOfUpper(row, column)] = array[row, column];
+                    DataIndexed.AtUpper(row, column, array[row, column]);
                 }
             }
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SymmetricDenseMatrix"/> class, copying
-        /// the values from the given matrix. Matrix must be Symmetric
+        /// the values from the given matrix. Matrix must be Symmetric.
         /// </summary>
         /// <param name="matrix">The matrix to copy.</param>
         /// <exception cref="ArgumentException">
@@ -186,7 +180,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
                 {
                     for (var column = row; column < order; column++)
                     {
-                        Data[IndexOfUpper(row, column)] = matrix[row, column];
+                        DataIndexed.AtUpper(row, column, matrix[row, column]);
                     }
                 }
             }
@@ -197,13 +191,30 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         }
 
         /// <summary>
-        /// Gets the matrix's data.
+        /// Gets the matrix's data in indexed format.
         /// </summary>
-        /// <value>The matrix's data.</value>
-        public double[] Data
+        /// <value>The matrix's indexed data.</value>
+        public PackedStorageUpper<double> DataIndexed
         {
             get;
             private set;
+        }
+
+        /// <summary>
+        /// Gets the matrix's data in array format. 
+        /// </summary>
+        /// <value>The matrix's raw data.</value>
+        public double[] DataRaw
+        {
+            get
+            {
+                return DataIndexed.Data;
+            }
+
+            private set
+            {
+                DataIndexed.Data = value;
+            }
         }
 
         /// <summary>
@@ -272,7 +283,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
                     throw new ArgumentOutOfRangeException("column");
                 }
 
-                return Data[IndexOf(row, column)];
+                return DataIndexed.At(row, column);
             }
 
             set
@@ -287,81 +298,8 @@ namespace MathNet.Numerics.LinearAlgebra.Double
                     throw new ArgumentOutOfRangeException("column");
                 }
 
-                Data[IndexOf(row, column)] = value;
+                DataIndexed.At(row, column, value);
             }
-        }
-        
-        /// <summary>
-        /// Retrieves the index of the requested element without range checking.
-        /// </summary>
-        /// <param name="row">
-        /// The row of the element. 
-        /// </param>
-        /// <param name="column">
-        /// The column of the element. 
-        /// </param>
-        /// <returns>
-        /// The requested index. 
-        /// </returns>
-        public static int IndexOf(int row, int column)
-        {
-            var r = Math.Min(row, column);
-            var c = Math.Max(row, column);
-            return IndexOfUpper(r, c);
-        }
-
-        /// <summary>
-        /// Retrieves the index of the requested element without range checking. 
-        /// CAUTION:
-        /// This method assumes (for performance) that you request an index from the upper triangle (row less than or equal column). 
-        /// If not, the result is completely wrong.
-        /// </summary>
-        /// <param name="row">
-        /// The row of the element. Must be less than or equal to column.
-        /// </param>
-        /// <param name="column">
-        /// The column of the element. Must be more than or equal to row.
-        /// </param>
-        /// <returns>
-        /// The requested index. 
-        /// </returns>
-        public static int IndexOfLower(int row, int column)
-        {
-            return column + ((row * (row + 1)) / 2);
-        }
-
-        /// <summary>
-        /// Retrieves the index of the requested element without range checking. 
-        /// CAUTION:
-        /// This method assumes (for performance) that you request an index from the upper triangle (row less than or equal column). 
-        /// If not, the result is completely wrong.  
-        /// </summary>
-        /// <param name="row">
-        /// The row of the element. Must be less than or equal to column.
-        /// </param>
-        /// <param name="column">
-        /// The column of the element. Must be more than or equal to row.
-        /// </param>
-        /// <returns>
-        /// The requested index. 
-        /// </returns>
-        public static int IndexOfUpper(int row, int column)
-        {
-            return row + ((column * (column + 1)) / 2);
-        }
-
-        /// <summary>
-        /// Retrieves the index of the requested element without range checking.
-        /// </summary>
-        /// <param name="row">
-        /// The row=column of the diagonal element. 
-        /// </param>
-        /// <returns>
-        /// The requested index. 
-        /// </returns>
-        public static int IndexOfDiagonal(int row)
-        {
-            return (row * (row + 3)) / 2;
         }
 
         /// <summary>
@@ -378,7 +316,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// </returns>
         public override double At(int row, int column)
         {
-            return Data[IndexOf(row, column)];
+            return DataIndexed.At(row, column);
         }
 
         /// <summary>
@@ -395,7 +333,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// </param>
         public override void At(int row, int column, double value)
         {
-            Data[IndexOf(row, column)] = value;
+            DataIndexed.At(row, column, value);
         }
 
         /// <summary>
@@ -415,7 +353,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// </returns>
         public override double AtUpper(int row, int column)
         {
-            return Data[IndexOfUpper(row, column)];
+            return DataIndexed.AtUpper(row, column);
         }
 
         /// <summary>
@@ -435,7 +373,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// </param>
         public override void AtUpper(int row, int column, double value)
         {
-            Data[IndexOfUpper(row, column)] = value;
+            DataIndexed.AtUpper(row, column, value);
         }
 
         /// <summary>
@@ -454,7 +392,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// </returns>
         public override double AtLower(int row, int column)
         {
-            return Data[IndexOfLower(row, column)];
+            return DataIndexed.AtLower(row, column);
         }
 
         /// <summary>
@@ -474,7 +412,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// </param>
         public override void AtLower(int row, int column, double value)
         {
-            Data[IndexOfLower(row, column)] = value;
+            DataIndexed.AtLower(row, column, value);
         }
 
         /// <summary>
@@ -488,7 +426,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// </returns>
         public override double AtDiagonal(int row)
         {
-            return Data[IndexOfDiagonal(row)];
+            return DataIndexed.AtDiagonal(row);
         }
 
         /// <summary>
@@ -502,7 +440,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// </param>
         public override void AtDiagonal(int row, double value)
         {
-            Data[IndexOfDiagonal(row)] = value;
+            DataIndexed.AtDiagonal(row, value);
         }
         #endregion
 
@@ -511,7 +449,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// </summary>
         public override void Clear()
         {
-            Array.Clear(Data, 0, Data.Length);
+            Array.Clear(DataRaw, 0, DataRaw.Length);
         }
      
         #region Static constructors for special matrices.
@@ -529,7 +467,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
             var m = new SymmetricDenseMatrix(order);
             for (var i = 0; i < order; i++)
             {
-                m.Data[IndexOfDiagonal(i)] = 1.0;
+                m.DataIndexed.AtDiagonal(i, 1.0);
             }
 
             return m;
@@ -554,7 +492,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
             }
             else
             {
-                Control.LinearAlgebraProvider.AddArrays(Data, denseOther.Data, denseResult.Data);
+                Control.LinearAlgebraProvider.AddArrays(DataRaw, denseOther.DataRaw, denseResult.DataRaw);
             }
         }
 
@@ -573,7 +511,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
             }
             else
             {
-                Control.LinearAlgebraProvider.SubtractArrays(Data, denseOther.Data, denseResult.Data);
+                Control.LinearAlgebraProvider.SubtractArrays(DataRaw, denseOther.DataRaw, denseResult.DataRaw);
             }
         }
 
@@ -591,7 +529,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
             }
             else
             {
-                Control.LinearAlgebraProvider.ScaleArray(scalar, Data, denseResult.Data);
+                Control.LinearAlgebraProvider.ScaleArray(scalar, DataRaw, denseResult.DataRaw);
             }
         }
 
@@ -693,7 +631,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
             }
             else
             {
-                Control.LinearAlgebraProvider.ScaleArray(-1, Data, denseResult.Data);
+                Control.LinearAlgebraProvider.ScaleArray(-1, DataRaw, denseResult.DataRaw);
             }
         }
 
@@ -713,7 +651,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
             }
             else
             {
-                Control.LinearAlgebraProvider.PointWiseMultiplyArrays(Data, denseOther.Data, denseResult.Data);
+                Control.LinearAlgebraProvider.PointWiseMultiplyArrays(DataRaw, denseOther.DataRaw, denseResult.DataRaw);
             }
         }
 
@@ -733,7 +671,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
             }
             else
             {
-                Control.LinearAlgebraProvider.PointWiseDivideArrays(Data, denseOther.Data, denseResult.Data);
+                Control.LinearAlgebraProvider.PointWiseDivideArrays(DataRaw, denseOther.DataRaw, denseResult.DataRaw);
             }
         }
 
@@ -833,8 +771,8 @@ namespace MathNet.Numerics.LinearAlgebra.Double
 
                 CommonParallel.For(
                     0,
-                    Data.Length,
-                    index => denseResult.Data[index] %= divisor);
+                    DataRaw.Length,
+                    index => denseResult.DataRaw[index] %= divisor);
             }
         }
 
@@ -883,9 +821,9 @@ namespace MathNet.Numerics.LinearAlgebra.Double
             }
             else
             {
-                for (var i = 0; i < denseMatrix.Data.Length; i++)
+                for (var i = 0; i < denseMatrix.DataRaw.Length; i++)
                 {
-                    denseMatrix.Data[i] = distribution.Sample();
+                    denseMatrix.DataRaw[i] = distribution.Sample();
                 }
             }
         }
@@ -905,9 +843,9 @@ namespace MathNet.Numerics.LinearAlgebra.Double
             }
             else
             {
-                for (var i = 0; i < denseMatrix.Data.Length; i++)
+                for (var i = 0; i < denseMatrix.DataRaw.Length; i++)
                 {
-                    denseMatrix.Data[i] = distribution.Sample();
+                    denseMatrix.DataRaw[i] = distribution.Sample();
                 }
             }
         }

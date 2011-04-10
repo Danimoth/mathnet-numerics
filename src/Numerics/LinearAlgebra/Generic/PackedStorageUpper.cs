@@ -63,6 +63,20 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="PackedStorageUpper{T}"/> class from a proper one-dimensional array. This constructor
+        /// will reference the one dimensional array and not copy it.
+        /// </summary>
+        /// <param name="order">The size of the square matrix.</param>
+        /// <param name="array"> The one dimensional array to create this matrix from.  </param>
+        /// <exception cref="ArgumentException">
+        /// If <paramref name="array"/> does not represent a packed array.
+        /// </exception>
+        public PackedStorageUpper(int order, T[] array)
+            : base(order, array)
+        {
+        }
+
+        /// <summary>
         /// Retrieves the index of the requested element without range checking.
         /// </summary>
         /// <param name="row">

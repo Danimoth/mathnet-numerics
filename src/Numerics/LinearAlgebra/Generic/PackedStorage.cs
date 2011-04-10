@@ -180,10 +180,7 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
         /// <returns>
         /// The requested element.
         /// </returns>
-        public T At(int row, int column)
-        {
-            return Data[IndexOf(row, column)];
-        }
+        public abstract T At(int row, int column);
 
         /// <summary>
         /// Sets the value of the given element.
@@ -197,10 +194,7 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
         /// <param name="value">
         /// The value to set the element to.
         /// </param>
-        public void At(int row, int column, T value)
-        {
-            Data[IndexOf(row, column)] = value;
-        }
+        public abstract void At(int row, int column, T value);
 
         /// <summary>
         /// Retrieves the requested element without range checking. 
@@ -217,7 +211,10 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
         /// <returns>
         /// The requested element from the upper triangle.
         /// </returns>
-        public abstract T AtUpper(int row, int column);
+        public virtual T AtUpper(int row, int column)
+        {
+            return At(row, column);
+        }
 
         /// <summary>
         /// Sets the value of the given element.
@@ -234,7 +231,10 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
         /// <param name="value">
         /// The value on the upper triangle to set the element to.
         /// </param>
-        public abstract void AtUpper(int row, int column, T value);
+        public virtual void AtUpper(int row, int column, T value)
+        {
+            At(row, column, value);
+        }
 
         /// <summary>
         /// Retrieves the requested element without range checking. 
@@ -250,7 +250,10 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
         /// <returns>
         /// The requested element from the lower triangle.
         /// </returns>
-        public abstract T AtLower(int row, int column);
+        public virtual T AtLower(int row, int column)
+        {
+            return At(row, column);
+        }
 
         /// <summary>
         /// Sets the value of the given element.
@@ -267,7 +270,10 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
         /// <param name="value">
         /// The value on the lower triangle to set the element to.
         /// </param>
-        public abstract void AtLower(int row, int column, T value);
+        public virtual void AtLower(int row, int column, T value)
+        {
+            At(row, column, value);
+        }
 
         /// <summary>
         /// Retrieves the requested element without range checking.

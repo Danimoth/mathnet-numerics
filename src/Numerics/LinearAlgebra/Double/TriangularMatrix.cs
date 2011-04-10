@@ -67,36 +67,29 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// Gets or sets the matrix's data in indexed format.
         /// </summary>
         /// <value>The matrix's indexed data.</value>
-        public PackedStorage<double> DataIndexed
+        public PackedStorage<double> Indexer
         {
             get;
             protected set;
         }
 
         /// <summary>
-        /// Gets or sets the matrix's data in array format. 
+        /// Gets the matrix's data in array format. 
         /// </summary>
         /// <value>The matrix's raw data.</value>
-        public double[] DataRaw
+        public double[] Data
         {
-            get
-            {
-                return DataIndexed.Data;
-            }
-
-            protected set
-            {
-                DataIndexed.Data = value;
-            }
+            get;
+            private set;
         }
 
-        #region IExtraAccessors<double> Members
+        #region IExtraAccessors<T> Members
 
         /// <summary>
         /// Retrieves the requested element without range checking. 
-        /// CAUTION:
-        /// This method assumes that you request an element from the upper triangle (row less than or equal to column).  
-        /// If not, the result is completely wrong.  
+        ///   CAUTION:
+        ///   This method assumes that you request an element from the upper triangle (row less than or equal to column).  
+        ///   If not, the result is completely wrong.
         /// </summary>
         /// <param name="row">
         /// The row of the element. Must be less than or equal to column. 
@@ -107,7 +100,10 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// <returns>
         /// The requested element from the upper triangle.
         /// </returns>
-        public abstract double AtUpper(int row, int column);
+        public virtual double AtUpper(int row, int column)
+        {
+            return At(row, column);
+        }
 
         /// <summary>
         /// Sets the value of the given element.
@@ -124,12 +120,15 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// <param name="value">
         /// The value on the upper triangle to set the element to.
         /// </param>
-        public abstract void AtUpper(int row, int column, double value);
+        public virtual void AtUpper(int row, int column, double value)
+        {
+            At(row, column, value);
+        }
 
         /// <summary>
         /// Retrieves the requested element without range checking. 
-        /// CAUTION:
-        /// This method assumes that you request an element from the lower triangle (row greater than or equal to column).  
+        ///   CAUTION:
+        ///   This method assumes that you request an element from the lower triangle (row greater than or equal to column).
         /// </summary>
         /// <param name="row">
         /// The row of the element. Must be more than or equal to column. 
@@ -140,7 +139,10 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// <returns>
         /// The requested element from the lower triangle.
         /// </returns>
-        public abstract double AtLower(int row, int column);
+        public virtual double AtLower(int row, int column)
+        {
+            return At(row, column);
+        }
 
         /// <summary>
         /// Sets the value of the given element.
@@ -157,10 +159,13 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// <param name="value">
         /// The value on the lower triangle to set the element to.
         /// </param>
-        public abstract void AtLower(int row, int column, double value);
+        public virtual void AtLower(int row, int column, double value)
+        {
+            At(row, column, value);
+        }
 
         /// <summary>
-        /// Retrieves the requested element without range checking. 
+        /// Retrieves the requested element without range checking.
         /// </summary>
         /// <param name="row">
         /// The row=column of the diagonal element.
@@ -168,7 +173,10 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// <returns>
         /// The requested element.
         /// </returns>
-        public abstract double AtDiagonal(int row);
+        public double AtDiagonal(int row)
+        {
+            return Data[Indexer.IndexOfDiagonal(row)];
+        }
 
         /// <summary>
         /// Sets the value of the given element.
@@ -179,7 +187,10 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// <param name="value">
         /// The value to set the element to.
         /// </param>
-        public abstract void AtDiagonal(int row, double value);
+        public void AtDiagonal(int row, double value)
+        {
+            Data[Indexer.IndexOfDiagonal(row)] = value;
+        }
 
         #endregion
     }

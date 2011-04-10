@@ -49,7 +49,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// </exception>
         public TriangularLowerMatrix(int rows, int columns) : base(rows, columns)
         {
-            DataIndexed = new PackedStorageLower<double>(rows);
+            Indexer = new PackedStorageLower<double>(rows);
         }
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// </param>
         public TriangularLowerMatrix(int order) : base(order)
         {
-            DataIndexed = new PackedStorageLower<double>(order);
+            Indexer = new PackedStorageLower<double>(order);
         }
 
         /// <summary>
@@ -104,7 +104,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// </returns>
         public override double At(int row, int column)
         {
-            throw new NotImplementedException();
+            return row >= column ? Data[Indexer.IndexOf(row, column)] : 0.0;
         }
 
         /// <summary>
@@ -121,53 +121,20 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// </param>
         public override void At(int row, int column, double value)
         {
-            throw new NotImplementedException();
+            if (row >= column)
+            {
+                Data[Indexer.IndexOf(row, column)] = value;
+            }
+            else
+            {
+                throw new InvalidOperationException("Cannot write in the upper triangle of a lower triangle matrix");
+            }
         }
 
         /// <summary>
         /// Retrieves the requested element without range checking. 
-        /// CAUTION:
-        /// This method assumes that you request an element from the upper triangle (row less than or equal to column).  
-        /// If not, the result is completely wrong.  
-        /// </summary>
-        /// <param name="row">
-        /// The row of the element. Must be less than or equal to column. 
-        /// </param>
-        /// <param name="column">
-        /// The column of the element. Must be more than or equal to row. 
-        /// </param>
-        /// <returns>
-        /// The requested element from the upper triangle.
-        /// </returns>
-        public override double AtUpper(int row, int column)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Sets the value of the given element.
-        /// CAUTION:
-        /// This method assumes that you set an element from the upper triangle (row less than or equal to column).
-        /// If not, the result is completely wrong. 
-        /// </summary>
-        /// <param name="row">
-        /// The row of the element. Must be less than or equal to column.
-        /// </param>
-        /// <param name="column">
-        /// The column of the element. Must be more than or equal to row. 
-        /// </param>
-        /// <param name="value">
-        /// The value on the upper triangle to set the element to.
-        /// </param>
-        public override void AtUpper(int row, int column, double value)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Retrieves the requested element without range checking. 
-        /// CAUTION:
-        /// This method assumes that you request an element from the lower triangle (row greater than or equal to column).  
+        ///   CAUTION:
+        ///   This method assumes that you request an element from the lower triangle (row greater than or equal to column).
         /// </summary>
         /// <param name="row">
         /// The row of the element. Must be more than or equal to column. 
@@ -180,14 +147,14 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// </returns>
         public override double AtLower(int row, int column)
         {
-            throw new NotImplementedException();
+            return Data[Indexer.IndexOf(row, column)];
         }
 
         /// <summary>
         /// Sets the value of the given element.
-        /// CAUTION:
-        /// This method assumes that you set an element from the lower triangle (row greater than or equal to column).
-        /// If not, the result is completely wrong. 
+        ///   CAUTION:
+        ///   This method assumes that you set an element from the lower triangle (row greater than or equal to column).
+        ///   If not, the result is completely wrong.
         /// </summary>
         /// <param name="row">
         /// The row of the element. Must be more than or equal to column
@@ -200,35 +167,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// </param>
         public override void AtLower(int row, int column, double value)
         {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Retrieves the requested element without range checking. 
-        /// </summary>
-        /// <param name="row">
-        /// The row=column of the diagonal element.
-        /// </param>
-        /// <returns>
-        /// The requested element.
-        /// </returns>
-        public override double AtDiagonal(int row)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Sets the value of the given element.
-        /// </summary>
-        /// <param name="row">
-        /// The row=column of the diagonal element.
-        /// </param>
-        /// <param name="value">
-        /// The value to set the element to.
-        /// </param>
-        public override void AtDiagonal(int row, double value)
-        {
-            throw new NotImplementedException();
+            Data[Indexer.IndexOf(row, column)] = value;
         }
 
         /// <summary>

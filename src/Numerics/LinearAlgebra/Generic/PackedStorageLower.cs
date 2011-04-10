@@ -46,115 +46,7 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
         public PackedStorageLower(int order) : base(order)
         {
         }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PackedStorageLower{T}"/> class with all entries set to a particular value.
-        /// </summary>
-        /// <param name="order">
-        /// The number of rows or columns. 
-        /// </param>
-        /// <param name="value">
-        /// The value which we assign to each element of the matrix.
-        /// </param>
-        public PackedStorageLower(int order, T value)
-            : base(order, value)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PackedStorageLower{T}"/> class from a proper one-dimensional array. This constructor
-        /// will reference the one dimensional array and not copy it.
-        /// </summary>
-        /// <param name="order">The size of the square matrix.</param>
-        /// <param name="array"> The one dimensional array to create this matrix from.  </param>
-        /// <exception cref="ArgumentException">
-        /// If <paramref name="array"/> does not represent a packed array.
-        /// </exception>
-        public PackedStorageLower(int order, T[] array)
-            : base(order, array)
-        {
-        }
-
-        /// <summary>
-        /// Retrieves the requested element without range checking.
-        /// </summary>
-        /// <param name="row">
-        /// The row of the element.
-        /// </param>
-        /// <param name="column">
-        /// The column of the element.
-        /// </param>
-        /// <returns>
-        /// The requested element.
-        /// </returns>
-        public override T At(int row, int column)
-        {
-            return row >= column ? Data[IndexOf(row, column)] : default(T);
-        }
-
-        /// <summary>
-        /// Sets the value of the given element.
-        /// </summary>
-        /// <param name="row">
-        /// The row of the element.
-        /// </param>
-        /// <param name="column">
-        /// The column of the element.
-        /// </param>
-        /// <param name="value">
-        /// The value to set the element to.
-        /// </param>
-        public override void At(int row, int column, T value)
-        {
-            if (row >= column)
-            {
-                Data[IndexOf(row, column)] = value;
-            }
-            else
-            {
-                throw new InvalidOperationException("Cannot write in the upper triangle of a lower triangle matrix");
-            }
-        }
         
-        /// <summary>
-        /// Retrieves the requested element without range checking. 
-        ///   CAUTION:
-        ///   This method assumes that you request an element from the lower triangle (row greater than or equal to column).
-        /// </summary>
-        /// <param name="row">
-        /// The row of the element. Must be more than or equal to column. 
-        /// </param>
-        /// <param name="column">
-        /// The column of the element. Must be less than or equal to row. 
-        /// </param>
-        /// <returns>
-        /// The requested element from the lower triangle.
-        /// </returns>
-        public override T AtLower(int row, int column)
-        {
-            return Data[IndexOf(row, column)];
-        }
-
-        /// <summary>
-        /// Sets the value of the given element.
-        ///   CAUTION:
-        ///   This method assumes that you set an element from the lower triangle (row greater than or equal to column).
-        ///   If not, the result is completely wrong.
-        /// </summary>
-        /// <param name="row">
-        /// The row of the element. Must be more than or equal to column
-        /// </param>
-        /// <param name="column">
-        /// The column of the element. Must be less than or equal to row. 
-        /// </param>
-        /// <param name="value">
-        /// The value on the lower triangle to set the element to.
-        /// </param>
-        public override void AtLower(int row, int column, T value)
-        {
-            Data[IndexOf(row, column)] = value;
-        }
-
         /// <summary>
         /// Retrieves the index of the requested element without range checking. Row must be greater than or equal to column. 
         /// </summary>
@@ -167,7 +59,7 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
         /// <returns>
         /// The requested index. 
         /// </returns>
-        protected override int IndexOf(int row, int column)
+        public override int IndexOf(int row, int column)
         {
             return row + ((((2 * Order) - column - 1) * column) / 2);
         }
@@ -181,7 +73,7 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
         /// <returns>
         /// The requested index. 
         /// </returns>
-        protected override int IndexOfDiagonal(int row)
+        public override int IndexOfDiagonal(int row)
         {
             return (((2 * Order) - row + 1) * row) / 2;
         }

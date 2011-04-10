@@ -38,7 +38,7 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
     /// <remarks>
     /// Upper version features faster indexing than the Lower version.
     /// </remarks>
-    public abstract class PackedStorage<T> : IExtraAccessors<T>
+    public abstract class PackedStorage<T> 
         where T : struct, IEquatable<T>, IFormattable
     {
         /// <summary>
@@ -64,246 +64,7 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
             }
 
             Order = order;
-            Data = new T[order * (order + 1) / 2];
         }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PackedStorage{T}"/> class with all entries set to a particular value.
-        /// </summary>
-        /// <param name="order">
-        /// The number of rows or columns. 
-        /// </param>
-        /// <param name="value">
-        /// The value which we assign to each element of the matrix.
-        /// </param>
-        protected PackedStorage(int order, T value)
-            : this(order)
-        {
-            for (var i = 0; i < Data.Length; i++)
-            {
-                Data[i] = value;
-            }
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PackedStorage{T}"/> class from a proper one-dimensional array. This constructor
-        ///   will reference the one dimensional array and not copy it.
-        /// </summary>
-        /// <param name="order">
-        /// The size of the square matrix.
-        /// </param>
-        /// <param name="array">
-        /// The one dimensional array to create this matrix from.  
-        /// </param>
-        /// <exception cref="ArgumentException">
-        /// If <paramref name="array"/> does not represent a packed array.
-        /// </exception>
-        protected PackedStorage(int order, T[] array)
-            : this(order)
-        {
-            if (array.Length != (order * (order + 1) / 2))
-            {
-                throw new ArgumentException(Resources.ArgumentArrayWrongLength);
-            }
-
-            Data = array;
-        }
-
-        /// <summary>
-        ///   Gets or sets the raw data.
-        /// </summary>
-        /// <value>The raw data.</value>
-        public T[] Data
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        ///   Gets or sets the value at the given row and column.
-        /// </summary>
-        /// <param name = "row">
-        ///   The row of the element.
-        /// </param>
-        /// <param name = "column">
-        ///   The column of the element.
-        /// </param>
-        /// <value>The value to get or set.</value>
-        /// <remarks>
-        ///   This method is ranged checked. <see cref = "At(int,int)" /> and <see cref = "At(int,int,T)" />
-        ///   to get and set values without range checking.
-        /// </remarks>
-        public T this[int row, int column]
-        {
-            get
-            {
-                if (row < 0 || row >= Order)
-                {
-                    throw new ArgumentOutOfRangeException("row");
-                }
-
-                if (column < 0 || column >= Order)
-                {
-                    throw new ArgumentOutOfRangeException("column");
-                }
-
-                return At(row, column);
-            }
-
-            set
-            {
-                if (row < 0 || row >= Order)
-                {
-                    throw new ArgumentOutOfRangeException("row");
-                }
-
-                if (column < 0 || column >= Order)
-                {
-                    throw new ArgumentOutOfRangeException("column");
-                }
-
-                At(row, column, value);
-            }
-        }
-
-        #region IExtraAccessors<T> Members
-
-        /// <summary>
-        /// Retrieves the requested element without range checking.
-        /// </summary>
-        /// <param name="row">
-        /// The row of the element.
-        /// </param>
-        /// <param name="column">
-        /// The column of the element.
-        /// </param>
-        /// <returns>
-        /// The requested element.
-        /// </returns>
-        public abstract T At(int row, int column);
-
-        /// <summary>
-        /// Sets the value of the given element.
-        /// </summary>
-        /// <param name="row">
-        /// The row of the element.
-        /// </param>
-        /// <param name="column">
-        /// The column of the element.
-        /// </param>
-        /// <param name="value">
-        /// The value to set the element to.
-        /// </param>
-        public abstract void At(int row, int column, T value);
-
-        /// <summary>
-        /// Retrieves the requested element without range checking. 
-        ///   CAUTION:
-        ///   This method assumes that you request an element from the upper triangle (row less than or equal to column).  
-        ///   If not, the result is completely wrong.
-        /// </summary>
-        /// <param name="row">
-        /// The row of the element. Must be less than or equal to column. 
-        /// </param>
-        /// <param name="column">
-        /// The column of the element. Must be more than or equal to row. 
-        /// </param>
-        /// <returns>
-        /// The requested element from the upper triangle.
-        /// </returns>
-        public virtual T AtUpper(int row, int column)
-        {
-            return At(row, column);
-        }
-
-        /// <summary>
-        /// Sets the value of the given element.
-        ///   CAUTION:
-        ///   This method assumes that you set an element from the upper triangle (row less than or equal to column).
-        ///   If not, the result is completely wrong.
-        /// </summary>
-        /// <param name="row">
-        /// The row of the element. Must be less than or equal to column.
-        /// </param>
-        /// <param name="column">
-        /// The column of the element. Must be more than or equal to row. 
-        /// </param>
-        /// <param name="value">
-        /// The value on the upper triangle to set the element to.
-        /// </param>
-        public virtual void AtUpper(int row, int column, T value)
-        {
-            At(row, column, value);
-        }
-
-        /// <summary>
-        /// Retrieves the requested element without range checking. 
-        ///   CAUTION:
-        ///   This method assumes that you request an element from the lower triangle (row greater than or equal to column).
-        /// </summary>
-        /// <param name="row">
-        /// The row of the element. Must be more than or equal to column. 
-        /// </param>
-        /// <param name="column">
-        /// The column of the element. Must be less than or equal to row. 
-        /// </param>
-        /// <returns>
-        /// The requested element from the lower triangle.
-        /// </returns>
-        public virtual T AtLower(int row, int column)
-        {
-            return At(row, column);
-        }
-
-        /// <summary>
-        /// Sets the value of the given element.
-        ///   CAUTION:
-        ///   This method assumes that you set an element from the lower triangle (row greater than or equal to column).
-        ///   If not, the result is completely wrong.
-        /// </summary>
-        /// <param name="row">
-        /// The row of the element. Must be more than or equal to column
-        /// </param>
-        /// <param name="column">
-        /// The column of the element. Must be less than or equal to row. 
-        /// </param>
-        /// <param name="value">
-        /// The value on the lower triangle to set the element to.
-        /// </param>
-        public virtual void AtLower(int row, int column, T value)
-        {
-            At(row, column, value);
-        }
-
-        /// <summary>
-        /// Retrieves the requested element without range checking.
-        /// </summary>
-        /// <param name="row">
-        /// The row=column of the diagonal element.
-        /// </param>
-        /// <returns>
-        /// The requested element.
-        /// </returns>
-        public T AtDiagonal(int row)
-        {
-            return Data[IndexOfDiagonal(row)];
-        }
-
-        /// <summary>
-        /// Sets the value of the given element.
-        /// </summary>
-        /// <param name="row">
-        /// The row=column of the diagonal element.
-        /// </param>
-        /// <param name="value">
-        /// The value to set the element to.
-        /// </param>
-        public void AtDiagonal(int row, T value)
-        {
-            Data[IndexOfDiagonal(row)] = value;
-        }
-
-        #endregion
 
         /// <summary>
         /// Retrieves the index of the requested element without range checking.
@@ -317,7 +78,7 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
         /// <returns>
         /// The requested index. 
         /// </returns>
-        protected abstract int IndexOf(int row, int column);
+        public abstract int IndexOf(int row, int column);
 
         /// <summary>
         /// Retrieves the index of the requested element without range checking.
@@ -328,6 +89,6 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
         /// <returns>
         /// The requested index. 
         /// </returns>
-        protected abstract int IndexOfDiagonal(int row);
+        public abstract int IndexOfDiagonal(int row);
     }
 }

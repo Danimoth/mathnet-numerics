@@ -61,6 +61,30 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         {
         }
 
+        /// <summary>
+        ///   Gets a value indicating whether this matrix is symmetric.
+        /// </summary>
+        /// <remarks> A lower triangular matrix will only by symmetric if all values of the stricly upper triangle are zero. 
+        /// Hence, it will also be a diagonal matrix. </remarks>
+        public override bool IsSymmetric
+        {
+            get
+            {
+                for (var row = 0; row < Order; row++)
+                {
+                    for (var column = row + 1; column < Order; column++)
+                    {
+                        if (AtUpper(row, column) != 0.0)
+                        {
+                            return false;
+                        }
+                    }
+                }
+
+                return true;
+            }
+        }
+
         #region Overrides of Matrix<double>
 
         /// <summary>

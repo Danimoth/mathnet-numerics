@@ -70,7 +70,18 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         {
             get
             {
-                for (var row = 0; row < )
+                for (var row = 0; row < Order; row++)
+                {
+                    for (var column = 0; column < row; column++)
+                    {
+                        if (AtLower(row, column) != 0.0)
+                        {
+                            return false;
+                        }
+                    }
+                }
+
+                return true;
             }
         }
 

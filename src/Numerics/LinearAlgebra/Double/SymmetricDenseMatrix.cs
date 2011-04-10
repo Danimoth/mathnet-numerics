@@ -41,13 +41,6 @@ namespace MathNet.Numerics.LinearAlgebra.Double
     public class SymmetricDenseMatrix : SymmetricMatrix
     {
         /// <summary>
-        /// Number of rows or columns.
-        /// </summary>
-        /// <remarks>Using this instead of the RowCount property to speed up calculating
-        /// a matrix index in the data array.</remarks>
-        private readonly int _order;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="SymmetricDenseMatrix"/> class. This matrix is square with a given size.
         /// </summary>
         /// <param name="order">The size of the square matrix.</param>
@@ -57,7 +50,6 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         public SymmetricDenseMatrix(int order)
             : base(order)
         {
-            _order = order;
             DataIndexed = new PackedStorageUpper<double>(order);
         }
 
@@ -76,7 +68,6 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         public SymmetricDenseMatrix(int rows, int columns)
             : base(rows, columns)
         {
-            _order = rows;
             DataIndexed = new PackedStorageUpper<double>(rows);
         }
 
@@ -95,7 +86,6 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         public SymmetricDenseMatrix(int rows, int columns, double value)
             : base(rows, columns)
         {
-            _order = rows;
             DataIndexed = new PackedStorageUpper<double>(rows, value);
         }
 
@@ -113,7 +103,6 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         public SymmetricDenseMatrix(int order, double[] array)
             : base(order)
         {
-            _order = order;
             DataIndexed = new PackedStorageUpper<double>(order);
             DataRaw = array;
         }
@@ -137,13 +126,10 @@ namespace MathNet.Numerics.LinearAlgebra.Double
                 throw new ArgumentException(Resources.ArgumentMatrixSymmetric);
             }
 
-            var order = array.GetLength(0);
-            _order = order;
-
-            DataIndexed = new PackedStorageUpper<double>(order);
-            for (var row = 0; row < order; row++)
+            DataIndexed = new PackedStorageUpper<double>(Order);
+            for (var row = 0; row < Order; row++)
             {
-                for (var column = row; column < order; column++)
+                for (var column = row; column < Order; column++)
                 {
                     DataIndexed.AtUpper(row, column, array[row, column]);
                 }
@@ -164,9 +150,6 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         public SymmetricDenseMatrix(Matrix<double> matrix)
             : base(matrix.RowCount, matrix.ColumnCount)
         {
-            var order = matrix.RowCount;
-            _order = order;
-
             var symmetricMatrix = matrix as SymmetricDenseMatrix;
 
             if (!matrix.IsSymmetric)
@@ -176,9 +159,9 @@ namespace MathNet.Numerics.LinearAlgebra.Double
 
             if (symmetricMatrix == null)
             {
-                for (var row = 0; row < order; row++)
+                for (var row = 0; row < Order; row++)
                 {
-                    for (var column = row; column < order; column++)
+                    for (var column = row; column < Order; column++)
                     {
                         DataIndexed.AtUpper(row, column, matrix[row, column]);
                     }
@@ -273,12 +256,12 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         {
             get
             {
-                if (row < 0 || row >= _order)
+                if (row < 0 || row >= Order)
                 {
                     throw new ArgumentOutOfRangeException("row");
                 }
 
-                if (column < 0 || column >= _order)
+                if (column < 0 || column >= Order)
                 {
                     throw new ArgumentOutOfRangeException("column");
                 }
@@ -288,12 +271,12 @@ namespace MathNet.Numerics.LinearAlgebra.Double
 
             set
             {
-                if (row < 0 || row >= _order)
+                if (row < 0 || row >= Order)
                 {
                     throw new ArgumentOutOfRangeException("row");
                 }
 
-                if (column < 0 || column >= _order)
+                if (column < 0 || column >= Order)
                 {
                     throw new ArgumentOutOfRangeException("column");
                 }
@@ -681,8 +664,8 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// <returns>The lower triangle of this matrix.</returns>  
         public override Matrix<double> LowerTriangle()
         {
-            var ret = new DenseMatrix(_order);
-            for (var row = 0; row < _order; row++)
+            var ret = new DenseMatrix(Order);
+            for (var row = 0; row < Order; row++)
             {
                 for (var column = 0; column <= row; column++)
                 {
@@ -700,8 +683,8 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// <returns>The lower triangle of this matrix.</returns>
         public override Matrix<double> StrictlyLowerTriangle()
         {
-            var ret = new DenseMatrix(_order);
-            for (var row = 0; row < _order; row++)
+            var ret = new DenseMatrix(Order);
+            for (var row = 0; row < Order; row++)
             {
                 for (var column = 0; column < row; column++)
                 {
@@ -718,10 +701,10 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// <returns>The upper triangle of this matrix.</returns>   
         public override Matrix<double> UpperTriangle()
         {
-            var ret = new DenseMatrix(_order);
-            for (var row = 0; row < _order; row++)
+            var ret = new DenseMatrix(Order);
+            for (var row = 0; row < Order; row++)
             {
-                for (var column = row; column < _order; column++)
+                for (var column = row; column < Order; column++)
                 {
                     ret[row, column] = AtUpper(row, column);
                 }
@@ -737,10 +720,10 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// <returns>The upper triangle of this matrix.</returns>
         public override Matrix<double> StrictlyUpperTriangle()
         {
-            var ret = new DenseMatrix(_order);
-            for (var row = 0; row < _order; row++)
+            var ret = new DenseMatrix(Order);
+            for (var row = 0; row < Order; row++)
             {
-                for (var column = row + 1; column < _order; column++)
+                for (var column = row + 1; column < Order; column++)
                 {
                     ret[row, column] = AtUpper(row, column);
                 }

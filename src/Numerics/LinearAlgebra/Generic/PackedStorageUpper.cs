@@ -30,33 +30,35 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
 
     /// <summary>
     /// A class for managing indexing when using Packed Storage scheme, which is a column-Wise packing scheme for Symmetric, Hermitian or Triangular square matrices. 
-    /// This variation provides indexes for storing the upper triangle of a matrix (row less than or equal to column). 
+    ///   This variation provides indexes for storing the upper triangle of a matrix (row less than or equal to column).
     /// </summary>
-    /// <remarks> Upper version features faster indexing than the Lower version. </remarks>
+    /// <remarks>
+    /// Upper version features faster indexing than the Lower version.
+    /// </remarks>
     public class PackedStorageUpper : PackedStorage
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PackedStorageUpper"/> class. 
+        /// Initializes a new instance of the <see cref="PackedStorageUpper"/> class.
         /// </summary>
         /// <param name="order">
         /// The order of the matrix.
         /// </param>
-        public PackedStorageUpper(int order) 
+        public PackedStorageUpper(int order)
             : base(order)
         {
         }
 
         /// <summary>
-        /// Gets the index of the given element.
+        ///   Gets the index of the given element.
         /// </summary>
-        /// <param name="row">
-        /// The row of the element.
+        /// <param name = "row">
+        ///   The row of the element.
         /// </param>
-        /// <param name="column">
-        /// The column of the element.
+        /// <param name = "column">
+        ///   The column of the element.
         /// </param>
         /// <remarks>
-        /// This method is parameter checked. <see cref="IndexOf(int,int)"/> and <see cref="IndexOfDiagonal(int)"/> to get values without parameter checking.
+        ///   This method is parameter checked. <see cref = "IndexOf(int,int)" /> and <see cref = "IndexOfDiagonal(int)" /> to get values without parameter checking.
         /// </remarks>
         public override int this[int row, int column]
         {
@@ -82,7 +84,7 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
         }
 
         /// <summary>
-        /// Retrieves the index of the requested element without parameter checking. Row must be less than or equal to column. 
+        /// Retrieves the index of the requested element without parameter checking. Row must be less than or equal to column.
         /// </summary>
         /// <param name="row">
         /// The row of the element. 

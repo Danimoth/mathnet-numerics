@@ -30,7 +30,7 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
     using Properties;
 
     /// <summary>
-    /// A class for managing indexing when using Packed Storage scheme, which is a column-Wise packing scheme for Symmetric, Hermitian or Triangular square matrices. 
+    /// A class for managing indexing when using Packed Storage scheme, which is a column-Wise packing scheme for Symmetric, Hermitian or Triangular square matrices.
     /// </summary>
     /// <remarks>
     /// Upper version features faster indexing than the Lower version.
@@ -60,12 +60,12 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
             }
 
             Order = order;
-            
+
             PackedDataSize = order * (order + 1) / 2;
         }
 
         /// <summary>
-        /// Gets the size of the Packed Data. 
+        ///   Gets the size of the Packed Data.
         /// </summary>
         public int PackedDataSize
         {
@@ -74,16 +74,16 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
         }
 
         /// <summary>
-        /// Gets the index of the given element.
+        ///   Gets the index of the given element.
         /// </summary>
-        /// <param name="row">
-        /// The row of the element.
+        /// <param name = "row">
+        ///   The row of the element.
         /// </param>
-        /// <param name="column">
-        /// The column of the element.
+        /// <param name = "column">
+        ///   The column of the element.
         /// </param>
         /// <remarks>
-        /// This method is parameter checked. <see cref="IndexOf(int,int)"/> and <see cref="IndexOfDiagonal(int)"/> to get values without parameter checking.
+        ///   This method is parameter checked. <see cref = "IndexOf(int,int)" /> and <see cref = "IndexOfDiagonal(int)" /> to get values without parameter checking.
         /// </remarks>
         public abstract int this[int row, int column]
         {

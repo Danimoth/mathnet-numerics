@@ -29,13 +29,12 @@ namespace MathNet.Numerics.LinearAlgebra.Double
     using System;
     using Distributions;
     using Generic;
-    using Properties;
 
     /// <summary>
     /// Symmetric <c>double</c> version of the <see cref="Matrix"/> class.
     /// </summary>
     [Serializable]
-    public abstract class SymmetricMatrix : SquareMatrix
+    public abstract class SymmetricMatrix : SquareMatrix, IExtraAccessors<double>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SymmetricMatrix"/> class.
@@ -65,7 +64,6 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         {
         }
 
-        #region Extra accessors for Symmetric Matrices. Used for efficiency. 
         /// <summary>
         /// Retrieves the requested element without range checking. 
         /// CAUTION:
@@ -154,7 +152,6 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// The value to set the element to.
         /// </param>
         public abstract void AtDiagonal(int row, double value);
-        #endregion
 
         /// <summary>
         /// Returns the transpose of this matrix. The transpose is equal and this method returns a reference to this matrix. 

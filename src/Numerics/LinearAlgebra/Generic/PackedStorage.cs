@@ -30,11 +30,13 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
     using Properties;
 
     /// <summary>
-    ///   Column-Wise packing for Symmetric, Hermitian or Triangular square matrices.
+    /// Column-Wise packing for Symmetric, Hermitian or Triangular square matrices.
     /// </summary>
-    /// <typeparam name = "T">Supported data types are <c>double</c>, <c>single</c>, <see cref = "Complex" />, and <see cref = "Complex32" />.</typeparam>
+    /// <typeparam name="T">
+    /// Supported data types are <c>double</c>, <c>single</c>, <see cref="Complex"/>, and <see cref="Complex32"/>.
+    /// </typeparam>
     /// <remarks>
-    ///   Upper version features faster indexing than the Lower version.
+    /// Upper version features faster indexing than the Lower version.
     /// </remarks>
     public abstract class PackedStorage<T> : IExtraAccessors<T>
         where T : struct, IEquatable<T>, IFormattable
@@ -49,10 +51,10 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
         protected readonly int Order;
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "PackedStorage{T}" /> class.
+        /// Initializes a new instance of the <see cref="PackedStorage{T}"/> class.
         /// </summary>
-        /// <param name = "order">
-        ///   The order of the matrix.
+        /// <param name="order">
+        /// The order of the matrix.
         /// </param>
         protected PackedStorage(int order)
         {
@@ -66,31 +68,35 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
         }
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "PackedStorage{T}" /> class with all entries set to a particular value.
+        /// Initializes a new instance of the <see cref="PackedStorage{T}"/> class with all entries set to a particular value.
         /// </summary>
-        /// <param name = "order">
-        ///   The number of rows or columns. 
+        /// <param name="order">
+        /// The number of rows or columns. 
         /// </param>
-        /// <param name = "value">
-        ///   The value which we assign to each element of the matrix.
+        /// <param name="value">
+        /// The value which we assign to each element of the matrix.
         /// </param>
         protected PackedStorage(int order, T value)
             : this(order)
         {
-            for (int i = 0; i < Data.Length; i++)
+            for (var i = 0; i < Data.Length; i++)
             {
                 Data[i] = value;
             }
         }
 
         /// <summary>
-        ///   Initializes a new instance of the <see cref = "PackedStorage{T}" /> class from a proper one-dimensional array. This constructor
+        /// Initializes a new instance of the <see cref="PackedStorage{T}"/> class from a proper one-dimensional array. This constructor
         ///   will reference the one dimensional array and not copy it.
         /// </summary>
-        /// <param name = "order">The size of the square matrix.</param>
-        /// <param name = "array"> The one dimensional array to create this matrix from.  </param>
-        /// <exception cref = "ArgumentException">
-        ///   If <paramref name = "array" /> does not represent a packed array.
+        /// <param name="order">
+        /// The size of the square matrix.
+        /// </param>
+        /// <param name="array">
+        /// The one dimensional array to create this matrix from.  
+        /// </param>
+        /// <exception cref="ArgumentException">
+        /// If <paramref name="array"/> does not represent a packed array.
         /// </exception>
         protected PackedStorage(int order, T[] array)
             : this(order)
@@ -163,16 +169,16 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
         #region IExtraAccessors<T> Members
 
         /// <summary>
-        ///   Retrieves the requested element without range checking.
+        /// Retrieves the requested element without range checking.
         /// </summary>
-        /// <param name = "row">
-        ///   The row of the element.
+        /// <param name="row">
+        /// The row of the element.
         /// </param>
-        /// <param name = "column">
-        ///   The column of the element.
+        /// <param name="column">
+        /// The column of the element.
         /// </param>
         /// <returns>
-        ///   The requested element.
+        /// The requested element.
         /// </returns>
         public T At(int row, int column)
         {
@@ -180,16 +186,16 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
         }
 
         /// <summary>
-        ///   Sets the value of the given element.
+        /// Sets the value of the given element.
         /// </summary>
-        /// <param name = "row">
-        ///   The row of the element.
+        /// <param name="row">
+        /// The row of the element.
         /// </param>
-        /// <param name = "column">
-        ///   The column of the element.
+        /// <param name="column">
+        /// The column of the element.
         /// </param>
-        /// <param name = "value">
-        ///   The value to set the element to.
+        /// <param name="value">
+        /// The value to set the element to.
         /// </param>
         public void At(int row, int column, T value)
         {
@@ -197,19 +203,19 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
         }
 
         /// <summary>
-        ///   Retrieves the requested element without range checking. 
+        /// Retrieves the requested element without range checking. 
         ///   CAUTION:
         ///   This method assumes that you request an element from the upper triangle (row less than or equal to column).  
         ///   If not, the result is completely wrong.
         /// </summary>
-        /// <param name = "row">
-        ///   The row of the element. Must be less than or equal to column. 
+        /// <param name="row">
+        /// The row of the element. Must be less than or equal to column. 
         /// </param>
-        /// <param name = "column">
-        ///   The column of the element. Must be more than or equal to row. 
+        /// <param name="column">
+        /// The column of the element. Must be more than or equal to row. 
         /// </param>
         /// <returns>
-        ///   The requested element from the upper triangle.
+        /// The requested element from the upper triangle.
         /// </returns>
         public T AtUpper(int row, int column)
         {
@@ -217,19 +223,19 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
         }
 
         /// <summary>
-        ///   Sets the value of the given element.
+        /// Sets the value of the given element.
         ///   CAUTION:
         ///   This method assumes that you set an element from the upper triangle (row less than or equal to column).
         ///   If not, the result is completely wrong.
         /// </summary>
-        /// <param name = "row">
-        ///   The row of the element. Must be less than or equal to column.
+        /// <param name="row">
+        /// The row of the element. Must be less than or equal to column.
         /// </param>
-        /// <param name = "column">
-        ///   The column of the element. Must be more than or equal to row. 
+        /// <param name="column">
+        /// The column of the element. Must be more than or equal to row. 
         /// </param>
-        /// <param name = "value">
-        ///   The value on the upper triangle to set the element to.
+        /// <param name="value">
+        /// The value on the upper triangle to set the element to.
         /// </param>
         public void AtUpper(int row, int column, T value)
         {
@@ -237,18 +243,18 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
         }
 
         /// <summary>
-        ///   Retrieves the requested element without range checking. 
+        /// Retrieves the requested element without range checking. 
         ///   CAUTION:
         ///   This method assumes that you request an element from the lower triangle (row greater than or equal to column).
         /// </summary>
-        /// <param name = "row">
-        ///   The row of the element. Must be more than or equal to column. 
+        /// <param name="row">
+        /// The row of the element. Must be more than or equal to column. 
         /// </param>
-        /// <param name = "column">
-        ///   The column of the element. Must be less than or equal to row. 
+        /// <param name="column">
+        /// The column of the element. Must be less than or equal to row. 
         /// </param>
         /// <returns>
-        ///   The requested element from the lower triangle.
+        /// The requested element from the lower triangle.
         /// </returns>
         public T AtLower(int row, int column)
         {
@@ -256,19 +262,19 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
         }
 
         /// <summary>
-        ///   Sets the value of the given element.
+        /// Sets the value of the given element.
         ///   CAUTION:
         ///   This method assumes that you set an element from the lower triangle (row greater than or equal to column).
         ///   If not, the result is completely wrong.
         /// </summary>
-        /// <param name = "row">
-        ///   The row of the element. Must be more than or equal to column
+        /// <param name="row">
+        /// The row of the element. Must be more than or equal to column
         /// </param>
-        /// <param name = "column">
-        ///   The column of the element. Must be less than or equal to row. 
+        /// <param name="column">
+        /// The column of the element. Must be less than or equal to row. 
         /// </param>
-        /// <param name = "value">
-        ///   The value on the lower triangle to set the element to.
+        /// <param name="value">
+        /// The value on the lower triangle to set the element to.
         /// </param>
         public void AtLower(int row, int column, T value)
         {
@@ -276,13 +282,13 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
         }
 
         /// <summary>
-        ///   Retrieves the requested element without range checking.
+        /// Retrieves the requested element without range checking.
         /// </summary>
-        /// <param name = "row">
-        ///   The row=column of the diagonal element.
+        /// <param name="row">
+        /// The row=column of the diagonal element.
         /// </param>
         /// <returns>
-        ///   The requested element.
+        /// The requested element.
         /// </returns>
         public T AtDiagonal(int row)
         {
@@ -290,13 +296,13 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
         }
 
         /// <summary>
-        ///   Sets the value of the given element.
+        /// Sets the value of the given element.
         /// </summary>
-        /// <param name = "row">
-        ///   The row=column of the diagonal element.
+        /// <param name="row">
+        /// The row=column of the diagonal element.
         /// </param>
-        /// <param name = "value">
-        ///   The value to set the element to.
+        /// <param name="value">
+        /// The value to set the element to.
         /// </param>
         public void AtDiagonal(int row, T value)
         {
@@ -306,61 +312,61 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
         #endregion
 
         /// <summary>
-        ///   Retrieves the index of the requested element without range checking.
+        /// Retrieves the index of the requested element without range checking.
         /// </summary>
-        /// <param name = "row">
-        ///   The row of the element. 
+        /// <param name="row">
+        /// The row of the element. 
         /// </param>
-        /// <param name = "column">
-        ///   The column of the element. 
+        /// <param name="column">
+        /// The column of the element. 
         /// </param>
         /// <returns>
-        ///   The requested index. 
+        /// The requested index. 
         /// </returns>
         public abstract int IndexOf(int row, int column);
 
         /// <summary>
-        ///   Retrieves the index of the requested element without range checking. 
+        /// Retrieves the index of the requested element without range checking. 
         ///   CAUTION:
         ///   This method assumes (for performance) that you request an index from the upper triangle (row less than or equal column). 
         ///   If not, the index is completely wrong.
         /// </summary>
-        /// <param name = "row">
-        ///   The row of the element. Must be less than or equal to column.
+        /// <param name="row">
+        /// The row of the element. Must be less than or equal to column.
         /// </param>
-        /// <param name = "column">
-        ///   The column of the element. Must be more than or equal to row.
+        /// <param name="column">
+        /// The column of the element. Must be more than or equal to row.
         /// </param>
         /// <returns>
-        ///   The requested index. 
+        /// The requested index. 
         /// </returns>
         public abstract int IndexOfLower(int row, int column);
 
         /// <summary>
-        ///   Retrieves the index of the requested element without range checking. 
+        /// Retrieves the index of the requested element without range checking. 
         ///   CAUTION:
         ///   This method assumes (for performance) that you request an index from the upper triangle (row less than or equal column). 
         ///   If not, the index is completely wrong.
         /// </summary>
-        /// <param name = "row">
-        ///   The row of the element. Must be less than or equal to column.
+        /// <param name="row">
+        /// The row of the element. Must be less than or equal to column.
         /// </param>
-        /// <param name = "column">
-        ///   The column of the element. Must be more than or equal to row.
+        /// <param name="column">
+        /// The column of the element. Must be more than or equal to row.
         /// </param>
         /// <returns>
-        ///   The requested index. 
+        /// The requested index. 
         /// </returns>
         public abstract int IndexOfUpper(int row, int column);
 
         /// <summary>
-        ///   Retrieves the index of the requested element without range checking.
+        /// Retrieves the index of the requested element without range checking.
         /// </summary>
-        /// <param name = "row">
-        ///   The row=column of the diagonal element. 
+        /// <param name="row">
+        /// The row=column of the diagonal element. 
         /// </param>
         /// <returns>
-        ///   The requested index. 
+        /// The requested index. 
         /// </returns>
         public abstract int IndexOfDiagonal(int row);
     }

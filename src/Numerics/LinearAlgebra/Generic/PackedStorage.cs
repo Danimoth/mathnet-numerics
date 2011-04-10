@@ -30,16 +30,12 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
     using Properties;
 
     /// <summary>
-    /// Column-Wise packing for Symmetric, Hermitian or Triangular square matrices.
+    /// A class for managing indexing when using Packed Storage scheme, which is a column-Wise packing scheme for Symmetric, Hermitian or Triangular square matrices. 
     /// </summary>
-    /// <typeparam name="T">
-    /// Supported data types are <c>double</c>, <c>single</c>, <see cref="Complex"/>, and <see cref="Complex32"/>.
-    /// </typeparam>
     /// <remarks>
     /// Upper version features faster indexing than the Lower version.
     /// </remarks>
-    public abstract class PackedStorage<T> 
-        where T : struct, IEquatable<T>, IFormattable
+    public abstract class PackedStorage
     {
         /// <summary>
         ///   Number of rows or columns.
@@ -51,7 +47,7 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
         protected readonly int Order;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PackedStorage{T}"/> class.
+        /// Initializes a new instance of the <see cref="PackedStorage"/> class.
         /// </summary>
         /// <param name="order">
         /// The order of the matrix.
@@ -64,6 +60,17 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
             }
 
             Order = order;
+            
+            PackedDataSize = order * (order + 1) / 2;
+        }
+
+        /// <summary>
+        /// Gets the size of the Packed Data. 
+        /// </summary>
+        public int PackedDataSize
+        {
+            get;
+            private set;
         }
 
         /// <summary>

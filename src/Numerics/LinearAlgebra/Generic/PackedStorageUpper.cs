@@ -26,19 +26,15 @@
 
 namespace MathNet.Numerics.LinearAlgebra.Generic
 {
-    using System;
-
     /// <summary>
-    /// Column-Wise packing for Symmetric, Hermitian or Triangular square matrices. 
-    /// This variation stores the upper triangle of a matrix (row less than or equal to column). 
+    /// A class for managing indexing when using Packed Storage scheme, which is a column-Wise packing scheme for Symmetric, Hermitian or Triangular square matrices. 
+    /// This variation provides indexes for storing the upper triangle of a matrix (row less than or equal to column). 
     /// </summary>
-    /// <typeparam name="T">Supported data types are <c>double</c>, <c>single</c>, <see cref="Complex"/>, and <see cref="Complex32"/>.</typeparam>
     /// <remarks> Upper version features faster indexing than the Lower version. </remarks>
-    public class PackedStorageUpper<T> : PackedStorage<T>
-        where T : struct, IEquatable<T>, IFormattable
+    public class PackedStorageUpper : PackedStorage
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PackedStorageUpper{T}"/> class. 
+        /// Initializes a new instance of the <see cref="PackedStorageUpper"/> class. 
         /// </summary>
         /// <param name="order">
         /// The order of the matrix.

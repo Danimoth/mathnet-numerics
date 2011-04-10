@@ -63,6 +63,33 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         {
         }
 
+        /// <summary>
+        /// Gets or sets the matrix's data in indexed format.
+        /// </summary>
+        /// <value>The matrix's indexed data.</value>
+        public PackedStorage<double> DataIndexed
+        {
+            get;
+            protected set;
+        }
+
+        /// <summary>
+        /// Gets or sets the matrix's data in array format. 
+        /// </summary>
+        /// <value>The matrix's raw data.</value>
+        public double[] DataRaw
+        {
+            get
+            {
+                return DataIndexed.Data;
+            }
+
+            protected set
+            {
+                DataIndexed.Data = value;
+            }
+        }
+
         #region IExtraAccessors<double> Members
 
         /// <summary>

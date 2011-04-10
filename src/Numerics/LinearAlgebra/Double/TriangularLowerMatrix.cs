@@ -50,6 +50,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         public TriangularLowerMatrix(int rows, int columns) : base(rows, columns)
         {
             Indexer = new PackedStorageSchemeLower(rows);
+            Data = new double[Indexer.PackedDataSize];
         }
 
         /// <summary>
@@ -61,6 +62,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         public TriangularLowerMatrix(int order) : base(order)
         {
             Indexer = new PackedStorageSchemeLower(order);
+            Data = new double[Indexer.PackedDataSize];
         }
 
         /// <summary>
@@ -187,22 +189,12 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// </remarks>
         public override Matrix<double> CreateMatrix(int numberOfRows, int numberOfColumns)
         {
-            throw new NotImplementedException();
-        }
+            if (numberOfRows != numberOfColumns)
+            {
+                return new DenseMatrix(numberOfRows, numberOfColumns);
+            }
 
-        /// <summary>
-        /// Creates a Vector with a the given dimension.
-        /// </summary>
-        /// <param name="size">The size of the vector.</param>
-        /// <returns>
-        /// A Vector with the given dimension.
-        /// </returns>
-        /// <remarks>
-        /// Creates a vector of the same type as the current matrix.
-        /// </remarks>
-        public override Vector<double> CreateVector(int size)
-        {
-            throw new NotImplementedException();
+            return new TriangularLowerMatrix(numberOfRows, numberOfColumns);
         }
 
         #endregion

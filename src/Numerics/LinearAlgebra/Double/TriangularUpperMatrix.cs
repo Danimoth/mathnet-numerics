@@ -50,6 +50,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         public TriangularUpperMatrix(int rows, int columns) : base(rows, columns)
         {
             Indexer = new PackedStorageSchemeUpper(rows);
+            Data = new double[Indexer.PackedDataSize];
         }
 
         /// <summary>
@@ -61,6 +62,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         public TriangularUpperMatrix(int order) : base(order)
         {
             Indexer = new PackedStorageSchemeUpper(order);
+            Data = new double[Indexer.PackedDataSize];
         }
 
         /// <summary>
@@ -188,7 +190,12 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// </remarks>
         public override Matrix<double> CreateMatrix(int numberOfRows, int numberOfColumns)
         {
-            throw new NotImplementedException();
+            if (numberOfRows != numberOfColumns)
+            {
+                return new DenseMatrix(numberOfRows, numberOfColumns);
+            }
+
+            return new TriangularUpperMatrix(numberOfRows, numberOfColumns);
         }
 
         /// <summary>

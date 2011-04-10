@@ -36,6 +36,14 @@ namespace MathNet.Numerics.LinearAlgebra.Double
     public abstract class SquareMatrix : Matrix
     {
         /// <summary>
+        ///   Number of rows or columns.
+        /// </summary>
+        /// <remarks>
+        ///   Using this instead of a property to speed up calculating a matrix index in the data array.
+        /// </remarks>
+        protected readonly int Order;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="SquareMatrix"/> class.
         /// </summary>
         /// <param name="rows">
@@ -54,6 +62,8 @@ namespace MathNet.Numerics.LinearAlgebra.Double
             {
                 throw new ArgumentException(Resources.ArgumentMatrixSquare);
             }
+
+            Order = rows;
         }
 
         /// <summary>
@@ -65,6 +75,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         protected SquareMatrix(int order) 
             : base(order)
         {
+            Order = order;
         }
     }
 }

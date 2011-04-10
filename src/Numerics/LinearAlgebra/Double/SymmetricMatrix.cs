@@ -65,10 +65,23 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         }
 
         /// <summary>
+        ///   Gets a value indicating whether this matrix is symmetric.
+        /// </summary>
+        public override bool IsSymmetric
+        {
+            get
+            {
+                return true;
+            }
+        }
+
+        #region IExtraAccessors<double> Members
+
+        /// <summary>
         /// Retrieves the requested element without range checking. 
-        /// CAUTION:
-        /// This method assumes that you request an element from the upper triangle (row less than or equal to column).  
-        /// If not, the result is completely wrong.  
+        ///   CAUTION:
+        ///   This method assumes that you request an element from the upper triangle (row less than or equal to column).  
+        ///   If not, the result is completely wrong.
         /// </summary>
         /// <param name="row">
         /// The row of the element. Must be less than or equal to column. 
@@ -83,9 +96,9 @@ namespace MathNet.Numerics.LinearAlgebra.Double
 
         /// <summary>
         /// Sets the value of the given element.
-        /// CAUTION:
-        /// This method assumes that you set an element from the upper triangle (row less than or equal to column).
-        /// If not, the result is completely wrong. 
+        ///   CAUTION:
+        ///   This method assumes that you set an element from the upper triangle (row less than or equal to column).
+        ///   If not, the result is completely wrong.
         /// </summary>
         /// <param name="row">
         /// The row of the element. Must be less than or equal to column.
@@ -100,8 +113,8 @@ namespace MathNet.Numerics.LinearAlgebra.Double
 
         /// <summary>
         /// Retrieves the requested element without range checking. 
-        /// CAUTION:
-        /// This method assumes that you request an element from the lower triangle (row greater than or equal to column).  
+        ///   CAUTION:
+        ///   This method assumes that you request an element from the lower triangle (row greater than or equal to column).
         /// </summary>
         /// <param name="row">
         /// The row of the element. Must be more than or equal to column. 
@@ -116,9 +129,9 @@ namespace MathNet.Numerics.LinearAlgebra.Double
 
         /// <summary>
         /// Sets the value of the given element.
-        /// CAUTION:
-        /// This method assumes that you set an element from the lower triangle (row greater than or equal to column).
-        /// If not, the result is completely wrong. 
+        ///   CAUTION:
+        ///   This method assumes that you set an element from the lower triangle (row greater than or equal to column).
+        ///   If not, the result is completely wrong.
         /// </summary>
         /// <param name="row">
         /// The row of the element. Must be more than or equal to column
@@ -132,7 +145,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         public abstract void AtLower(int row, int column, double value);
 
         /// <summary>
-        /// Retrieves the requested element without range checking. 
+        /// Retrieves the requested element without range checking.
         /// </summary>
         /// <param name="row">
         /// The row=column of the diagonal element.
@@ -153,20 +166,28 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// </param>
         public abstract void AtDiagonal(int row, double value);
 
+        #endregion
+
         /// <summary>
-        /// Returns the transpose of this matrix. The transpose is equal and this method returns a reference to this matrix. 
-        /// </summary>        
-        /// <returns>The transpose of this matrix.</returns>
+        /// Returns the transpose of this matrix. The transpose is equal and this method returns a reference to this matrix.
+        /// </summary>
+        /// <returns>
+        /// The transpose of this matrix.
+        /// </returns>
         public override sealed Matrix<double> Transpose()
         {
             return this;
         }
 
         /// <summary>
-        /// Returns a value indicating whether the array is symmetric.  
+        /// Returns a value indicating whether the array is symmetric.
         /// </summary>
-        /// <param name="array">The array to check for symmetry. </param>
-        /// <returns>True is array is symmetric, false if not symmetric. </returns>
+        /// <param name="array">
+        /// The array to check for symmetry. 
+        /// </param>
+        /// <returns>
+        /// True is array is symmetric, false if not symmetric. 
+        /// </returns>
         public static bool CheckIfSymmetric(double[,] array)
         {
             var rows = array.GetLength(0);
@@ -199,10 +220,18 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// <summary>
         /// Adds another matrix to this matrix.
         /// </summary>
-        /// <param name="other">The matrix to add to this matrix.</param>
-        /// <param name="result">The matrix to store the result of the addition.</param>
-        /// <exception cref="ArgumentNullException">If the other matrix is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentOutOfRangeException">If the two matrices don't have the same dimensions.</exception>
+        /// <param name="other">
+        /// The matrix to add to this matrix.
+        /// </param>
+        /// <param name="result">
+        /// The matrix to store the result of the addition.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// If the other matrix is <see langword="null"/>.
+        /// </exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// If the two matrices don't have the same dimensions.
+        /// </exception>
         protected override void DoAdd(Matrix<double> other, Matrix<double> result)
         {
             var symmetricOther = other as SymmetricMatrix;
@@ -226,10 +255,18 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// <summary>
         /// Subtracts another matrix from this matrix.
         /// </summary>
-        /// <param name="other">The matrix to subtract to this matrix.</param>
-        /// <param name="result">The matrix to store the result of subtraction.</param>
-        /// <exception cref="ArgumentNullException">If the other matrix is <see langword="null"/>.</exception>
-        /// <exception cref="ArgumentOutOfRangeException">If the two matrices don't have the same dimensions.</exception>
+        /// <param name="other">
+        /// The matrix to subtract to this matrix.
+        /// </param>
+        /// <param name="result">
+        /// The matrix to store the result of subtraction.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// If the other matrix is <see langword="null"/>.
+        /// </exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// If the two matrices don't have the same dimensions.
+        /// </exception>
         protected override void DoSubtract(Matrix<double> other, Matrix<double> result)
         {
             var symmetricOther = other as SymmetricMatrix;
@@ -253,8 +290,12 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// <summary>
         /// Multiplies each element of the matrix by a scalar and places results into the result matrix.
         /// </summary>
-        /// <param name="scalar">The scalar to multiply the matrix with.</param>
-        /// <param name="result">The matrix to store the result of the multiplication.</param>
+        /// <param name="scalar">
+        /// The scalar to multiply the matrix with.
+        /// </param>
+        /// <param name="result">
+        /// The matrix to store the result of the multiplication.
+        /// </param>
         protected override void DoMultiply(double scalar, Matrix<double> result)
         {
             var symmetricResult = result as SymmetricMatrix;
@@ -278,8 +319,12 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// <summary>
         /// Multiplies the transpose of this matrix with another matrix and places the results into the result matrix.
         /// </summary>
-        /// <param name="other">The matrix to multiply with.</param>
-        /// <param name="result">The result of the multiplication.</param>
+        /// <param name="other">
+        /// The matrix to multiply with.
+        /// </param>
+        /// <param name="result">
+        /// The result of the multiplication.
+        /// </param>
         protected override sealed void DoTransposeThisAndMultiply(Matrix<double> other, Matrix<double> result)
         {
             DoMultiply(other, result);
@@ -288,8 +333,12 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// <summary>
         /// Multiplies the transpose of this matrix with a vector and places the results into the result vector.
         /// </summary>
-        /// <param name="rightSide">The vector to multiply with.</param>
-        /// <param name="result">The result of the multiplication.</param>
+        /// <param name="rightSide">
+        /// The vector to multiply with.
+        /// </param>
+        /// <param name="result">
+        /// The result of the multiplication.
+        /// </param>
         protected override sealed void DoTransposeThisAndMultiply(Vector<double> rightSide, Vector<double> result)
         {
             DoMultiply(rightSide, result);
@@ -298,7 +347,9 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// <summary>
         /// Negate each element of this matrix and place the results into the result matrix.
         /// </summary>
-        /// <param name="result">The result of the negation.</param>
+        /// <param name="result">
+        /// The result of the negation.
+        /// </param>
         protected override void DoNegate(Matrix<double> result)
         {
             var symmetricResult = result as SymmetricMatrix;
@@ -322,8 +373,12 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// <summary>
         /// Pointwise multiplies this matrix with another matrix and stores the result into the result matrix.
         /// </summary>
-        /// <param name="other">The matrix to pointwise multiply with this one.</param>
-        /// <param name="result">The matrix to store the result of the pointwise multiplication.</param>
+        /// <param name="other">
+        /// The matrix to pointwise multiply with this one.
+        /// </param>
+        /// <param name="result">
+        /// The matrix to store the result of the pointwise multiplication.
+        /// </param>
         protected override void DoPointwiseMultiply(Matrix<double> other, Matrix<double> result)
         {
             var symmetricOther = other as SymmetricMatrix;
@@ -347,8 +402,12 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// <summary>
         /// Pointwise divide this matrix by another matrix and stores the result into the result matrix.
         /// </summary>
-        /// <param name="other">The matrix to pointwise divide this one by.</param>
-        /// <param name="result">The matrix to store the result of the pointwise division.</param>
+        /// <param name="other">
+        /// The matrix to pointwise divide this one by.
+        /// </param>
+        /// <param name="result">
+        /// The matrix to store the result of the pointwise division.
+        /// </param>
         protected override void DoPointwiseDivide(Matrix<double> other, Matrix<double> result)
         {
             var symmetricOther = other as SymmetricMatrix;
@@ -370,21 +429,14 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         }
 
         /// <summary>
-        /// Gets a value indicating whether this matrix is symmetric.
-        /// </summary>
-        public override bool IsSymmetric
-        {
-            get
-            {
-                return true;
-            }
-        }
-
-        /// <summary>
         /// Computes the modulus for each element of the matrix.
         /// </summary>
-        /// <param name="divisor">The divisor to use.</param>
-        /// <param name="result">Matrix to store the results in.</param>
+        /// <param name="divisor">
+        /// The divisor to use.
+        /// </param>
+        /// <param name="result">
+        /// Matrix to store the results in.
+        /// </param>
         protected override void DoModulus(double divisor, Matrix<double> result)
         {
             var symmetricResult = result as SymmetricMatrix;
@@ -408,8 +460,12 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// <summary>
         /// Populates a matrix with random elements.
         /// </summary>
-        /// <param name="matrix">The matrix to populate.</param>
-        /// <param name="distribution">Continuous Random Distribution to generate elements from.</param>
+        /// <param name="matrix">
+        /// The matrix to populate.
+        /// </param>
+        /// <param name="distribution">
+        /// Continuous Random Distribution to generate elements from.
+        /// </param>
         protected override void DoRandom(Matrix<double> matrix, IContinuousDistribution distribution)
         {
             var symmetricMatrix = matrix as SymmetricMatrix;
@@ -433,12 +489,15 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// <summary>
         /// Populates a matrix with random elements.
         /// </summary>
-        /// <param name="matrix">The matrix to populate.</param>
-        /// <param name="distribution">Continuous Random Distribution to generate elements from.</param>
+        /// <param name="matrix">
+        /// The matrix to populate.
+        /// </param>
+        /// <param name="distribution">
+        /// Continuous Random Distribution to generate elements from.
+        /// </param>
         protected override void DoRandom(Matrix<double> matrix, IDiscreteDistribution distribution)
         {
             var symmetricMatrix = matrix as SymmetricMatrix;
-
             if (symmetricMatrix == null)
             {
                 base.DoRandom(matrix, distribution);

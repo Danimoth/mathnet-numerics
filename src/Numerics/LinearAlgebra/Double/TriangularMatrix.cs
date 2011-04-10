@@ -27,12 +27,13 @@
 namespace MathNet.Numerics.LinearAlgebra.Double
 {
     using System;
+    using Generic;
 
     /// <summary>
     /// Abstract class for square triangular matrices. 
     /// A triangular matrix has elements on the diagonal and above or below it. 
     /// </summary>
-    public abstract class TriangularMatrix : SquareMatrix
+    public abstract class TriangularMatrix : SquareMatrix, IExtraAccessors<double>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TriangularMatrix"/> class.
@@ -61,5 +62,98 @@ namespace MathNet.Numerics.LinearAlgebra.Double
             : base(order)
         {
         }
+
+        #region IExtraAccessors<double> Members
+
+        /// <summary>
+        /// Retrieves the requested element without range checking. 
+        /// CAUTION:
+        /// This method assumes that you request an element from the upper triangle (row less than or equal to column).  
+        /// If not, the result is completely wrong.  
+        /// </summary>
+        /// <param name="row">
+        /// The row of the element. Must be less than or equal to column. 
+        /// </param>
+        /// <param name="column">
+        /// The column of the element. Must be more than or equal to row. 
+        /// </param>
+        /// <returns>
+        /// The requested element from the upper triangle.
+        /// </returns>
+        public abstract double AtUpper(int row, int column);
+
+        /// <summary>
+        /// Sets the value of the given element.
+        /// CAUTION:
+        /// This method assumes that you set an element from the upper triangle (row less than or equal to column).
+        /// If not, the result is completely wrong. 
+        /// </summary>
+        /// <param name="row">
+        /// The row of the element. Must be less than or equal to column.
+        /// </param>
+        /// <param name="column">
+        /// The column of the element. Must be more than or equal to row. 
+        /// </param>
+        /// <param name="value">
+        /// The value on the upper triangle to set the element to.
+        /// </param>
+        public abstract void AtUpper(int row, int column, double value);
+
+        /// <summary>
+        /// Retrieves the requested element without range checking. 
+        /// CAUTION:
+        /// This method assumes that you request an element from the lower triangle (row greater than or equal to column).  
+        /// </summary>
+        /// <param name="row">
+        /// The row of the element. Must be more than or equal to column. 
+        /// </param>
+        /// <param name="column">
+        /// The column of the element. Must be less than or equal to row. 
+        /// </param>
+        /// <returns>
+        /// The requested element from the lower triangle.
+        /// </returns>
+        public abstract double AtLower(int row, int column);
+
+        /// <summary>
+        /// Sets the value of the given element.
+        /// CAUTION:
+        /// This method assumes that you set an element from the lower triangle (row greater than or equal to column).
+        /// If not, the result is completely wrong. 
+        /// </summary>
+        /// <param name="row">
+        /// The row of the element. Must be more than or equal to column
+        /// </param>
+        /// <param name="column">
+        /// The column of the element. Must be less than or equal to row. 
+        /// </param>
+        /// <param name="value">
+        /// The value on the lower triangle to set the element to.
+        /// </param>
+        public abstract void AtLower(int row, int column, double value);
+
+        /// <summary>
+        /// Retrieves the requested element without range checking. 
+        /// </summary>
+        /// <param name="row">
+        /// The row=column of the diagonal element.
+        /// </param>
+        /// <returns>
+        /// The requested element.
+        /// </returns>
+        public abstract double AtDiagonal(int row);
+
+        /// <summary>
+        /// Sets the value of the given element.
+        /// </summary>
+        /// <param name="row">
+        /// The row=column of the diagonal element.
+        /// </param>
+        /// <param name="value">
+        /// The value to set the element to.
+        /// </param>
+        public abstract void AtDiagonal(int row, double value);
+
+        #endregion
     }
 }

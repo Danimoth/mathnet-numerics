@@ -49,6 +49,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// </exception>
         public TriangularLowerMatrix(int rows, int columns) : base(rows, columns)
         {
+            DataIndexed = new PackedStorageLower<double>(rows);
         }
 
         /// <summary>
@@ -59,6 +60,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// </param>
         public TriangularLowerMatrix(int order) : base(order)
         {
+            DataIndexed = new PackedStorageLower<double>(order);
         }
 
         /// <summary>

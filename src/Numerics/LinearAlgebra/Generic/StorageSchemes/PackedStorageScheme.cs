@@ -35,7 +35,7 @@ namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes
     /// <remarks>
     /// Upper version features faster indexing than the Lower version.
     /// </remarks>
-    public abstract class PackedStorageScheme
+    public abstract class PackedStorageScheme : StorageScheme
     {
         /// <summary>
         ///   Number of rows or columns.
@@ -72,47 +72,5 @@ namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes
             get;
             private set;
         }
-
-        /// <summary>
-        ///   Gets the index of the given element.
-        /// </summary>
-        /// <param name = "row">
-        ///   The row of the element.
-        /// </param>
-        /// <param name = "column">
-        ///   The column of the element.
-        /// </param>
-        /// <remarks>
-        ///   This method is parameter checked. <see cref = "IndexOf(int,int)" /> and <see cref = "IndexOfDiagonal(int)" /> to get values without parameter checking.
-        /// </remarks>
-        public abstract int this[int row, int column]
-        {
-            get;
-        }
-
-        /// <summary>
-        /// Retrieves the index of the requested element without parameter checking.
-        /// </summary>
-        /// <param name="row">
-        /// The row of the element. 
-        /// </param>
-        /// <param name="column">
-        /// The column of the element. 
-        /// </param>
-        /// <returns>
-        /// The requested index. 
-        /// </returns>
-        public abstract int IndexOf(int row, int column);
-
-        /// <summary>
-        /// Retrieves the index of the requested diagonal element without parameter checking.
-        /// </summary>
-        /// <param name="row">
-        /// The row=column of the diagonal element. 
-        /// </param>
-        /// <returns>
-        /// The requested index. 
-        /// </returns>
-        public abstract int IndexOfDiagonal(int row);
     }
 }

@@ -26,6 +26,8 @@
 
 namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes
 {
+    using System;
+
     /// <summary>
     /// A class for managing indexing when using Skyline Storage scheme. 
     /// </summary>
@@ -33,7 +35,57 @@ namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes
     /// <a href = "http://en.wikipedia.org/wiki/Skyline_matrix">Wikipedia - Skyline Matrix</a>
     /// Commonly referenced as skyline matrix, or variable band matrix, or envelope storage scheme
     /// </remarks>
-    public class SkylineStorageScheme
+    public class SkylineStorageScheme : StorageScheme
     {
+        /// <summary>
+        ///   Gets the index of the given element.
+        /// </summary>
+        /// <param name = "row">
+        ///   The row of the element.
+        /// </param>
+        /// <param name = "column">
+        ///   The column of the element.
+        /// </param>
+        /// <remarks>
+        ///   This method is parameter checked. <see cref = "StorageScheme.IndexOf" /> and <see cref = "StorageScheme.IndexOfDiagonal" /> to get values without parameter checking.
+        /// </remarks>
+        public override int this[int row, int column]
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        /// <summary>
+        /// Retrieves the index of the requested element without parameter checking.
+        /// </summary>
+        /// <param name="row">
+        /// The row of the element. 
+        /// </param>
+        /// <param name="column">
+        /// The column of the element. 
+        /// </param>
+        /// <returns>
+        /// The requested index. 
+        /// </returns>
+        public override int IndexOf(int row, int column)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Retrieves the index of the requested diagonal element without parameter checking.
+        /// </summary>
+        /// <param name="row">
+        /// The row=column of the diagonal element. 
+        /// </param>
+        /// <returns>
+        /// The requested index. 
+        /// </returns>
+        public override int IndexOfDiagonal(int row)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

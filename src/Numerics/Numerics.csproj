@@ -191,6 +191,8 @@
     <Compile Include="LinearAlgebra\Generic\StorageSchemes\PackedStorageScheme.cs" />
     <Compile Include="LinearAlgebra\Generic\StorageSchemes\PackedStorageSchemeLower.cs" />
     <Compile Include="LinearAlgebra\Generic\StorageSchemes\PackedStorageSchemeUpper.cs" />
+    <Compile Include="LinearAlgebra\Generic\StorageSchemes\SkylineStorageScheme.cs" />
+    <Compile Include="LinearAlgebra\Generic\StorageSchemes\StorageScheme.cs" />
     <Compile Include="LinearAlgebra\IO\MatlabReader.cs" />
     <Compile Include="LinearAlgebra\IO\MatlabWriter.cs" />
     <Compile Include="LinearAlgebra\IO\Matlab\ArrayClass.cs" />

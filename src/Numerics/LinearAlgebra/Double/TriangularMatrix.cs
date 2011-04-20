@@ -28,6 +28,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
 {
     using System;
     using Generic;
+    using Generic.StorageSchemes;
 
     /// <summary>
     /// Abstract class for square triangular matrices. 

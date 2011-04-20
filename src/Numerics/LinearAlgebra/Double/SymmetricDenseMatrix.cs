@@ -29,6 +29,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
     using System;
     using Distributions;
     using Generic;
+    using Generic.StorageSchemes;
     using Properties;
     using Threading;
 

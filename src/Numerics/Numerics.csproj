@@ -188,9 +188,9 @@
     <Compile Include="LinearAlgebra\Double\Vector.cs" />
     <Compile Include="LinearAlgebra\Generic\Common.cs" />
     <Compile Include="LinearAlgebra\Generic\IExtraAccessors.cs" />
-    <Compile Include="LinearAlgebra\Generic\PackedStorageScheme.cs" />
-    <Compile Include="LinearAlgebra\Generic\PackedStorageSchemeLower.cs" />
-    <Compile Include="LinearAlgebra\Generic\PackedStorageSchemeUpper.cs" />
+    <Compile Include="LinearAlgebra\Generic\StorageSchemes\PackedStorageScheme.cs" />
+    <Compile Include="LinearAlgebra\Generic\StorageSchemes\PackedStorageSchemeLower.cs" />
+    <Compile Include="LinearAlgebra\Generic\StorageSchemes\PackedStorageSchemeUpper.cs" />
     <Compile Include="LinearAlgebra\IO\MatlabReader.cs" />
     <Compile Include="LinearAlgebra\IO\MatlabWriter.cs" />
     <Compile Include="LinearAlgebra\IO\Matlab\ArrayClass.cs" />

@@ -1,4 +1,4 @@
-﻿// <copyright file="PackedStorageUpper.cs" company="Math.NET">
+﻿// <copyright file="PackedStorageScheme.cs" company="Math.NET">
 // Math.NET Numerics, part of the Math.NET Project
 // http://numerics.mathdotnet.com
 // http://github.com/mathnet/mathnet-numerics
@@ -24,28 +24,53 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-namespace MathNet.Numerics.LinearAlgebra.Generic
+namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes
 {
     using System;
+    using Properties;
 
     /// <summary>
-    /// A class for managing indexing when using Packed Storage scheme, which is a column-Wise packing scheme for Symmetric, Hermitian or Triangular square matrices. 
-    ///   This variation provides indexes for storing the upper triangle of a matrix (row less than or equal to column).
+    /// A class for managing indexing when using Packed Storage scheme, which is a column-Wise packing scheme for Symmetric, Hermitian or Triangular square matrices.
     /// </summary>
     /// <remarks>
     /// Upper version features faster indexing than the Lower version.
     /// </remarks>
-    public class PackedStorageSchemeUpper : PackedStorageScheme
+    public abstract class PackedStorageScheme
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PackedStorageSchemeUpper"/> class.
+        ///   Number of rows or columns.
+        /// </summary>
+        /// <remarks>
+        ///   Using this instead of a property to speed up calculating 
+        ///   a matrix index in the data array.
+        /// </remarks>
+        protected readonly int Order;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PackedStorageScheme"/> class.
         /// </summary>
         /// <param name="order">
         /// The order of the matrix.
         /// </param>
-        public PackedStorageSchemeUpper(int order)
-            : base(order)
+        protected PackedStorageScheme(int order)
         {
+            if (order <= 0)
+            {
+                throw new ArgumentOutOfRangeException(Resources.MatrixRowsOrColumnsMustBePositive);
+            }
+
+            Order = order;
+
+            PackedDataSize = order * (order + 1) / 2;
+        }
+
+        /// <summary>
+        ///   Gets the size of the Packed Data.
+        /// </summary>
+        public int PackedDataSize
+        {
+            get;
+            private set;
         }
 
         /// <summary>
@@ -60,31 +85,13 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
         /// <remarks>
         ///   This method is parameter checked. <see cref = "IndexOf(int,int)" /> and <see cref = "IndexOfDiagonal(int)" /> to get values without parameter checking.
         /// </remarks>
-        public override int this[int row, int column]
+        public abstract int this[int row, int column]
         {
-            get
-            {
-                if (row < 0 || row >= Order)
-                {
-                    throw new ArgumentOutOfRangeException("row");
-                }
-
-                if (column < 0 || column >= Order)
-                {
-                    throw new ArgumentOutOfRangeException("column");
-                }
-
-                if (row > column)
-                {
-                    throw new ArgumentException("Row must be less than or equal to column");
-                }
-
-                return IndexOf(row, column);
-            }
+            get;
         }
 
         /// <summary>
-        /// Retrieves the index of the requested element without parameter checking. Row must be less than or equal to column.
+        /// Retrieves the index of the requested element without parameter checking.
         /// </summary>
         /// <param name="row">
         /// The row of the element. 
@@ -95,10 +102,7 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
         /// <returns>
         /// The requested index. 
         /// </returns>
-        public override int IndexOf(int row, int column)
-        {
-            return row + ((column * (column + 1)) / 2);
-        }
+        public abstract int IndexOf(int row, int column);
 
         /// <summary>
         /// Retrieves the index of the requested diagonal element without parameter checking.
@@ -109,9 +113,6 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
         /// <returns>
         /// The requested index. 
         /// </returns>
-        public override int IndexOfDiagonal(int row)
-        {
-            return (row * (row + 3)) / 2;
-        }
+        public abstract int IndexOfDiagonal(int row);
     }
 }

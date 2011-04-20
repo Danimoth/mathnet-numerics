@@ -69,7 +69,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         ///   Gets a value indicating whether this matrix is symmetric.
         /// </summary>
         /// <remarks>
-        ///   An upper triangular matrix will only by symmetric if all values of the stricly upper triangle are zero, 
+        ///   An upper triangular matrix will only be symmetric if all values of the strictly upper triangle are zero, 
         ///   since by definition all values in the strictly lower triangle are zero. Hence, it will also be a diagonal matrix.
         /// </remarks>
         public override bool IsSymmetric

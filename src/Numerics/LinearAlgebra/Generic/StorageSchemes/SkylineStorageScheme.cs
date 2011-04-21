@@ -53,6 +53,11 @@ namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes
         private readonly double[] _data;
 
         /// <summary>
+        ///   Length of the stored data. 
+        /// </summary>
+        private readonly int _dataLength;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="SkylineStorageScheme"/> class.
         /// </summary>
         /// <param name="dataArray">
@@ -86,6 +91,17 @@ namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes
                     _data[pos] = dataArray[i, j];
                     pos++;
                 }
+            }
+        }
+
+        /// <summary>
+        ///   Gets the length of the stored data.
+        /// </summary>
+        public override int DataLength
+        {
+            get
+            {
+                return _dataLength;
             }
         }
 

@@ -47,6 +47,11 @@ namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes
         protected readonly int Order;
 
         /// <summary>
+        ///   Length of the stored data. 
+        /// </summary>
+        private readonly int _dataLength;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="PackedStorageScheme"/> class.
         /// </summary>
         /// <param name="order">
@@ -60,17 +65,18 @@ namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes
             }
 
             Order = order;
-
-            DataLength = order * (order + 1) / 2;
+           _dataLength = order * (order + 1) / 2;
         }
 
         /// <summary>
-        ///   Gets the size of the Packed Data.
+        /// Gets the length of the stored data. 
         /// </summary>
-        public int DataLength
+        public override int DataLength
         {
-            get;
-            private set;
+            get
+            {
+                return _dataLength;
+            }
         }
     }
 }

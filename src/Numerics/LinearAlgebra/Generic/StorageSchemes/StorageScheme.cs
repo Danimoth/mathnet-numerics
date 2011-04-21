@@ -32,6 +32,11 @@ namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes
     public abstract class StorageScheme
     {
         /// <summary>
+        ///   Gets the length of the stored data.
+        /// </summary>
+        public abstract int DataLength { get; }
+
+        /// <summary>
         ///   Gets the index of the given element.
         /// </summary>
         /// <param name = "row">

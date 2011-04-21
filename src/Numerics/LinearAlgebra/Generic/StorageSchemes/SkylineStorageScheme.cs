@@ -39,6 +39,15 @@ namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes
     public class SkylineStorageScheme : StorageScheme
     {
         /// <summary>
+        ///   Number of rows or columns.
+        /// </summary>
+        /// <remarks>
+        ///   Using this instead of a property to speed up calculating 
+        ///   a matrix index in the data array.
+        /// </remarks>
+        protected readonly int Order;
+
+        /// <summary>
         ///  Supportive array that stores the index on which the corresponding row starts in the data array.  
         /// </summary>
         /// <remarks> 
@@ -63,8 +72,10 @@ namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes
         /// <param name="dataArray">
         /// The data array.
         /// </param>
-        /// <exception cref="InvalidOperationException">
+        /// <exception cref="ArgumentException">
+        ///   If the array is not square. 
         /// </exception>
+        /// <remarks> Current implementation saves the whole upper triangle matrix. </remarks>
         public SkylineStorageScheme(double[,] dataArray)
         {
             int order = dataArray.GetLength(0);
@@ -73,7 +84,8 @@ namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes
             {
                 throw new ArgumentException(Resources.ArgumentMatrixSquare);
             }
-            
+
+            Order = order;
             _rowIndexes = new int[order + 1];
 
             for (int i = 0; i < order; i++)
@@ -81,7 +93,8 @@ namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes
                 _rowIndexes[i + 1] = _rowIndexes[i] + i + 1;
             }
 
-             _data = new double[_rowIndexes[_rowIndexes.Length - 1]];
+            _dataLength = _rowIndexes[_rowIndexes.Length - 1];
+            _data = new double[_dataLength];
             
             int pos = 0;
             for (int j = 0; j < order; j++)

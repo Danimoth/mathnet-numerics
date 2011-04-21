@@ -107,6 +107,36 @@ namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes
             }
         }
 
+        public void CalculateRowIndexes(double[,] dataArray)
+        {
+            // The first index is always 0 and the second is always 1. 
+            _rowIndexes[1] = 1;
+
+            for (var column = 1; column < Order; column++)
+            {
+                bool indexIsSet = false;
+                for (var row = 0; row < column; row++)
+                {
+                    if (dataArray[row, column] == 0)
+                    {
+                        continue;
+                    }
+
+                    _rowIndexes[column + 1] = _rowIndexes[column] + column - row + 1;
+                    indexIsSet = true;
+                    break;
+                }
+
+                if (!indexIsSet)
+                {
+                    /* If we reach this point, no non-zero values exist above the diagonal of this column. 
+                     * The diagonal element is treated separately because it must always be stored and to
+                     * take into account the corner case of having a whole column full of zeros. */
+                    _rowIndexes[column + 1] = _rowIndexes[column] + 1;
+                }
+            }
+        }
+
         /// <summary>
         ///   Gets the length of the stored data.
         /// </summary>
@@ -117,7 +147,7 @@ namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes
                 return _dataLength;
             }
         }
-
+        
         /// <summary>
         ///   Gets the index of the given element.
         /// </summary>

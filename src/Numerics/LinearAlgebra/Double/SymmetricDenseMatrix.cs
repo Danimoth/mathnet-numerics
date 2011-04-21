@@ -52,7 +52,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
             : base(order)
         {
             Indexer = new PackedStorageSchemeUpper(order);
-            Data = new double[Indexer.PackedDataSize];
+            Data = new double[Indexer.DataLength];
         }
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
             : base(rows, columns)
         {
             Indexer = new PackedStorageSchemeUpper(rows);
-            Data = new double[Indexer.PackedDataSize];
+            Data = new double[Indexer.DataLength];
         }
 
         /// <summary>

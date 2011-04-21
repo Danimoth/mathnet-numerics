@@ -51,7 +51,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         public TriangularUpperMatrix(int rows, int columns) : base(rows, columns)
         {
             Indexer = new PackedStorageSchemeUpper(rows);
-            Data = new double[Indexer.PackedDataSize];
+            Data = new double[Indexer.DataLength];
         }
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         public TriangularUpperMatrix(int order) : base(order)
         {
             Indexer = new PackedStorageSchemeUpper(order);
-            Data = new double[Indexer.PackedDataSize];
+            Data = new double[Indexer.DataLength];
         }
 
         /// <summary>

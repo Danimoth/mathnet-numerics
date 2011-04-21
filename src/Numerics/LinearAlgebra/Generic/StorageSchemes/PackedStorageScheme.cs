@@ -61,13 +61,13 @@ namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes
 
             Order = order;
 
-            PackedDataSize = order * (order + 1) / 2;
+            DataLength = order * (order + 1) / 2;
         }
 
         /// <summary>
         ///   Gets the size of the Packed Data.
         /// </summary>
-        public int PackedDataSize
+        public int DataLength
         {
             get;
             private set;

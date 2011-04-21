@@ -27,16 +27,68 @@
 namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes
 {
     using System;
+    using Properties;
 
     /// <summary>
     /// A class for managing indexing when using Skyline Storage scheme. 
     /// </summary>
     /// <remarks>
     /// <a href = "http://en.wikipedia.org/wiki/Skyline_matrix">Wikipedia - Skyline Matrix</a>
-    /// Commonly referenced as skyline matrix, or variable band matrix, or envelope storage scheme
+    /// Commonly referenced as skyline matrix, or variable band matrix, or envelope storage scheme, or active column. 
     /// </remarks>
     public class SkylineStorageScheme : StorageScheme
     {
+        /// <summary>
+        ///  Supportive array that stores the index on which the corresponding row starts in the data array.  
+        /// </summary>
+        /// <remarks> 
+        /// The difference between two consecutive elements i, i + 1 of this array shows the number of strictly-above-the-diagonal elements of column i. 
+        /// The length of this array is equal to the order of the matrix plus 1 (the plus 1 is needed so that we can store the height of the last column. 
+        /// </remarks>
+        private readonly int[] _rowIndexes;
+
+        /// <summary>
+        ///   Contains the stored elements. 
+        /// </summary>
+        private readonly double[] _data;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SkylineStorageScheme"/> class.
+        /// </summary>
+        /// <param name="dataArray">
+        /// The data array.
+        /// </param>
+        /// <exception cref="InvalidOperationException">
+        /// </exception>
+        public SkylineStorageScheme(double[,] dataArray)
+        {
+            int order = dataArray.GetLength(0);
+
+            if (dataArray.GetLength(1) != order)
+            {
+                throw new ArgumentException(Resources.ArgumentMatrixSquare);
+            }
+            
+            _rowIndexes = new int[order + 1];
+
+            for (int i = 0; i < order; i++)
+            {
+                _rowIndexes[i + 1] = _rowIndexes[i] + i + 1;
+            }
+
+             _data = new double[_rowIndexes[_rowIndexes.Length - 1]];
+            
+            int pos = 0;
+            for (int j = 0; j < order; j++)
+            {
+                for (int i = j; i >= 0; i--)
+                {
+                    _data[pos] = dataArray[i, j];
+                    pos++;
+                }
+            }
+        }
+
         /// <summary>
         ///   Gets the index of the given element.
         /// </summary>

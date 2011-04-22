@@ -35,7 +35,7 @@ namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes
     /// <remarks>
     /// Upper version features faster indexing than the Lower version.
     /// </remarks>
-    public abstract class PackedStorageScheme : StorageScheme
+    public abstract class PackedStorageScheme : StorageScheme, IStaticStorageScheme
     {
         /// <summary>
         ///   Number of rows or columns.

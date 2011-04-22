@@ -36,7 +36,7 @@ namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes
     /// <a href = "http://en.wikipedia.org/wiki/Skyline_matrix">Wikipedia - Skyline Matrix</a>
     /// Commonly referenced as skyline matrix, or variable band matrix, or envelope storage scheme, or active column. 
     /// </remarks>
-    public class SkylineStorageScheme : StorageScheme
+    public class SkylineStorageScheme : StorageScheme, IDynamicStorageScheme<double>
     {
         /// <summary>
         ///   Number of rows or columns.
@@ -60,7 +60,7 @@ namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes
         ///   Contains the stored elements. 
         /// </summary>
         private readonly double[] _data;
-
+        
         /// <summary>
         ///   Length of the stored data. 
         /// </summary>
@@ -197,6 +197,17 @@ namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes
         public override int IndexOfDiagonal(int row)
         {
             throw new NotImplementedException();
+        }
+
+        /// <summary>
+        ///   Gets the array containing the stored elements.
+        /// </summary>
+        public double[] Data
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
         }
     }
 }

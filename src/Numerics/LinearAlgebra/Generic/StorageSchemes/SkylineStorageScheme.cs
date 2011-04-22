@@ -42,19 +42,18 @@ namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes
         ///   Number of rows or columns.
         /// </summary>
         /// <remarks>
-        ///   Using this instead of a property to speed up calculating 
-        ///   a matrix index in the data array.
+        ///   Using this instead of a property to speed up calculating a matrix index in the data array.
         /// </remarks>
         protected readonly int Order;
-
+        
         /// <summary>
-        ///  Supportive array that stores the index on which the corresponding row starts in the data array.  
+        ///  Supportive array that stores the index of each column's diagonal element in the data array. 
         /// </summary>
         /// <remarks> 
         /// The difference between two consecutive elements i, i + 1 of this array shows the number of strictly-above-the-diagonal elements of column i. 
         /// The length of this array is equal to the order of the matrix plus 1 (the plus 1 is needed so that we can store the height of the last column. 
         /// </remarks>
-        private readonly int[] _rowIndexes;
+        private readonly int[] _diagonalIndexes;
 
         /// <summary>
         ///   Contains the stored elements. 
@@ -81,14 +80,14 @@ namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes
             }
 
             Order = order;
-            _rowIndexes = new int[order + 1];
+            _diagonalIndexes = new int[order + 1];
 
             for (int i = 0; i < order; i++)
             {
-                _rowIndexes[i + 1] = _rowIndexes[i] + i + 1;
+                _diagonalIndexes[i + 1] = _diagonalIndexes[i] + i + 1;
             }
 
-            _data = new double[_rowIndexes[_rowIndexes.Length - 1]];
+            _data = new double[_diagonalIndexes[_diagonalIndexes.Length - 1]];
             
             int pos = 0;
             for (int j = 0; j < order; j++)
@@ -104,7 +103,7 @@ namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes
         public void CalculateRowIndexes(double[,] dataArray)
         {
             // The first index is always 0 and the second is always 1. 
-            _rowIndexes[1] = 1;
+            _diagonalIndexes[1] = 1;
 
             for (var column = 1; column < Order; column++)
             {
@@ -116,7 +115,7 @@ namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes
                         continue;
                     }
 
-                    _rowIndexes[column + 1] = _rowIndexes[column] + column - row + 1;
+                    _diagonalIndexes[column + 1] = _diagonalIndexes[column] + column - row + 1;
                     indexIsSet = true;
                     break;
                 }
@@ -126,7 +125,7 @@ namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes
                     /* If we reach this point, no non-zero values exist above the diagonal of this column. 
                      * The diagonal element is treated separately because it must always be stored and to
                      * take into account the corner case of having a whole column full of zeros. */
-                    _rowIndexes[column + 1] = _rowIndexes[column] + 1;
+                    _diagonalIndexes[column + 1] = _diagonalIndexes[column] + 1;
                 }
             }
         }

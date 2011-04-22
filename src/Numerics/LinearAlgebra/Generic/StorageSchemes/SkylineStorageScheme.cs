@@ -58,7 +58,7 @@ namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes
         /// <summary>
         ///   Contains the stored elements. 
         /// </summary>
-        private readonly double[] _data;
+        private double[] _data;
         
         /// <summary>
         /// Initializes a new instance of the <see cref="SkylineStorageScheme"/> class.
@@ -82,19 +82,24 @@ namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes
             Order = order;
             _diagonalIndexes = new int[order + 1];
 
-            for (int i = 0; i < order; i++)
+            StoreWholeUpperTriangle(dataArray);
+        }
+
+        public void StoreWholeUpperTriangle(double[,] dataArray)
+        {
+            for (int column = 0; column < Order; column++)
             {
-                _diagonalIndexes[i + 1] = _diagonalIndexes[i] + i + 1;
+                _diagonalIndexes[column + 1] = _diagonalIndexes[column] + column + 1;
             }
 
             _data = new double[_diagonalIndexes[_diagonalIndexes.Length - 1]];
             
             int pos = 0;
-            for (int j = 0; j < order; j++)
+            for (int column = 0; column < Order; column++)
             {
-                for (int i = j; i >= 0; i--)
+                for (int row = column; row >= 0; row--)
                 {
-                    _data[pos] = dataArray[i, j];
+                    _data[pos] = dataArray[row, column];
                     pos++;
                 }
             }

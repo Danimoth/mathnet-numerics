@@ -1,5 +1,5 @@
 <Configuration>
-  <SharingSettings Version="1.0" AutoUpdateCommonSettings="True" ClearReadOnlyFlagOnUpdates="True" />
+  <SharingSettings Version="1.0" AutoUpdateCommonSettings="False" ClearReadOnlyFlagOnUpdates="True" />
   <ResharperSettings>
     <SharedSolutionTemplateManager>
       <FileTemplates>

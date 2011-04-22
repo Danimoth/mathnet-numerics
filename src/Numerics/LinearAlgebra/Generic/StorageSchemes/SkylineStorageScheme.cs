@@ -62,11 +62,6 @@ namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes
         private readonly double[] _data;
         
         /// <summary>
-        ///   Length of the stored data. 
-        /// </summary>
-        private readonly int _dataLength;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="SkylineStorageScheme"/> class.
         /// </summary>
         /// <param name="dataArray">
@@ -93,8 +88,7 @@ namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes
                 _rowIndexes[i + 1] = _rowIndexes[i] + i + 1;
             }
 
-            _dataLength = _rowIndexes[_rowIndexes.Length - 1];
-            _data = new double[_dataLength];
+            _data = new double[_rowIndexes[_rowIndexes.Length - 1]];
             
             int pos = 0;
             for (int j = 0; j < order; j++)
@@ -136,18 +130,7 @@ namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes
                 }
             }
         }
-
-        /// <summary>
-        ///   Gets the length of the stored data.
-        /// </summary>
-        public override int DataLength
-        {
-            get
-            {
-                return _dataLength;
-            }
-        }
-        
+       
         /// <summary>
         ///   Gets the index of the given element.
         /// </summary>

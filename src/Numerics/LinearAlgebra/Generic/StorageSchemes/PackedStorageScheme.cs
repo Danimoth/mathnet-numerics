@@ -57,6 +57,7 @@ namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes
         /// <param name="order">
         /// The order of the matrix.
         /// </param>
+        /// <exception cref="ArgumentOutOfRangeException"><c></c> is out of range.</exception>
         protected PackedStorageScheme(int order)
         {
             if (order <= 0)
@@ -71,7 +72,7 @@ namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes
         /// <summary>
         /// Gets the length of the stored data. 
         /// </summary>
-        public override int DataLength
+        public int DataLength
         {
             get
             {

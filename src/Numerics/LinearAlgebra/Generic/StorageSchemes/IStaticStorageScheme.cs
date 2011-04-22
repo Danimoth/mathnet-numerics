@@ -35,5 +35,9 @@ namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes
     /// </remarks>
     public interface IStaticStorageScheme
     {
+        /// <summary>
+        ///   Gets the length of the stored data.
+        /// </summary>
+        int DataLength { get; }
     }
 }

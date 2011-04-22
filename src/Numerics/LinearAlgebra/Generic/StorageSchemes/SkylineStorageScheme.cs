@@ -50,7 +50,8 @@ namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes
         ///  Supportive array that stores the index of each column's diagonal element in the data array. 
         /// </summary>
         /// <remarks> 
-        /// The difference between two consecutive elements i, i + 1 of this array shows the number of strictly-above-the-diagonal elements of column i. 
+        /// The difference between two consecutive elements (i), (i + 1) of this array minus 1 shows the number 
+        /// of strictly-above-the-diagonal elements of column i. This is the height of the column. 
         /// The length of this array is equal to the order of the matrix plus 1 (the plus 1 is needed so that we can store the height of the last column. 
         /// </remarks>
         private readonly int[] _diagonalIndexes;
@@ -85,6 +86,10 @@ namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes
             StoreWholeUpperTriangle(dataArray);
         }
 
+        /// <summary>
+        /// Stores the whole upper triangle of the array. Builds the corresponding indexes as well. 
+        /// </summary>
+        /// <param name="dataArray">The data array.</param>
         public void StoreWholeUpperTriangle(double[,] dataArray)
         {
             for (int column = 0; column < Order; column++)
@@ -105,7 +110,11 @@ namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes
             }
         }
 
-        public void CalculateRowIndexes(double[,] dataArray)
+        /// <summary>
+        ///   Calculates the diagonal indexes by scanning the matrix and figuring out how high each column is. 
+        /// </summary>
+        /// <param name="dataArray">The data array.</param>
+        public void CalculateDiagonalIndexes(double[,] dataArray)
         {
             // The first index is always 0 and the second is always 1. 
             _diagonalIndexes[1] = 1;
@@ -134,7 +143,29 @@ namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes
                 }
             }
         }
-       
+
+        /// <summary>
+        /// Writes the skyline data array.
+        /// </summary>
+        /// <param name="dataArray">The data array.</param>
+        public void WriteSkylineDataArray(double[,] dataArray)
+        {
+            _data = new double[_diagonalIndexes[Order + 1] - 1];
+
+            int pos = -1;
+            for (int column = 0; column < Order; column++)
+            {
+                int columnHeight = _diagonalIndexes[column + 1] - _diagonalIndexes[column] - 1;
+                int highestIndex = column - columnHeight;
+
+                for (int row = column; row >= highestIndex; row--)
+                {
+                    pos++;
+                    _data[pos] = dataArray[row, column];
+                }
+            }
+        }
+
         /// <summary>
         ///   Gets the index of the given element.
         /// </summary>

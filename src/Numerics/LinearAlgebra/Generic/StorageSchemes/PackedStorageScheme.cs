@@ -41,8 +41,7 @@ namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes
         ///   Number of rows or columns.
         /// </summary>
         /// <remarks>
-        ///   Using this instead of a property to speed up calculating 
-        ///   a matrix index in the data array.
+        ///   Using this instead of a property to speed up calculating a matrix index in the data array.
         /// </remarks>
         protected readonly int Order;
 

@@ -35,6 +35,24 @@ namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes.Static
     /// </remarks>
     public abstract class StaticStorageScheme : StorageScheme
     {
+
+        /// <summary>
+        ///   Gets the index of the given element.
+        /// </summary>
+        /// <param name = "row">
+        ///   The row of the element.
+        /// </param>
+        /// <param name = "column">
+        ///   The column of the element.
+        /// </param>
+        /// <remarks>
+        ///   This method is parameter checked. <see cref = "StorageScheme.IndexOf(int,int)" /> and <see cref = "StorageScheme.IndexOfDiagonal(int)" /> to get values without parameter checking.
+        /// </remarks>
+        public abstract int this[int row, int column]
+        {
+            get;
+        }
+
         /// <summary>
         ///    Gets the length of the stored data.
         ///  </summary>

@@ -39,6 +39,52 @@ namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes.Dynamic
         where T : struct, IEquatable<T>, IFormattable
     {
         /// <summary>
+        ///   Gets the requested element.
+        /// </summary>
+        /// <param name = "row">
+        ///   The row of the element.
+        /// </param>
+        /// <param name = "column">
+        ///   The column of the element.
+        /// </param>
+        /// <remarks>
+        ///   This method is parameter checked. <see cref = "At(int,int)" /> and <see cref = "At(int,int,T)" /> to get values without parameter checking.
+        /// </remarks>
+        public abstract T this[int row, int column]
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Retrieves the requested element without parameter checking.
+        /// </summary>
+        /// <param name="row">
+        /// The row of the element.
+        /// </param>
+        /// <param name="column">
+        /// The column of the element.
+        /// </param>
+        /// <returns>
+        /// The requested element.
+        /// </returns>
+        public abstract T At(int row, int column);
+
+        /// <summary>
+        /// Sets the value of the given element.
+        /// </summary>
+        /// <param name="row">
+        /// The row of the element.
+        /// </param>
+        /// <param name="column">
+        /// The column of the element.
+        /// </param>
+        /// <param name="value">
+        /// The value to set the element to.
+        /// </param>
+        public abstract void At(int row, int column, T value);
+
+
+        /// <summary>
         ///    Gets the array containing the stored elements.
         ///  </summary>
         public abstract T[] Data

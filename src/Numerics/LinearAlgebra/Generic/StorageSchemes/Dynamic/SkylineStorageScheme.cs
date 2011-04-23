@@ -172,26 +172,6 @@ namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes.Dynamic
         }
 
         /// <summary>
-        ///   Gets the index of the given element.
-        /// </summary>
-        /// <param name = "row">
-        ///   The row of the element.
-        /// </param>
-        /// <param name = "column">
-        ///   The column of the element.
-        /// </param>
-        /// <remarks>
-        ///   This method is parameter checked. <see cref = "StorageScheme.IndexOf" /> and <see cref = "StorageScheme.IndexOfDiagonal" /> to get values without parameter checking.
-        /// </remarks>
-        public override int this[int row, int column]
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        /// <summary>
         /// Retrieves the index of the requested element without parameter checking.
         /// </summary>
         /// <param name="row">
@@ -228,6 +208,60 @@ namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes.Dynamic
         public override int IndexOfDiagonal(int row)
         {
             return _diagonalIndexes[row];
+        }
+
+        /// <summary>
+        ///   Gets the requested element.
+        /// </summary>
+        /// <param name = "row">
+        ///   The row of the element.
+        /// </param>
+        /// <param name = "column">
+        ///   The column of the element.
+        /// </param>
+        /// <remarks>
+        ///   This method is parameter checked. <see cref = "DynamicStorageScheme{T}.At(int,int)" /> and <see cref = "DynamicStorageScheme{T}.At(int,int,T)" /> to get values without parameter checking.
+        /// </remarks>
+        public override double this[int row, int column]
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        /// <summary>
+        /// Retrieves the requested element without parameter checking.
+        /// </summary>
+        /// <param name="row">
+        /// The row of the element.
+        /// </param>
+        /// <param name="column">
+        /// The column of the element.
+        /// </param>
+        /// <returns>
+        /// The requested element.
+        /// </returns>
+        public override double At(int row, int column)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Sets the value of the given element.
+        /// </summary>
+        /// <param name="row">
+        /// The row of the element.
+        /// </param>
+        /// <param name="column">
+        /// The column of the element.
+        /// </param>
+        /// <param name="value">
+        /// The value to set the element to.
+        /// </param>
+        public override void At(int row, int column, double value)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>

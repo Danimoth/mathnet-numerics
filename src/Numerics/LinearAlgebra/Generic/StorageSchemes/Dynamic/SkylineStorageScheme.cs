@@ -226,11 +226,41 @@ namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes.Dynamic
         {
             get
             {
-                throw new NotImplementedException();
+                if (row < 0 || row >= Order)
+                {
+                    throw new ArgumentOutOfRangeException("row");
+                }
+
+                if (column < 0 || column >= Order)
+                {
+                    throw new ArgumentOutOfRangeException("column");
+                }
+
+                if (row > column)
+                {
+                    throw new ArgumentException("Row must be less than or equal to column");
+                }
+
+                return _data[IndexOf(row, column)];
             }
             set
             {
-                throw new NotImplementedException();
+                if (row < 0 || row >= Order)
+                {
+                    throw new ArgumentOutOfRangeException("row");
+                }
+
+                if (column < 0 || column >= Order)
+                {
+                    throw new ArgumentOutOfRangeException("column");
+                }
+
+                if (row > column)
+                {
+                    throw new ArgumentException("Row must be less than or equal to column");
+                }
+
+                _data[IndexOf(row, column)] = value;
             }
         }
 
@@ -248,7 +278,7 @@ namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes.Dynamic
         /// </returns>
         public override double At(int row, int column)
         {
-            throw new NotImplementedException();
+            return _data[IndexOf(row, column)];
         }
 
         /// <summary>
@@ -265,7 +295,7 @@ namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes.Dynamic
         /// </param>
         public override void At(int row, int column, double value)
         {
-            throw new NotImplementedException();
+            _data[IndexOf(row, column)] = value;
         }
 
         /// <summary>

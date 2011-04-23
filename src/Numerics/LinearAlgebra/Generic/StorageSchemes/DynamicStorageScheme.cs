@@ -1,4 +1,4 @@
-﻿// <copyright file="IStaticStorageScheme.cs" company="Math.NET">
+﻿// <copyright file="DynamicStorageScheme.cs" company="Math.NET">
 // Math.NET Numerics, part of the Math.NET Project
 // http://numerics.mathdotnet.com
 // http://github.com/mathnet/mathnet-numerics
@@ -25,19 +25,25 @@
 // </copyright>
 namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes
 {
+    using System;
+
     /// <summary>
-    ///   Classes that contain indexing information of a static storage scheme.
+    ///   Classes that completely manage dynamic storage scheme.
     /// </summary>
     /// <remarks>
-    ///   A static storage scheme always the same and may only depend on the size of the matrix. 
-    ///   This category of storage scheme does not need to manage the data array. Therefore, for
-    ///   efficiency, it only provides indexes of the matrix elements.
+    ///   A dynamic storage scheme is dependent on the actual matrix and therefore different for
+    ///   every matrix. This category of storage scheme needs to manage the data array.
     /// </remarks>
-    public interface IStaticStorageScheme
+    /// <typeparam name = "T">Supported data types are double, single, <see cref = "Complex" />, and <see cref = "Complex32" />.</typeparam>
+    public abstract class DynamicStorageScheme<T> : StorageScheme
+        where T : struct, IEquatable<T>, IFormattable
     {
         /// <summary>
-        ///   Gets the length of the stored data.
-        /// </summary>
-        int DataLength { get; }
+        ///    Gets the array containing the stored elements.
+        ///  </summary>
+        public abstract T[] Data
+        {
+            get;
+        }
     }
 }

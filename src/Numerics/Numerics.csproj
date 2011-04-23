@@ -188,12 +188,12 @@
     <Compile Include="LinearAlgebra\Double\Vector.cs" />
     <Compile Include="LinearAlgebra\Generic\Common.cs" />
     <Compile Include="LinearAlgebra\Generic\IExtraAccessors.cs" />
-    <Compile Include="LinearAlgebra\Generic\StorageSchemes\IDynamicStorageScheme.cs" />
+    <Compile Include="LinearAlgebra\Generic\StorageSchemes\DynamicStorageScheme.cs" />
     <Compile Include="LinearAlgebra\Generic\StorageSchemes\PackedStorageScheme.cs" />
     <Compile Include="LinearAlgebra\Generic\StorageSchemes\PackedStorageSchemeLower.cs" />
     <Compile Include="LinearAlgebra\Generic\StorageSchemes\PackedStorageSchemeUpper.cs" />
     <Compile Include="LinearAlgebra\Generic\StorageSchemes\SkylineStorageScheme.cs" />
-    <Compile Include="LinearAlgebra\Generic\StorageSchemes\IStaticStorageScheme.cs" />
+    <Compile Include="LinearAlgebra\Generic\StorageSchemes\StaticStorageScheme.cs" />
     <Compile Include="LinearAlgebra\Generic\StorageSchemes\StorageScheme.cs" />
     <Compile Include="LinearAlgebra\IO\MatlabReader.cs" />
     <Compile Include="LinearAlgebra\IO\MatlabWriter.cs" />

@@ -36,7 +36,7 @@ namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes
     /// <a href = "http://en.wikipedia.org/wiki/Skyline_matrix">Wikipedia - Skyline Matrix</a>
     /// Commonly referenced as skyline matrix, or variable band matrix, or envelope storage scheme, or active column. 
     /// </remarks>
-    public class SkylineStorageScheme : StorageScheme, IDynamicStorageScheme<double>
+    public class SkylineStorageScheme : DynamicStorageScheme<double>
     {
         /// <summary>
         ///   This is a dummy index that is returned when requesting the index of an unknown element. 
@@ -233,7 +233,7 @@ namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes
         /// <summary>
         ///   Gets the array containing the stored elements.
         /// </summary>
-        public double[] Data
+        public override double[] Data
         {
             get
             {

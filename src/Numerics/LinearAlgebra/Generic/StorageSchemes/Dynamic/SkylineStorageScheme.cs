@@ -39,7 +39,7 @@ namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes.Dynamic
     public class SkylineStorageScheme : DynamicStorageScheme<double>
     {
         /// <summary>
-        ///   This is a dummy index that is returned when requesting the index of an unknown element. 
+        ///   This is a dummy index that is returned when requesting the index of an element that resides outside the stored region. 
         /// </summary>
         private const int DummyIndexOfUnstoredZeroElement = -1;
 

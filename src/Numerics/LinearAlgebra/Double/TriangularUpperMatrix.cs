@@ -28,7 +28,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
 {
     using System;
     using Generic;
-    using Generic.StorageSchemes;
+    using Generic.StorageSchemes.Static;
 
     /// <summary>
     /// Class for upper triangular square matrices. 

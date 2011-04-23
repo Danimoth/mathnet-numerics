@@ -24,7 +24,7 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
-namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes
+namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes.Dynamic
 {
     using System;
     using Properties;

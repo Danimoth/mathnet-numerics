@@ -23,7 +23,7 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
-namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes
+namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes.Static
 {
     /// <summary>
     ///   Classes that contain indexing information of a static storage scheme.

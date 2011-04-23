@@ -214,7 +214,7 @@ namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes
         /// </returns>
         public override int IndexOfDiagonal(int row)
         {
-            throw new NotImplementedException();
+            return _diagonalIndexes[row];
         }
 
         /// <summary>
@@ -224,7 +224,7 @@ namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes
         {
             get
             {
-                throw new NotImplementedException();
+                return _data;
             }
         }
     }

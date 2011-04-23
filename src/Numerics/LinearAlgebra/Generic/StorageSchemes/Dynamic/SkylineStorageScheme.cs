@@ -30,7 +30,7 @@ namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes.Dynamic
     using Properties;
 
     /// <summary>
-    /// A class for managing indexing when using Skyline Storage scheme. 
+    /// A class for managing the Skyline Storage scheme. 
     /// </summary>
     /// <remarks>
     /// <a href = "http://en.wikipedia.org/wiki/Skyline_matrix">Wikipedia - Skyline Matrix</a>
@@ -243,6 +243,7 @@ namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes.Dynamic
 
                 return _data[IndexOf(row, column)];
             }
+
             set
             {
                 if (row < 0 || row >= Order)

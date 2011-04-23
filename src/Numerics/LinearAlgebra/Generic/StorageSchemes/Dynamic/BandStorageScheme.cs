@@ -28,6 +28,13 @@ namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes.Dynamic
 {
     using System;
 
+    /// <summary>
+    /// A class for managing the Band Storage scheme. 
+    /// </summary>
+    /// <remarks>
+    /// <a href = "http://en.wikipedia.org/wiki/Band_matrix">Wikipedia - Band Matrix</a>
+    /// A skyline matrix, also called "variable band matrix" is a generalization of band matrix 
+    /// </remarks>
     public class BandStorageScheme : DynamicStorageScheme<double>
     {
         /// <summary>
@@ -84,6 +91,7 @@ namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes.Dynamic
             {
                 throw new NotImplementedException();
             }
+
             set
             {
                 throw new NotImplementedException();
@@ -125,8 +133,8 @@ namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes.Dynamic
         }
 
         /// <summary>
-        ///    Gets the array containing the stored elements.
-        ///  </summary>
+        /// Gets the array containing the stored elements.
+        /// </summary>
         public override double[] Data
         {
             get

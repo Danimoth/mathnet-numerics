@@ -84,10 +84,9 @@ namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes.Dynamic
         /// </param>
         public abstract void At(int row, int column, T value);
 
-
         /// <summary>
         ///    Gets the array containing the stored elements.
-        ///  </summary>
+        /// </summary>
         public abstract T[] Data
         {
             get;

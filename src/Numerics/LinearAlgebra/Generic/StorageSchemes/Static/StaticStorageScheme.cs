@@ -35,7 +35,6 @@ namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes.Static
     /// </remarks>
     public abstract class StaticStorageScheme : StorageScheme
     {
-
         /// <summary>
         ///   Gets the index of the given element.
         /// </summary>
@@ -55,7 +54,7 @@ namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes.Static
 
         /// <summary>
         ///    Gets the length of the stored data.
-        ///  </summary>
+        /// </summary>
         public abstract int DataLength
         {
             get;

@@ -39,6 +39,11 @@ namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes
     public class SkylineStorageScheme : StorageScheme, IDynamicStorageScheme<double>
     {
         /// <summary>
+        ///   This is a dummy index that is returned when requesting the index of an unknown element. 
+        /// </summary>
+        private const int DummyIndexOfUnstoredZeroElement = -1;
+
+        /// <summary>
         ///   Number of rows or columns.
         /// </summary>
         /// <remarks>
@@ -156,9 +161,9 @@ namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes
             for (int column = 0; column < Order; column++)
             {
                 int columnHeight = _diagonalIndexes[column + 1] - _diagonalIndexes[column] - 1;
-                int highestIndex = column - columnHeight;
+                int indexOfHighestStoredRow = column - columnHeight;
 
-                for (int row = column; row >= highestIndex; row--)
+                for (int row = column; row >= indexOfHighestStoredRow; row--)
                 {
                     pos++;
                     _data[pos] = dataArray[row, column];
@@ -200,7 +205,15 @@ namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes
         /// </returns>
         public override int IndexOf(int row, int column)
         {
-            throw new NotImplementedException();
+            int columnHeight = _diagonalIndexes[column + 1] - _diagonalIndexes[column] - 1;
+            int indexOfHighestStoredRow = column - columnHeight;
+
+            if (row < indexOfHighestStoredRow)
+            {
+                return DummyIndexOfUnstoredZeroElement;
+            }
+
+            return _diagonalIndexes[column] + column - row;
         }
 
         /// <summary>

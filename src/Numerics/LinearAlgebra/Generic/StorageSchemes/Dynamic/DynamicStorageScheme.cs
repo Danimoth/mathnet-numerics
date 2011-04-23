@@ -53,6 +53,7 @@ namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes.Dynamic
         public abstract T this[int row, int column]
         {
             get;
+            set;
         }
 
         /// <summary>

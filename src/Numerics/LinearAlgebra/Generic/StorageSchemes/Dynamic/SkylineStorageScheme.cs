@@ -228,6 +228,10 @@ namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes.Dynamic
             {
                 throw new NotImplementedException();
             }
+            set
+            {
+                throw new NotImplementedException();
+            }
         }
 
         /// <summary>

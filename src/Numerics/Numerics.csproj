@@ -188,6 +188,7 @@
     <Compile Include="LinearAlgebra\Double\Vector.cs" />
     <Compile Include="LinearAlgebra\Generic\Common.cs" />
     <Compile Include="LinearAlgebra\Generic\IExtraAccessors.cs" />
+    <Compile Include="LinearAlgebra\Generic\StorageSchemes\Dynamic\BandStorageScheme.cs" />
     <Compile Include="LinearAlgebra\Generic\StorageSchemes\Dynamic\DynamicStorageScheme.cs" />
     <Compile Include="LinearAlgebra\Generic\StorageSchemes\Static\PackedStorageScheme.cs" />
     <Compile Include="LinearAlgebra\Generic\StorageSchemes\Static\PackedStorageSchemeLower.cs" />

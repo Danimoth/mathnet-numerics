@@ -27,14 +27,12 @@
 namespace MathNet.Numerics.LinearAlgebra.Double
 {
     using System;
-    using Generic;
-    using Generic.StorageSchemes.Static;
 
     /// <summary>
-    /// Class for upper triangular square matrices. 
+    ///   Class for upper triangular square matrices. 
     ///   An upper triangular matrix has elements on the diagonal and above it.
     /// </summary>
-    public class TriangularUpperMatrix : TriangularMatrix
+    public abstract class TriangularUpperMatrix : TriangularMatrix
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TriangularUpperMatrix"/> class.
@@ -48,10 +46,8 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// <exception cref="ArgumentException">
         /// If <paramref name="rows"/> not equal to <paramref name="columns"/>.
         /// </exception>
-        public TriangularUpperMatrix(int rows, int columns) : base(rows, columns)
+        protected TriangularUpperMatrix(int rows, int columns) : base(rows, columns)
         {
-            Indexer = new PackedStorageSchemeUpper(rows);
-            Data = new double[Indexer.DataLength];
         }
 
         /// <summary>
@@ -60,10 +56,8 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// <param name="order">
         /// The order of the matrix.
         /// </param>
-        public TriangularUpperMatrix(int order) : base(order)
+        protected TriangularUpperMatrix(int order) : base(order)
         {
-            Indexer = new PackedStorageSchemeUpper(order);
-            Data = new double[Indexer.DataLength];
         }
 
         /// <summary>
@@ -90,129 +84,6 @@ namespace MathNet.Numerics.LinearAlgebra.Double
 
                 return true;
             }
-        }
-
-        /// <summary>
-        /// Retrieves the requested element without range checking.
-        /// </summary>
-        /// <param name="row">
-        /// The row of the element.
-        /// </param>
-        /// <param name="column">
-        /// The column of the element.
-        /// </param>
-        /// <returns>
-        /// The requested element.
-        /// </returns>
-        public override double At(int row, int column)
-        {
-            return row <= column ? Data[Indexer.IndexOf(row, column)] : 0.0;
-        }
-
-        /// <summary>
-        /// Sets the value of the given element.
-        /// </summary>
-        /// <param name="row">
-        /// The row of the element.
-        /// </param>
-        /// <param name="column">
-        /// The column of the element.
-        /// </param>
-        /// <param name="value">
-        /// The value to set the element to.
-        /// </param>
-        public override void At(int row, int column, double value)
-        {
-            if (row <= column)
-            {
-                Data[Indexer.IndexOf(row, column)] = value;
-            }
-            else
-            {
-                throw new InvalidOperationException("Cannot write in the lower triangle of an upper triangle matrix");
-            }
-        }
-
-        /// <summary>
-        /// Retrieves the requested element without range checking. 
-        ///   CAUTION:
-        ///   This method assumes that you request an element from the upper triangle (row less than or equal to column).  
-        ///   If not, the result is completely wrong.
-        /// </summary>
-        /// <param name="row">
-        /// The row of the element. Must be less than or equal to column. 
-        /// </param>
-        /// <param name="column">
-        /// The column of the element. Must be more than or equal to row. 
-        /// </param>
-        /// <returns>
-        /// The requested element from the upper triangle.
-        /// </returns>
-        public override double AtUpper(int row, int column)
-        {
-            return Data[Indexer.IndexOf(row, column)];
-        }
-
-        /// <summary>
-        /// Sets the value of the given element.
-        ///   CAUTION:
-        ///   This method assumes that you set an element from the upper triangle (row less than or equal to column).
-        ///   If not, the result is completely wrong.
-        /// </summary>
-        /// <param name="row">
-        /// The row of the element. Must be less than or equal to column.
-        /// </param>
-        /// <param name="column">
-        /// The column of the element. Must be more than or equal to row. 
-        /// </param>
-        /// <param name="value">
-        /// The value on the upper triangle to set the element to.
-        /// </param>
-        public override void AtUpper(int row, int column, double value)
-        {
-            Data[Indexer.IndexOf(row, column)] = value;
-        }
-
-        /// <summary>
-        /// Creates a <strong>Matrix</strong> for the given number of rows and columns.
-        /// </summary>
-        /// <param name="numberOfRows">
-        /// The number of rows.
-        /// </param>
-        /// <param name="numberOfColumns">
-        /// The number of columns.
-        /// </param>
-        /// <returns>
-        /// A <strong>Matrix</strong> with the given dimensions.
-        /// </returns>
-        /// <remarks>
-        /// Creates a matrix of the same matrix type as the current matrix.
-        /// </remarks>
-        public override Matrix<double> CreateMatrix(int numberOfRows, int numberOfColumns)
-        {
-            if (numberOfRows != numberOfColumns)
-            {
-                return new DenseMatrix(numberOfRows, numberOfColumns);
-            }
-
-            return new TriangularUpperMatrix(numberOfRows, numberOfColumns);
-        }
-
-        /// <summary>
-        /// Creates a Vector with a the given dimension.
-        /// </summary>
-        /// <param name="size">
-        /// The size of the vector.
-        /// </param>
-        /// <returns>
-        /// A Vector with the given dimension.
-        /// </returns>
-        /// <remarks>
-        /// Creates a vector of the same type as the current matrix.
-        /// </remarks>
-        public override Vector<double> CreateVector(int size)
-        {
-            throw new NotImplementedException();
         }
     }
 }

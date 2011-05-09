@@ -205,13 +205,32 @@ namespace MathNet.Numerics.LinearAlgebra.Double
                 for (var row = 0; row < RowCount; row++)
                 {
                     var s = 0.0;
-                    for (var column = row; column != ColumnCount; column++)
+                    for (var column = row; column < ColumnCount; column++)
                     {
                         s += At(row, column) * rightSide[column];
                     }
 
                     result[row] = s;
                 }
+            }
+        }
+
+        /// <summary>
+        /// Left multiply a matrix with a vector ( = vector * matrix ) and place the result in the result vector.
+        /// </summary>
+        /// <param name="leftSide">The vector to multiply with.</param>
+        /// <param name="result">The result of the multiplication.</param>
+        protected override void DoLeftMultiply(Vector<double> leftSide, Vector<double> result)
+        {
+            for (var column = 0; column < ColumnCount; column++)
+            {
+                var s = 0.0;
+                for (var row = 0; row <= column; row++)
+                {
+                    s += leftSide[row] * At(row, column);
+                }
+
+                result[column] = s;
             }
         }
     }

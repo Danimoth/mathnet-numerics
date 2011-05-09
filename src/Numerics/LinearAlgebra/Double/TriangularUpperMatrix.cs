@@ -121,5 +121,40 @@ namespace MathNet.Numerics.LinearAlgebra.Double
                 }
             }
         }
+
+        /// <summary>
+        /// Subtracts another matrix from this matrix.
+        /// </summary>
+        /// <param name="other">
+        /// The matrix to subtract to this matrix.
+        /// </param>
+        /// <param name="result">
+        /// The matrix to store the result of subtraction.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// If the other matrix is <see langword="null"/>.
+        /// </exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// If the two matrices don't have the same dimensions.
+        /// </exception>
+        protected override void DoSubtract(Matrix<double> other, Matrix<double> result)
+        {
+            var triangularUpperOther = other as TriangularUpperMatrix;
+            var triangularUpperResult = result as TriangularUpperMatrix;
+            if (triangularUpperOther == null || triangularUpperResult == null)
+            {
+                base.DoAdd(other, result);
+            }
+            else
+            {
+                for (var row = 0; row < RowCount; row++)
+                {
+                    for (var column = row; column < ColumnCount; column++)
+                    {
+                        triangularUpperResult.AtUpper(row, column, At(row, column) - triangularUpperOther.AtUpper(row, column));
+                    }
+                }
+            }
+        }
     }
 }

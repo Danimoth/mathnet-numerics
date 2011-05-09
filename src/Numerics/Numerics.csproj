@@ -182,6 +182,7 @@
     <Compile Include="LinearAlgebra\Double\SquareMatrix.cs" />
     <Compile Include="LinearAlgebra\Double\SymmetricDenseMatrix.cs" />
     <Compile Include="LinearAlgebra\Double\SymmetricMatrix.cs" />
+    <Compile Include="LinearAlgebra\Double\TriangularLowerDenseMatrix.cs" />
     <Compile Include="LinearAlgebra\Double\TriangularLowerMatrix.cs" />
     <Compile Include="LinearAlgebra\Double\TriangularMatrix.cs" />
     <Compile Include="LinearAlgebra\Double\TriangularUpperMatrix.cs" />

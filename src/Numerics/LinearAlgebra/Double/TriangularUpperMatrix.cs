@@ -185,5 +185,34 @@ namespace MathNet.Numerics.LinearAlgebra.Double
                 }
             }
         }
+
+        /// <summary>
+        /// Multiplies this matrix with a vector and places the results into the result vector.
+        /// </summary>
+        /// <param name="rightSide">The vector to multiply with.</param>
+        /// <param name="result">The result of the multiplication.</param>
+        protected override void DoMultiply(Vector<double> rightSide, Vector<double> result)
+        {
+            var denseRight = rightSide as DenseVector;
+            var denseResult = result as DenseVector;
+
+            if (denseRight == null || denseResult == null)
+            {
+                base.DoMultiply(rightSide, result);
+            }
+            else
+            {
+                for (var row = 0; row < RowCount; row++)
+                {
+                    var s = 0.0;
+                    for (var column = row; column != ColumnCount; column++)
+                    {
+                        s += At(row, column) * rightSide[column];
+                    }
+
+                    result[row] = s;
+                }
+            }
+        }
     }
 }

@@ -233,5 +233,52 @@ namespace MathNet.Numerics.LinearAlgebra.Double
                 result[column] = s;
             }
         }
+
+        /// <summary>
+        /// Multiplies this matrix with another matrix and places the results into the result matrix.
+        /// </summary>
+        /// <param name="other">The matrix to multiply with.</param>
+        /// <param name="result">The result of the multiplication.</param>
+        /// <remarks> 
+        /// Multiplying two upper triangular matrices results in an upper triangular matrix. 
+        /// </remarks>
+        protected override void DoMultiply(Matrix<double> other, Matrix<double> result)
+        {
+            var triangularUpperOther = other as TriangularUpperMatrix;
+            var triangularUpperResult = result as TriangularUpperMatrix;
+
+            if (triangularUpperOther == null || triangularUpperResult == null)
+            {
+                for (var row = 0; row < RowCount; row++)
+                {
+                    for (var columnOther = 0; columnOther < other.ColumnCount; columnOther++)
+                    {
+                        var s = 0.0;
+                        for (var column = row; column < ColumnCount; column++)
+                        {
+                            s += At(row, column) * other.At(column, columnOther);
+                        }
+
+                        result.At(row, columnOther, s);
+                    }
+                }
+            }
+            else
+            {
+                for (var row = 0; row < RowCount; row++)
+                {
+                    for (var columnOther = row; columnOther < other.ColumnCount; columnOther++)
+                    {
+                        var s = 0.0;
+                        for (var column = row; column < ColumnCount; column++)
+                        {
+                            s += At(row, column) * other.At(column, columnOther);
+                        }
+
+                        result.At(row, columnOther, s);
+                    }
+                }
+            }
+        }
     }
 }

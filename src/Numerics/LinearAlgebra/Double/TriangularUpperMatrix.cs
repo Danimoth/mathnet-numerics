@@ -88,6 +88,27 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         }
 
         /// <summary>
+        /// Calculates the L1 norm.
+        /// </summary>
+        /// <returns>The L1 norm of the matrix.</returns>
+        public override double L1Norm()
+        {
+            var norm = 0.0;
+            for (var column = 0; column < ColumnCount; column++)
+            {
+                var s = 0.0;
+                for (var row = 0; row <= column; row++)
+                {
+                    s += Math.Abs(At(row, column));
+                }
+
+                norm = Math.Max(norm, s);
+            }
+
+            return norm;
+        }
+
+        /// <summary>
         /// Adds another matrix to this matrix.
         /// </summary>
         /// <param name="other">

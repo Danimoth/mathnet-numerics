@@ -322,5 +322,31 @@ namespace MathNet.Numerics.LinearAlgebra.Double
                 }
             }
         }
+        
+        /// <summary>
+        /// Negate each element of this matrix and place the results into the result matrix.
+        /// </summary>
+        /// <param name="result">
+        /// The result of the negation.
+        /// </param>
+        protected override void DoNegate(Matrix<double> result)
+        {
+            var triangularUpperResult = result as TriangularUpperMatrix;
+
+            if (triangularUpperResult == null)
+            {
+                base.DoNegate(result);
+            }
+            else
+            {
+                for (var row = 0; row < RowCount; row++)
+                {
+                    for (var column = row; column != ColumnCount; column++)
+                    {
+                        triangularUpperResult[row, column] = -AtUpper(row, column);
+                    }
+                }
+            }
+        }
     }
 }

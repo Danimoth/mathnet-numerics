@@ -406,5 +406,34 @@ namespace MathNet.Numerics.LinearAlgebra.Double
                 }
             }
         }
+
+        /// <summary>
+        /// Computes the modulus for each element of the matrix.
+        /// </summary>
+        /// <param name="divisor">
+        /// The divisor to use.
+        /// </param>
+        /// <param name="result">
+        /// Matrix to store the results in.
+        /// </param>
+        protected override void DoModulus(double divisor, Matrix<double> result)
+        {
+            var triangularUpperResult = result as TriangularUpperMatrix;
+
+            if (triangularUpperResult == null)
+            {
+                base.DoModulus(divisor, result);
+            }
+            else
+            {
+                for (var row = 0; row < RowCount; row++)
+                {
+                    for (var column = row; column < ColumnCount; column++)
+                    {
+                        triangularUpperResult.AtUpper(row, column, At(row, column) % divisor);
+                    }
+                }
+            }
+        }
     }
 }

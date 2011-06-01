@@ -27,6 +27,7 @@
 namespace MathNet.Numerics.LinearAlgebra.Double
 {
     using System;
+    using Distributions;
     using Generic;
 
     /// <summary>
@@ -431,6 +432,63 @@ namespace MathNet.Numerics.LinearAlgebra.Double
                     for (var column = row; column < ColumnCount; column++)
                     {
                         triangularUpperResult.AtUpper(row, column, At(row, column) % divisor);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Populates a matrix with random elements.
+        /// </summary>
+        /// <param name="matrix">
+        /// The matrix to populate.
+        /// </param>
+        /// <param name="distribution">
+        /// Continuous Random Distribution to generate elements from.
+        /// </param>
+        protected override void DoRandom(Matrix<double> matrix, IContinuousDistribution distribution)
+        {
+            var triangularUpperMatrix = matrix as TriangularUpperMatrix;
+
+            if (triangularUpperMatrix == null)
+            {
+                base.DoRandom(matrix, distribution);
+            }
+            else
+            {
+                for (var row = 0; row < matrix.RowCount; row++)
+                {
+                    for (var column = row; column < matrix.ColumnCount; column++)
+                    {
+                        triangularUpperMatrix.AtUpper(row, column, distribution.Sample());
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Populates a matrix with random elements.
+        /// </summary>
+        /// <param name="matrix">
+        /// The matrix to populate.
+        /// </param>
+        /// <param name="distribution">
+        /// Continuous Random Distribution to generate elements from.
+        /// </param>
+        protected override void DoRandom(Matrix<double> matrix, IDiscreteDistribution distribution)
+        {
+            var triangularUpperMatrix = matrix as TriangularUpperMatrix;
+            if (triangularUpperMatrix == null)
+            {
+                base.DoRandom(matrix, distribution);
+            }
+            else
+            {
+                for (var row = 0; row < matrix.RowCount; row++)
+                {
+                    for (var column = row; column < matrix.ColumnCount; column++)
+                    {
+                        triangularUpperMatrix.AtUpper(row, column, distribution.Sample());
                     }
                 }
             }

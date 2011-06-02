@@ -148,8 +148,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         protected override void DoAdd(Matrix<double> other, Matrix<double> result)
         {
             var triangularUpperOther = other as TriangularUpperMatrix;
-            var triangularUpperResult = result as TriangularUpperMatrix;
-            if (triangularUpperOther == null || triangularUpperResult == null)
+            if (triangularUpperOther == null)
             {
                 base.DoAdd(other, result);
             }
@@ -159,7 +158,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
                 {
                     for (var column = row; column < ColumnCount; column++)
                     {
-                        triangularUpperResult.AtUpper(row, column, At(row, column) + triangularUpperOther.AtUpper(row, column));
+                        result.At(row, column, At(row, column) + triangularUpperOther.AtUpper(row, column));
                     }
                 }
             }
@@ -183,8 +182,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         protected override void DoSubtract(Matrix<double> other, Matrix<double> result)
         {
             var triangularUpperOther = other as TriangularUpperMatrix;
-            var triangularUpperResult = result as TriangularUpperMatrix;
-            if (triangularUpperOther == null || triangularUpperResult == null)
+            if (triangularUpperOther == null)
             {
                 base.DoAdd(other, result);
             }
@@ -194,7 +192,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
                 {
                     for (var column = row; column < ColumnCount; column++)
                     {
-                        triangularUpperResult.AtUpper(row, column, At(row, column) - triangularUpperOther.AtUpper(row, column));
+                        result.At(row, column, At(row, column) - triangularUpperOther.AtUpper(row, column));
                     }
                 }
             }
@@ -211,20 +209,11 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// </param>
         protected override void DoMultiply(double scalar, Matrix<double> result)
         {
-            var triangularUpperResult = result as TriangularUpperMatrix;
-
-            if (triangularUpperResult == null)
+            for (var row = 0; row < RowCount; row++)
             {
-                base.DoMultiply(scalar, result);
-            }
-            else
-            {
-                for (var row = 0; row < RowCount; row++)
+                for (var column = row; column < ColumnCount; column++)
                 {
-                    for (var column = row; column < ColumnCount; column++)
-                    {
-                        triangularUpperResult.AtUpper(row, column, At(row, column) * scalar);
-                    }
+                    result.At(row, column, At(row, column) * scalar);
                 }
             }
         }

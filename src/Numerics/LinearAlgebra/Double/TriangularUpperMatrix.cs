@@ -378,42 +378,46 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// </remarks>
         protected override void DoMultiply(Matrix<double> other, Matrix<double> result)
         {
-            var triangularUpperOther = other as TriangularUpperMatrix;
-
-            if (triangularUpperOther == null)
+            for (var row = 0; row < RowCount; row++)
             {
-                for (var row = 0; row < RowCount; row++)
+                for (var columnOther = 0; columnOther < other.ColumnCount; columnOther++)
                 {
-                    for (var columnOther = 0; columnOther < other.ColumnCount; columnOther++)
+                    var s = 0.0;
+                    for (var column = row; column < ColumnCount; column++)
                     {
-                        var s = 0.0;
-                        for (var column = row; column < ColumnCount; column++)
-                        {
-                            s += AtUpper(row, column) * other.At(column, columnOther);
-                        }
-
-                        result.At(row, columnOther, s);
+                        s += AtUpper(row, column) * other.At(column, columnOther);
                     }
-                }
-            }
-            else
-            {
-                for (var row = 0; row < RowCount; row++)
-                {
-                    for (var columnOther = row; columnOther < other.ColumnCount; columnOther++)
-                    {
-                        var s = 0.0;
-                        for (var column = row; column < ColumnCount; column++)
-                        {
-                            s += AtUpper(row, column) * triangularUpperOther.AtUpper(column, columnOther);
-                        }
 
-                        result.At(row, columnOther, s);
-                    }
+                    result.At(row, columnOther, s);
                 }
             }
         }
-        
+
+        /// <summary>
+        /// Multiplies this matrix with another matrix and places the results into the result matrix.
+        /// </summary>
+        /// <param name="other">The matrix to multiply with.</param>
+        /// <param name="result">The result of the multiplication.</param>
+        /// <remarks> 
+        /// Multiplying two upper triangular matrices results in an upper triangular matrix. 
+        /// </remarks>
+        protected void DoMultiply(TriangularUpperMatrix other, Matrix<double> result)
+        {
+            for (var row = 0; row < RowCount; row++)
+            {
+                for (var columnOther = row; columnOther < other.ColumnCount; columnOther++)
+                {
+                    var s = 0.0;
+                    for (var column = row; column < ColumnCount; column++)
+                    {
+                        s += AtUpper(row, column) * other.AtUpper(column, columnOther);
+                    }
+
+                    result.At(row, columnOther, s);
+                }
+            }
+        }
+
         /// <summary>
         /// Negate each element of this matrix and place the results into the result matrix.
         /// </summary>

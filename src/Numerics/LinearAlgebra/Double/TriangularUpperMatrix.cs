@@ -452,6 +452,40 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         }
 
         /// <summary>
+        /// Pointwise multiplies this matrix with another matrix and stores the result into the result matrix.
+        /// </summary>
+        /// <param name="other">
+        /// The matrix to pointwise multiply with this one.
+        /// </param>
+        /// <param name="result">
+        /// The matrix to store the result of the pointwise multiplication.
+        /// </param>
+        protected void DoPointwiseMultiply(TriangularLowerMatrix other, Matrix<double> result)
+        {
+            for (var row = 0; row < RowCount; row++)
+            {
+                result.AtDiagonal(row, AtDiagonal(row) * other.AtDiagonal(row));
+            }
+        }
+
+        /// <summary>
+        /// Pointwise multiplies this matrix with another matrix and stores the result into the result matrix.
+        /// </summary>
+        /// <param name="other">
+        /// The matrix to pointwise multiply with this one.
+        /// </param>
+        /// <param name="result">
+        /// The matrix to store the result of the pointwise multiplication.
+        /// </param>
+        protected void DoPointwiseMultiply(DiagonalMatrix other, Matrix<double> result)
+        {
+            for (var row = 0; row < RowCount; row++)
+            {
+                result.AtDiagonal(row, AtDiagonal(row) * other.AtDiagonal(row));
+            }
+        }
+
+        /// <summary>
         /// Pointwise divide this matrix by another matrix and stores the result into the result matrix.
         /// </summary>
         /// <param name="other">

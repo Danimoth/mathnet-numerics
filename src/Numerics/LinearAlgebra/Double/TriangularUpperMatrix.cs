@@ -340,7 +340,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
                 {
                     for (var column = row; column != ColumnCount; column++)
                     {
-                        result[row, column] = -AtUpper(row, column);
+                        result.At(row, column,-AtUpper(row, column));
                     }
                 }
             }
@@ -350,7 +350,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
                 {
                     for (var column = row; column != ColumnCount; column++)
                     {
-                        triangularUpperResult[row, column] = -AtUpper(row, column);
+                        triangularUpperResult.AtUpper(row, column, -AtUpper(row, column));
                     }
                 }
             }

@@ -100,7 +100,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
                 var s = 0.0;
                 for (var row = 0; row <= column; row++)
                 {
-                    s += Math.Abs(At(row, column));
+                    s += Math.Abs(AtUpper(row, column));
                 }
 
                 norm = Math.Max(norm, s);
@@ -121,7 +121,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
                 var s = 0.0;
                 for (var column = row; column < ColumnCount; column++)
                 {
-                    s += Math.Abs(At(row, column));
+                    s += Math.Abs(AtUpper(row, column));
                 }
 
                 norm = Math.Max(norm, s);
@@ -158,7 +158,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
                 {
                     for (var column = row; column < ColumnCount; column++)
                     {
-                        result.At(row, column, At(row, column) + triangularUpperOther.AtUpper(row, column));
+                        result.At(row, column, AtUpper(row, column) + triangularUpperOther.AtUpper(row, column));
                     }
                 }
             }
@@ -192,7 +192,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
                 {
                     for (var column = row; column < ColumnCount; column++)
                     {
-                        result.At(row, column, At(row, column) - triangularUpperOther.AtUpper(row, column));
+                        result.At(row, column, AtUpper(row, column) - triangularUpperOther.AtUpper(row, column));
                     }
                 }
             }
@@ -213,7 +213,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
             {
                 for (var column = row; column < ColumnCount; column++)
                 {
-                    result.At(row, column, At(row, column) * scalar);
+                    result.At(row, column, AtUpper(row, column) * scalar);
                 }
             }
         }
@@ -230,7 +230,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
                 var s = 0.0;
                 for (var column = row; column < ColumnCount; column++)
                 {
-                    s += At(row, column) * rightSide[column];
+                    s += AtUpper(row, column) * rightSide[column];
                 }
 
                 result[row] = s;
@@ -249,7 +249,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
                 var s = 0.0;
                 for (var row = 0; row <= column; row++)
                 {
-                    s += leftSide[row] * At(row, column);
+                    s += leftSide[row] * AtUpper(row, column);
                 }
 
                 result[column] = s;
@@ -351,7 +351,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
                 {
                     for (var column = row; column < ColumnCount; column++)
                     {
-                        triangularUpperResult.AtUpper(row, column, At(row, column) * triangularUpperOther.AtUpper(row, column));
+                        triangularUpperResult.AtUpper(row, column, AtUpper(row, column) * triangularUpperOther.AtUpper(row, column));
                     }
                 }
             }
@@ -380,7 +380,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
                 {
                     for (var column = row; column < ColumnCount; column++)
                     {
-                        triangularUpperResult.AtUpper(row, column, At(row, column) / triangularUpperOther.AtUpper(row, column));
+                        triangularUpperResult.AtUpper(row, column, AtUpper(row, column) / triangularUpperOther.AtUpper(row, column));
                     }
                 }
             }
@@ -409,7 +409,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
                 {
                     for (var column = row; column < ColumnCount; column++)
                     {
-                        triangularUpperResult.AtUpper(row, column, At(row, column) % divisor);
+                        triangularUpperResult.AtUpper(row, column, AtUpper(row, column) % divisor);
                     }
                 }
             }

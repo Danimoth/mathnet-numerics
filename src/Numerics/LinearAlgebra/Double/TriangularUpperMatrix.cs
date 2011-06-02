@@ -336,7 +336,13 @@ namespace MathNet.Numerics.LinearAlgebra.Double
 
             if (triangularUpperResult == null)
             {
-                base.DoNegate(result);
+                for (var row = 0; row < RowCount; row++)
+                {
+                    for (var column = row; column != ColumnCount; column++)
+                    {
+                        result[row, column] = -AtUpper(row, column);
+                    }
+                }
             }
             else
             {

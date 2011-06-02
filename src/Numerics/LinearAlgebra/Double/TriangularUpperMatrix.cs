@@ -520,20 +520,11 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// </param>
         protected override void DoRandom(Matrix<double> matrix, IContinuousDistribution distribution)
         {
-            var triangularUpperMatrix = matrix as TriangularUpperMatrix;
-
-            if (triangularUpperMatrix == null)
+            for (var row = 0; row < matrix.RowCount; row++)
             {
-                base.DoRandom(matrix, distribution);
-            }
-            else
-            {
-                for (var row = 0; row < matrix.RowCount; row++)
+                for (var column = row; column < matrix.ColumnCount; column++)
                 {
-                    for (var column = row; column < matrix.ColumnCount; column++)
-                    {
-                        triangularUpperMatrix.AtUpper(row, column, distribution.Sample());
-                    }
+                    matrix.AtUpper(row, column, distribution.Sample());
                 }
             }
         }
@@ -549,19 +540,11 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// </param>
         protected override void DoRandom(Matrix<double> matrix, IDiscreteDistribution distribution)
         {
-            var triangularUpperMatrix = matrix as TriangularUpperMatrix;
-            if (triangularUpperMatrix == null)
+            for (var row = 0; row < matrix.RowCount; row++)
             {
-                base.DoRandom(matrix, distribution);
-            }
-            else
-            {
-                for (var row = 0; row < matrix.RowCount; row++)
+                for (var column = row; column < matrix.ColumnCount; column++)
                 {
-                    for (var column = row; column < matrix.ColumnCount; column++)
-                    {
-                        triangularUpperMatrix.AtUpper(row, column, distribution.Sample());
-                    }
+                    matrix.AtUpper(row, column, distribution.Sample());
                 }
             }
         }

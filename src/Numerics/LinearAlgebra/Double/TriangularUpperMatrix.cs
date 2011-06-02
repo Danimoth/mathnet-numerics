@@ -408,7 +408,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
                 for (var columnOther = row; columnOther < other.ColumnCount; columnOther++)
                 {
                     var s = 0.0;
-                    for (var column = row; column < ColumnCount; column++)
+                    for (var column = row; column < columnOther; column++)
                     {
                         s += AtUpper(row, column) * other.AtUpper(column, columnOther);
                     }

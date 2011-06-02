@@ -195,7 +195,18 @@ namespace MathNet.Numerics.LinearAlgebra.Double
             var triangularUpperOther = other as TriangularUpperMatrix;
             if (triangularUpperOther == null)
             {
-                base.DoAdd(other, result);
+                for (var row = 0; row < RowCount; row++)
+                {
+                    for (var column = 0; column < row; column++)
+                    {
+                        result.At(row, column, other.At(row, column));
+                    }
+
+                    for (var column = row; column < ColumnCount; column++)
+                    {
+                        result.At(row, column, AtUpper(row, column) - other.At(row, column));
+                    }
+                }
             }
             else
             {

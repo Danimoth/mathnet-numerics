@@ -263,30 +263,101 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// </exception>
         protected override void DoSubtract(Matrix<double> other, Matrix<double> result)
         {
-            var triangularUpperOther = other as TriangularUpperMatrix;
-            if (triangularUpperOther == null)
+            for (var row = 0; row < RowCount; row++)
             {
-                for (var row = 0; row < RowCount; row++)
+                for (var column = 0; column < row; column++)
                 {
-                    for (var column = 0; column < row; column++)
-                    {
-                        result.At(row, column, other.At(row, column));
-                    }
+                    result.At(row, column, other.At(row, column));
+                }
 
-                    for (var column = row; column < ColumnCount; column++)
-                    {
-                        result.At(row, column, AtUpper(row, column) - other.At(row, column));
-                    }
+                for (var column = row; column < ColumnCount; column++)
+                {
+                    result.At(row, column, AtUpper(row, column) - other.At(row, column));
                 }
             }
-            else
+        }
+
+        /// <summary>
+        /// Subtracts another matrix from this matrix.
+        /// </summary>
+        /// <param name="other">
+        /// The matrix to subtract to this matrix.
+        /// </param>
+        /// <param name="result">
+        /// The matrix to store the result of subtraction.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// If the other matrix is <see langword="null"/>.
+        /// </exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// If the two matrices don't have the same dimensions.
+        /// </exception>
+        protected void DoSubtract(TriangularUpperMatrix other, Matrix<double> result)
+        {
+            for (var row = 0; row < RowCount; row++)
             {
-                for (var row = 0; row < RowCount; row++)
+                for (var column = row; column < ColumnCount; column++)
                 {
-                    for (var column = row; column < ColumnCount; column++)
-                    {
-                        result.At(row, column, AtUpper(row, column) - triangularUpperOther.AtUpper(row, column));
-                    }
+                    result.At(row, column, AtUpper(row, column) - other.AtUpper(row, column));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Subtracts another matrix from this matrix.
+        /// </summary>
+        /// <param name="other">
+        /// The matrix to subtract to this matrix.
+        /// </param>
+        /// <param name="result">
+        /// The matrix to store the result of subtraction.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// If the other matrix is <see langword="null"/>.
+        /// </exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// If the two matrices don't have the same dimensions.
+        /// </exception>
+        protected void DoSubtract(TriangularLowerMatrix other, Matrix<double> result)
+        {
+            for (var row = 0; row < RowCount; row++)
+            {
+                for (var column = 0; column < row; column++)
+                {
+                    result.At(row, column, other.AtLower(row, column));
+                }
+
+                result.At(row, row, AtDiagonal(row) - other.AtDiagonal(row));
+
+                for (var column = row + 1; column < ColumnCount; column++)
+                {
+                    result.At(row, column, AtUpper(row, column));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Subtracts another matrix from this matrix.
+        /// </summary>
+        /// <param name="other">
+        /// The matrix to subtract to this matrix.
+        /// </param>
+        /// <param name="result">
+        /// The matrix to store the result of subtraction.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// If the other matrix is <see langword="null"/>.
+        /// </exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// If the two matrices don't have the same dimensions.
+        /// </exception>
+        protected void DoSubtract(TriangularUpperMatrix other, TriangularUpperMatrix result)
+        {
+            for (var row = 0; row < RowCount; row++)
+            {
+                for (var column = row; column < ColumnCount; column++)
+                {
+                    result.AtUpper(row, column, AtUpper(row, column) - other.AtUpper(row, column));
                 }
             }
         }

@@ -34,7 +34,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
     /// Abstract class for square triangular matrices. 
     ///   A triangular matrix has elements on the diagonal and above or below it.
     /// </summary>
-    public abstract class TriangularMatrix : SquareMatrix, IExtraAccessors<double>
+    public abstract class TriangularMatrix : SquareMatrix
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TriangularMatrix"/> class.
@@ -101,7 +101,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// <returns>
         /// The requested element from the upper triangle.
         /// </returns>
-        public virtual double AtUpper(int row, int column)
+        public override double AtUpper(int row, int column)
         {
             return At(row, column);
         }
@@ -121,7 +121,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// <param name="value">
         /// The value on the upper triangle to set the element to.
         /// </param>
-        public virtual void AtUpper(int row, int column, double value)
+        public override void AtUpper(int row, int column, double value)
         {
             At(row, column, value);
         }
@@ -140,7 +140,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// <returns>
         /// The requested element from the lower triangle.
         /// </returns>
-        public virtual double AtLower(int row, int column)
+        public override double AtLower(int row, int column)
         {
             return At(row, column);
         }
@@ -160,7 +160,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// <param name="value">
         /// The value on the lower triangle to set the element to.
         /// </param>
-        public virtual void AtLower(int row, int column, double value)
+        public override void AtLower(int row, int column, double value)
         {
             At(row, column, value);
         }
@@ -174,7 +174,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// <returns>
         /// The requested element.
         /// </returns>
-        public double AtDiagonal(int row)
+        public override double AtDiagonal(int row)
         {
             return Data[Indexer.IndexOfDiagonal(row)];
         }
@@ -188,7 +188,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// <param name="value">
         /// The value to set the element to.
         /// </param>
-        public void AtDiagonal(int row, double value)
+        public override void AtDiagonal(int row, double value)
         {
             Data[Indexer.IndexOfDiagonal(row)] = value;
         }

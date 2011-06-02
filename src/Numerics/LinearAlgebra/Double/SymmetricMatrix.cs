@@ -34,7 +34,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
     /// Symmetric <c>double</c> version of the <see cref="Matrix"/> class.
     /// </summary>
     [Serializable]
-    public abstract class SymmetricMatrix : SquareMatrix, IExtraAccessors<double>
+    public abstract class SymmetricMatrix : SquareMatrix
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SymmetricMatrix"/> class.
@@ -74,99 +74,6 @@ namespace MathNet.Numerics.LinearAlgebra.Double
                 return true;
             }
         }
-
-        #region IExtraAccessors<double> Members
-
-        /// <summary>
-        /// Retrieves the requested element without range checking. 
-        ///   CAUTION:
-        ///   This method assumes that you request an element from the upper triangle (row less than or equal to column).  
-        ///   If not, the result is completely wrong.
-        /// </summary>
-        /// <param name="row">
-        /// The row of the element. Must be less than or equal to column. 
-        /// </param>
-        /// <param name="column">
-        /// The column of the element. Must be more than or equal to row. 
-        /// </param>
-        /// <returns>
-        /// The requested element from the upper triangle.
-        /// </returns>
-        public abstract double AtUpper(int row, int column);
-
-        /// <summary>
-        /// Sets the value of the given element.
-        ///   CAUTION:
-        ///   This method assumes that you set an element from the upper triangle (row less than or equal to column).
-        ///   If not, the result is completely wrong.
-        /// </summary>
-        /// <param name="row">
-        /// The row of the element. Must be less than or equal to column.
-        /// </param>
-        /// <param name="column">
-        /// The column of the element. Must be more than or equal to row. 
-        /// </param>
-        /// <param name="value">
-        /// The value on the upper triangle to set the element to.
-        /// </param>
-        public abstract void AtUpper(int row, int column, double value);
-
-        /// <summary>
-        /// Retrieves the requested element without range checking. 
-        ///   CAUTION:
-        ///   This method assumes that you request an element from the lower triangle (row greater than or equal to column).
-        /// </summary>
-        /// <param name="row">
-        /// The row of the element. Must be more than or equal to column. 
-        /// </param>
-        /// <param name="column">
-        /// The column of the element. Must be less than or equal to row. 
-        /// </param>
-        /// <returns>
-        /// The requested element from the lower triangle.
-        /// </returns>
-        public abstract double AtLower(int row, int column);
-
-        /// <summary>
-        /// Sets the value of the given element.
-        ///   CAUTION:
-        ///   This method assumes that you set an element from the lower triangle (row greater than or equal to column).
-        ///   If not, the result is completely wrong.
-        /// </summary>
-        /// <param name="row">
-        /// The row of the element. Must be more than or equal to column
-        /// </param>
-        /// <param name="column">
-        /// The column of the element. Must be less than or equal to row. 
-        /// </param>
-        /// <param name="value">
-        /// The value on the lower triangle to set the element to.
-        /// </param>
-        public abstract void AtLower(int row, int column, double value);
-
-        /// <summary>
-        /// Retrieves the requested element without range checking.
-        /// </summary>
-        /// <param name="row">
-        /// The row=column of the diagonal element.
-        /// </param>
-        /// <returns>
-        /// The requested element.
-        /// </returns>
-        public abstract double AtDiagonal(int row);
-
-        /// <summary>
-        /// Sets the value of the given element.
-        /// </summary>
-        /// <param name="row">
-        /// The row=column of the diagonal element.
-        /// </param>
-        /// <param name="value">
-        /// The value to set the element to.
-        /// </param>
-        public abstract void AtDiagonal(int row, double value);
-
-        #endregion
 
         /// <summary>
         /// Returns the transpose of this matrix. The transpose is equal and this method returns a reference to this matrix.

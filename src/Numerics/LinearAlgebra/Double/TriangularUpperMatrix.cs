@@ -471,20 +471,11 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// </param>
         protected override void DoPointwiseDivide(Matrix<double> other, Matrix<double> result)
         {
-            var triangularUpperOther = other as TriangularUpperMatrix;
-            var triangularUpperResult = result as TriangularUpperMatrix;
-            if (triangularUpperOther == null || triangularUpperResult == null)
+            for (var row = 0; row < RowCount; row++)
             {
-                base.DoPointwiseDivide(other, result);
-            }
-            else
-            {
-                for (var row = 0; row < RowCount; row++)
+                for (var column = row; column < ColumnCount; column++)
                 {
-                    for (var column = row; column < ColumnCount; column++)
-                    {
-                        triangularUpperResult.AtUpper(row, column, AtUpper(row, column) / triangularUpperOther.AtUpper(row, column));
-                    }
+                    result.AtUpper(row, column, AtUpper(row, column) / other.AtUpper(row, column));
                 }
             }
         }

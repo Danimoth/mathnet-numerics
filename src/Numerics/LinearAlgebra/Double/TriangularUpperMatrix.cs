@@ -500,20 +500,11 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// </param>
         protected override void DoModulus(double divisor, Matrix<double> result)
         {
-            var triangularUpperResult = result as TriangularUpperMatrix;
-
-            if (triangularUpperResult == null)
+            for (var row = 0; row < RowCount; row++)
             {
-                base.DoModulus(divisor, result);
-            }
-            else
-            {
-                for (var row = 0; row < RowCount; row++)
+                for (var column = row; column < ColumnCount; column++)
                 {
-                    for (var column = row; column < ColumnCount; column++)
-                    {
-                        triangularUpperResult.AtUpper(row, column, AtUpper(row, column) % divisor);
-                    }
+                    result.AtUpper(row, column, AtUpper(row, column) % divisor);
                 }
             }
         }

@@ -267,9 +267,8 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         protected override void DoMultiply(Matrix<double> other, Matrix<double> result)
         {
             var triangularUpperOther = other as TriangularUpperMatrix;
-            var triangularUpperResult = result as TriangularUpperMatrix;
 
-            if (triangularUpperOther == null || triangularUpperResult == null)
+            if (triangularUpperOther == null)
             {
                 for (var row = 0; row < RowCount; row++)
                 {
@@ -278,7 +277,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
                         var s = 0.0;
                         for (var column = row; column < ColumnCount; column++)
                         {
-                            s += At(row, column) * other.At(column, columnOther);
+                            s += AtUpper(row, column) * other.At(column, columnOther);
                         }
 
                         result.At(row, columnOther, s);
@@ -294,7 +293,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
                         var s = 0.0;
                         for (var column = row; column < ColumnCount; column++)
                         {
-                            s += At(row, column) * other.At(column, columnOther);
+                            s += AtUpper(row, column) * triangularUpperOther.AtUpper(column, columnOther);
                         }
 
                         result.At(row, columnOther, s);

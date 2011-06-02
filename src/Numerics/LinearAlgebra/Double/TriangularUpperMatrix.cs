@@ -188,6 +188,65 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         }
 
         /// <summary>
+        /// Adds another matrix to this matrix.
+        /// </summary>
+        /// <param name="other">
+        /// The matrix to add to this matrix.
+        /// </param>
+        /// <param name="result">
+        /// The matrix to store the result of the addition.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// If the other matrix is <see langword="null"/>.
+        /// </exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// If the two matrices don't have the same dimensions.
+        /// </exception>
+        protected void DoAdd(TriangularLowerMatrix other, Matrix<double> result)
+        {
+            for (var row = 0; row < RowCount; row++)
+            {
+                for (var column = 0; column < row; column++)
+                {
+                    result.At(row, column, other.AtLower(row, column));
+                }
+
+                result.At(row, row, AtDiagonal(row) + other.AtDiagonal(row));
+
+                for (var column = row + 1; column < ColumnCount; column++)
+                {
+                    result.At(row, column, AtUpper(row, column));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Adds another matrix to this matrix.
+        /// </summary>
+        /// <param name="other">
+        /// The matrix to add to this matrix.
+        /// </param>
+        /// <param name="result">
+        /// The matrix to store the result of the addition.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// If the other matrix is <see langword="null"/>.
+        /// </exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// If the two matrices don't have the same dimensions.
+        /// </exception>
+        protected void DoAdd(TriangularUpperMatrix other, TriangularUpperMatrix result)
+        {
+            for (var row = 0; row < RowCount; row++)
+            {
+                for (var column = row; column < ColumnCount; column++)
+                {
+                    result.AtUpper(row, column, AtUpper(row, column) + other.AtUpper(row, column));
+                }
+            }
+        }
+
+        /// <summary>
         /// Subtracts another matrix from this matrix.
         /// </summary>
         /// <param name="other">

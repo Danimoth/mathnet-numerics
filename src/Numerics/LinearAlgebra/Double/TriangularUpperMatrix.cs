@@ -151,12 +151,12 @@ namespace MathNet.Numerics.LinearAlgebra.Double
             {
                 for (var column = 0; column < row; column++)
                 {
-                    result.At(row, column, other.At(row, column));
+                    result.AtLower(row, column, other.AtLower(row, column));
                 }
 
                 for (var column = row; column < ColumnCount; column++)
                 {
-                    result.At(row, column, AtUpper(row, column) + other.At(row, column));
+                    result.AtUpper(row, column, AtUpper(row, column) + other.AtUpper(row, column));
                 }
             }
         }
@@ -208,14 +208,14 @@ namespace MathNet.Numerics.LinearAlgebra.Double
             {
                 for (var column = 0; column < row; column++)
                 {
-                    result.At(row, column, other.AtLower(row, column));
+                    result.AtLower(row, column, other.AtLower(row, column));
                 }
 
-                result.At(row, row, AtDiagonal(row) + other.AtDiagonal(row));
+                result.AtDiagonal(row, AtDiagonal(row) + other.AtDiagonal(row));
 
                 for (var column = row + 1; column < ColumnCount; column++)
                 {
-                    result.At(row, column, AtUpper(row, column));
+                    result.AtUpper(row, column, AtUpper(row, column));
                 }
             }
         }
@@ -241,12 +241,12 @@ namespace MathNet.Numerics.LinearAlgebra.Double
             {
                 for (var column = 0; column < row; column++)
                 {
-                    result.At(row, column, other.At(row, column));
+                    result.AtLower(row, column, other.AtLower(row, column));
                 }
 
                 for (var column = row; column < ColumnCount; column++)
                 {
-                    result.At(row, column, AtUpper(row, column) - other.At(row, column));
+                    result.AtUpper(row, column, AtUpper(row, column) - other.AtUpper(row, column));
                 }
             }
         }
@@ -298,14 +298,14 @@ namespace MathNet.Numerics.LinearAlgebra.Double
             {
                 for (var column = 0; column < row; column++)
                 {
-                    result.At(row, column, other.AtLower(row, column));
+                    result.AtLower(row, column, other.AtLower(row, column));
                 }
 
-                result.At(row, row, AtDiagonal(row) - other.AtDiagonal(row));
+                result.AtDiagonal(row, AtDiagonal(row) - other.AtDiagonal(row));
 
                 for (var column = row + 1; column < ColumnCount; column++)
                 {
-                    result.At(row, column, AtUpper(row, column));
+                    result.AtUpper(row, column, AtUpper(row, column));
                 }
             }
         }
@@ -325,7 +325,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
             {
                 for (var column = row; column < ColumnCount; column++)
                 {
-                    result.At(row, column, AtUpper(row, column) * scalar);
+                    result.AtUpper(row, column, AtUpper(row, column) * scalar);
                 }
             }
         }
@@ -430,7 +430,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
                 {
                     for (var column = row; column != ColumnCount; column++)
                     {
-                        result.At(row, column,-AtUpper(row, column));
+                        result.AtUpper(row, column,-AtUpper(row, column));
                     }
                 }
             }

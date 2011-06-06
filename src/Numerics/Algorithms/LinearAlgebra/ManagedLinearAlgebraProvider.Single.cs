@@ -61,15 +61,15 @@ namespace MathNet.Numerics.Algorithms.LinearAlgebra
 
             if (alpha == 0.0)
             {
-                CommonParallel.For(0, y.Length, index => result[index] = y[index]);
+                Buffer.BlockCopy(y, 0, result, 0, y.Length * Constants.SizeOfFloat);
             }
             else if (alpha == 1.0)
             {
-                CommonParallel.For(0, y.Length, index => result[index] = y[index] + x[index]);
+                CommonParallel.ElementFor(0, y.Length, y.Length, index => result[index] = y[index] + x[index]);
             }
             else
             {
-                CommonParallel.For(0, y.Length, index => result[index] = y[index] + (alpha * x[index]));
+                CommonParallel.ElementFor(0, y.Length, y.Length, index => result[index] = y[index] + (alpha * x[index]));
             }
         }
 
@@ -89,15 +89,15 @@ namespace MathNet.Numerics.Algorithms.LinearAlgebra
 
             if (alpha == 0.0)
             {
-                CommonParallel.For(0, x.Length, index => result[index] = 0.0f);
+                Array.Clear(result, 0, result.Length);
             }
             else if (alpha == 1.0)
             {
-                CommonParallel.For(0, x.Length, index => result[index] = x[index]);
+                Buffer.BlockCopy(x, 0, result, 0, x.Length * Constants.SizeOfFloat);
             }
             else
             {
-                CommonParallel.For(0, x.Length, index => { result[index] = alpha * x[index]; });
+                CommonParallel.ElementFor(0, x.Length, x.Length, index => { result[index] = alpha * x[index]; });
             }
         }
 
@@ -125,8 +125,13 @@ namespace MathNet.Numerics.Algorithms.LinearAlgebra
                 throw new ArgumentException(Resources.ArgumentVectorsSameLength);
             }
 
-            float sum = 0;
-            CommonParallel.For(0, y.Length, index => sum += y[index] * x[index]);
+            var sum = 0.0f;
+
+            for (var index = 0; index < y.Length; index++)
+            {
+                sum += y[index] * x[index];
+            }
+
             return sum;
         }
 
@@ -162,7 +167,7 @@ namespace MathNet.Numerics.Algorithms.LinearAlgebra
                 throw new ArgumentException(Resources.ArgumentVectorsSameLength);
             }
 
-            CommonParallel.For(0, y.Length, i => result[i] = x[i] + y[i]);
+            CommonParallel.ElementFor(0, y.Length, y.Length, i => result[i] = x[i] + y[i]);
         }
 
         /// <summary>
@@ -197,7 +202,7 @@ namespace MathNet.Numerics.Algorithms.LinearAlgebra
                 throw new ArgumentException(Resources.ArgumentVectorsSameLength);
             }
 
-            CommonParallel.For(0, y.Length, i => result[i] = x[i] - y[i]);
+            CommonParallel.ElementFor(0, y.Length, y.Length, i => result[i] = x[i] - y[i]);
         }
 
         /// <summary>
@@ -232,7 +237,7 @@ namespace MathNet.Numerics.Algorithms.LinearAlgebra
                 throw new ArgumentException(Resources.ArgumentVectorsSameLength);
             }
 
-            CommonParallel.For(0, y.Length, i => result[i] = x[i] * y[i]);
+            CommonParallel.ElementFor(0, y.Length, y.Length, i => result[i] = x[i] * y[i]);
         }
 
         /// <summary>
@@ -267,7 +272,7 @@ namespace MathNet.Numerics.Algorithms.LinearAlgebra
                 throw new ArgumentException(Resources.ArgumentVectorsSameLength);
             }
 
-            CommonParallel.For(0, y.Length, index => { result[index] = x[index] / y[index]; });
+            CommonParallel.ElementFor(0, y.Length, y.Length, index => { result[index] = x[index] / y[index]; });
         }
         
         /// <summary>

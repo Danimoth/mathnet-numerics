@@ -1474,7 +1474,7 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
         #endregion
 
         /// <summary>
-        /// Ranges the check.
+        /// Checks the range of the requested row, column. 
         /// </summary>
         /// <param name="row">
         /// The row of the element.

@@ -419,6 +419,50 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         }
 
         /// <summary>
+        /// Multiplies this matrix with another matrix and places the results into the result matrix.
+        /// </summary>
+        /// <param name="other">The matrix to multiply with.</param>
+        /// <param name="result">The result of the multiplication.</param>
+        /// <remarks> 
+        /// Multiplying two upper triangular matrices results in an upper triangular matrix. 
+        /// </remarks>
+        protected void DoMultiply(TriangularLowerMatrix other, Matrix<double> result)
+        {
+            for (var row = 0; row < RowCount; row++)
+            {
+                for (var columnOther = 0; columnOther < other.ColumnCount; columnOther++)
+                {
+                    var s = 0.0;
+                    for (var column = Math.Max(row, columnOther); column < columnOther; column++)
+                    {
+                        s += AtUpper(row, column) * other.AtUpper(column, columnOther);
+                    }
+
+                    result.At(row, columnOther, s);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Multiplies this matrix with another matrix and places the results into the result matrix.
+        /// </summary>
+        /// <param name="other">The matrix to multiply with.</param>
+        /// <param name="result">The result of the multiplication.</param>
+        /// <remarks> 
+        /// Multiplying two upper triangular matrices results in an upper triangular matrix. 
+        /// </remarks>
+        protected void DoMultiply(DiagonalMatrix other, Matrix<double> result)
+        {
+            for (var row = 0; row < RowCount; row++)
+            {
+                for (var columnOther = row; columnOther < other.ColumnCount; columnOther++)
+                {
+                    result.At(row, columnOther, At(row, columnOther) * other.At(columnOther, columnOther));
+                }
+            }
+        }
+
+        /// <summary>
         /// Negate each element of this matrix and place the results into the result matrix.
         /// </summary>
         /// <param name="result">

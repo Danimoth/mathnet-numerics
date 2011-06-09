@@ -420,9 +420,6 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// </summary>
         /// <param name="other">The matrix to multiply with.</param>
         /// <param name="result">The result of the multiplication.</param>
-        /// <remarks> 
-        /// Multiplying two upper triangular matrices results in an upper triangular matrix. 
-        /// </remarks>
         protected override void DoMultiply(Matrix<double> other, Matrix<double> result)
         {
             for (var row = 0; row < RowCount; row++)
@@ -445,9 +442,6 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// </summary>
         /// <param name="other">The matrix to multiply with.</param>
         /// <param name="result">The result of the multiplication.</param>
-        /// <remarks> 
-        /// Multiplying two upper triangular matrices results in an upper triangular matrix. 
-        /// </remarks>
         protected void DoMultiply(TriangularLowerMatrix other, Matrix<double> result)
         {
             for (var row = 0; row < RowCount; row++)
@@ -495,9 +489,6 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// </summary>
         /// <param name="other">The matrix to multiply with.</param>
         /// <param name="result">The result of the multiplication.</param>
-        /// <remarks> 
-        /// Multiplying two upper triangular matrices results in an upper triangular matrix. 
-        /// </remarks>
         protected void DoMultiply(DiagonalMatrix other, Matrix<double> result)
         {
             for (var row = 0; row < RowCount; row++)

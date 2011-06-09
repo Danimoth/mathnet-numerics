@@ -668,18 +668,18 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         }
 
         /// <summary>
-        /// Multiplies the transpose of this matrix with another matrix and places the results into the result matrix.
+        /// Multiplies the transpose of this matrix with a vector and places the results into the result vector.
         /// </summary>
-        /// <param name="other">The matrix to multiply with.</param>
+        /// <param name="rightSide">The vector to multiply with.</param>
         /// <param name="result">The result of the multiplication.</param>
-        protected override void DoTransposeThisAndMultiply(Vector<double> other, Vector<double> result)
+        protected override void DoTransposeThisAndMultiply(Vector<double> rightSide, Vector<double> result)
         {
             for (var column = 0; column < ColumnCount; column++)
             {
                 var s = 0.0;
                 for (var row = 0; row <= column; row++)
                 {
-                    s += other[row] * AtUpper(row, column);
+                    s += rightSide[row] * AtUpper(row, column);
                 }
 
                 result[column] = s;

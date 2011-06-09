@@ -451,7 +451,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
                     var s = 0.0;
                     for (var column = Math.Max(row, columnOther); column < columnOther; column++)
                     {
-                        s += AtUpper(row, column) * other.AtUpper(column, columnOther);
+                        s += AtUpper(row, column) * other.AtLower(column, columnOther);
                     }
 
                     result.At(row, columnOther, s);
@@ -464,9 +464,6 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// </summary>
         /// <param name="other">The matrix to multiply with.</param>
         /// <param name="result">The result of the multiplication.</param>
-        /// <remarks> 
-        /// Multiplying two upper triangular matrices results in an upper triangular matrix. 
-        /// </remarks>
         protected void DoMultiply(TriangularUpperMatrix other, Matrix<double> result)
         {
             for (var row = 0; row < RowCount; row++)
@@ -479,7 +476,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
                         s += AtUpper(row, column) * other.AtUpper(column, columnOther);
                     }
 
-                    result.At(row, columnOther, s);
+                    result.AtUpper(row, columnOther, s);
                 }
             }
         }
@@ -495,7 +492,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
             {
                 for (var columnOther = row; columnOther < other.ColumnCount; columnOther++)
                 {
-                    result.At(row, columnOther, At(row, columnOther) * other.At(columnOther, columnOther));
+                    result.AtUpper(row, columnOther, AtUpper(row, columnOther) * other.AtDiagonal(columnOther));
                 }
             }
         }
@@ -514,7 +511,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
                     var s = 0.0;
                     for (var column = row; column < ColumnCount; column++)
                     {
-                        s += At(row, column) * other.At(rowOther, column);
+                        s += AtUpper(row, column) * other.At(rowOther, column);
                     }
 
                     result.At(row, rowOther, s);
@@ -536,10 +533,10 @@ namespace MathNet.Numerics.LinearAlgebra.Double
                     var s = 0.0;
                     for (var column = row; column < rowOther; column++)
                     {
-                        s += At(row, column) * other.At(rowOther, column);
+                        s += AtUpper(row, column) * other.AtLower(rowOther, column);
                     }
 
-                    result.At(row, rowOther, s);
+                    result.AtUpper(row, rowOther, s);
                 }
             }
         }
@@ -558,7 +555,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
                     var s = 0.0;
                     for (var column = Math.Max(row, rowOther); column < ColumnCount; column++)
                     {
-                        s += At(row, column) * other.At(rowOther, column);
+                        s += AtUpper(row, column) * other.AtUpper(rowOther, column);
                     }
 
                     result.At(row, rowOther, s);
@@ -590,7 +587,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
                     var s = 0.0;
                     for (var row = 0; row < column; row++)
                     {
-                        s += At(row, column) * other.At(row, columnOther);
+                        s += AtUpper(row, column) * other.At(row, columnOther);
                     }
 
                     result.At(column, columnOther, s);
@@ -612,10 +609,10 @@ namespace MathNet.Numerics.LinearAlgebra.Double
                     var s = 0.0;
                     for (var row = columnOther; row < column; row++)
                     {
-                        s += At(row, column) * other.At(row, columnOther);
+                        s += AtUpper(row, column) * other.AtLower(row, columnOther);
                     }
 
-                    result.At(column, columnOther, s);
+                    result.AtLower(column, columnOther, s);
                 }
             }
         }
@@ -634,7 +631,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
                     var s = 0.0;
                     for (var row = 0; row < Math.Min(column, columnOther); row++)
                     {
-                        s += At(row, column) * other.At(row, columnOther);
+                        s += AtUpper(row, column) * other.AtUpper(row, columnOther);
                     }
 
                     result.At(column, columnOther, s);
@@ -653,7 +650,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
             {
                 for (var columnOther = 0; columnOther < other.ColumnCount; columnOther++)
                 {
-                    result.At(column, columnOther, At(columnOther, column) * other.At(columnOther, columnOther));
+                    result.AtLower(column, columnOther, AtUpper(columnOther, column) * other.AtDiagonal(columnOther));
                 }
             }
         }

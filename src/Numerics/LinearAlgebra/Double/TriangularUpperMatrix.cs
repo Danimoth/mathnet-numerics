@@ -412,16 +412,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// <param name="result">The result of the multiplication.</param>
         protected override void DoLeftMultiply(Vector<double> leftSide, Vector<double> result)
         {
-            for (var column = 0; column < ColumnCount; column++)
-            {
-                var s = 0.0;
-                for (var row = 0; row <= column; row++)
-                {
-                    s += leftSide[row] * AtUpper(row, column);
-                }
-
-                result[column] = s;
-            }
+            DoTransposeThisAndMultiply(leftSide, result);
         }
 
         /// <summary>
@@ -592,6 +583,107 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         protected void DoTransposeAndMultiply(DiagonalMatrix other, Matrix<double> result)
         {
             DoMultiply(other, result);
+        }
+
+        /// <summary>
+        /// Multiplies the transpose of this matrix with another matrix and places the results into the result matrix.
+        /// </summary>
+        /// <param name="other">The matrix to multiply with.</param>
+        /// <param name="result">The result of the multiplication.</param>
+        protected override void DoTransposeThisAndMultiply(Matrix<double> other, Matrix<double> result)
+        {
+            for (var column = 0; column < ColumnCount; column++)
+            {
+                for (var columnOther = 0; columnOther < other.ColumnCount; columnOther++)
+                {
+                    var s = 0.0;
+                    for (var row = 0; row < column; row++)
+                    {
+                        s += At(row, column) * other.At(row, columnOther);
+                    }
+
+                    result.At(column, columnOther, s);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Multiplies the transpose of this matrix with another matrix and places the results into the result matrix.
+        /// </summary>
+        /// <param name="other">The matrix to multiply with.</param>
+        /// <param name="result">The result of the multiplication.</param>
+        protected void DoTransposeThisAndMultiply(TriangularLowerMatrix other, Matrix<double> result)
+        {
+            for (var column = 0; column < ColumnCount; column++)
+            {
+                for (var columnOther = 0; columnOther < column; columnOther++)
+                {
+                    var s = 0.0;
+                    for (var row = columnOther; row < column; row++)
+                    {
+                        s += At(row, column) * other.At(row, columnOther);
+                    }
+
+                    result.At(column, columnOther, s);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Multiplies the transpose of this matrix with another matrix and places the results into the result matrix.
+        /// </summary>
+        /// <param name="other">The matrix to multiply with.</param>
+        /// <param name="result">The result of the multiplication.</param>
+        protected void DoTransposeThisAndMultiply(TriangularUpperMatrix other, Matrix<double> result)
+        {
+            for (var column = 0; column < ColumnCount; column++)
+            {
+                for (var columnOther = 0; columnOther < other.ColumnCount; columnOther++)
+                {
+                    var s = 0.0;
+                    for (var row = 0; row < Math.Min(column, columnOther); row++)
+                    {
+                        s += At(row, column) * other.At(row, columnOther);
+                    }
+
+                    result.At(column, columnOther, s);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Multiplies the transpose of this matrix with another matrix and places the results into the result matrix.
+        /// </summary>
+        /// <param name="other">The matrix to multiply with.</param>
+        /// <param name="result">The result of the multiplication.</param>
+        protected void DoTransposeThisAndMultiply(DiagonalMatrix other, Matrix<double> result)
+        {
+            for (var column = 0; column < ColumnCount; column++)
+            {
+                for (var columnOther = 0; columnOther < other.ColumnCount; columnOther++)
+                {
+                    result.At(column, columnOther, At(columnOther, column) * other.At(columnOther, columnOther));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Multiplies the transpose of this matrix with another matrix and places the results into the result matrix.
+        /// </summary>
+        /// <param name="other">The matrix to multiply with.</param>
+        /// <param name="result">The result of the multiplication.</param>
+        protected override void DoTransposeThisAndMultiply(Vector<double> other, Vector<double> result)
+        {
+            for (var column = 0; column < ColumnCount; column++)
+            {
+                var s = 0.0;
+                for (var row = 0; row <= column; row++)
+                {
+                    s += other[row] * AtUpper(row, column);
+                }
+
+                result[column] = s;
+            }
         }
 
         /// <summary>

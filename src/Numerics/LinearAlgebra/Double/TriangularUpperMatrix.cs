@@ -294,13 +294,20 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// <exception cref="ArgumentOutOfRangeException">
         /// If the two matrices don't have the same dimensions.
         /// </exception>
-        protected void DoSubtract(TriangularUpperMatrix other, Matrix<double> result)
+        protected void DoSubtract(TriangularLowerMatrix other, Matrix<double> result)
         {
             for (var row = 0; row < RowCount; row++)
             {
-                for (var column = row; column < ColumnCount; column++)
+                for (var column = 0; column < row; column++)
                 {
-                    result.AtUpper(row, column, AtUpper(row, column) - other.AtUpper(row, column));
+                    result.AtLower(row, column, other.AtLower(row, column));
+                }
+
+                result.AtDiagonal(row, AtDiagonal(row) - other.AtDiagonal(row));
+
+                for (var column = row + 1; column < ColumnCount; column++)
+                {
+                    result.AtUpper(row, column, AtUpper(row, column));
                 }
             }
         }
@@ -320,20 +327,13 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// <exception cref="ArgumentOutOfRangeException">
         /// If the two matrices don't have the same dimensions.
         /// </exception>
-        protected void DoSubtract(TriangularLowerMatrix other, Matrix<double> result)
+        protected void DoSubtract(TriangularUpperMatrix other, Matrix<double> result)
         {
             for (var row = 0; row < RowCount; row++)
             {
-                for (var column = 0; column < row; column++)
+                for (var column = row; column < ColumnCount; column++)
                 {
-                    result.AtLower(row, column, other.AtLower(row, column));
-                }
-
-                result.AtDiagonal(row, AtDiagonal(row) - other.AtDiagonal(row));
-
-                for (var column = row + 1; column < ColumnCount; column++)
-                {
-                    result.AtUpper(row, column, AtUpper(row, column));
+                    result.AtUpper(row, column, AtUpper(row, column) - other.AtUpper(row, column));
                 }
             }
         }
@@ -448,14 +448,14 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// <remarks> 
         /// Multiplying two upper triangular matrices results in an upper triangular matrix. 
         /// </remarks>
-        protected void DoMultiply(TriangularUpperMatrix other, Matrix<double> result)
+        protected void DoMultiply(TriangularLowerMatrix other, Matrix<double> result)
         {
             for (var row = 0; row < RowCount; row++)
             {
-                for (var columnOther = row; columnOther < other.ColumnCount; columnOther++)
+                for (var columnOther = 0; columnOther < other.ColumnCount; columnOther++)
                 {
                     var s = 0.0;
-                    for (var column = row; column < columnOther; column++)
+                    for (var column = Math.Max(row, columnOther); column < columnOther; column++)
                     {
                         s += AtUpper(row, column) * other.AtUpper(column, columnOther);
                     }
@@ -473,14 +473,14 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         /// <remarks> 
         /// Multiplying two upper triangular matrices results in an upper triangular matrix. 
         /// </remarks>
-        protected void DoMultiply(TriangularLowerMatrix other, Matrix<double> result)
+        protected void DoMultiply(TriangularUpperMatrix other, Matrix<double> result)
         {
             for (var row = 0; row < RowCount; row++)
             {
-                for (var columnOther = 0; columnOther < other.ColumnCount; columnOther++)
+                for (var columnOther = row; columnOther < other.ColumnCount; columnOther++)
                 {
                     var s = 0.0;
-                    for (var column = Math.Max(row, columnOther); column < columnOther; column++)
+                    for (var column = row; column < columnOther; column++)
                     {
                         s += AtUpper(row, column) * other.AtUpper(column, columnOther);
                     }

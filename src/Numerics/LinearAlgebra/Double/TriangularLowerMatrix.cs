@@ -403,5 +403,27 @@ namespace MathNet.Numerics.LinearAlgebra.Double
                 result[row] = s;
             }
         }
+
+        /// <summary>
+        /// Multiplies this matrix with another matrix and places the results into the result matrix.
+        /// </summary>
+        /// <param name="other">The matrix to multiply with.</param>
+        /// <param name="result">The result of the multiplication.</param>
+        protected override void DoMultiply(Matrix<double> other, Matrix<double> result)
+        {
+            for (var row = 0; row < RowCount; row++)
+            {
+                for (var columnOther = 0; columnOther < other.ColumnCount; columnOther++)
+                {
+                    var s = 0.0;
+                    for (var column = 0; column <= row; column++)
+                    {
+                        s += AtLower(row, column) * other.At(column, columnOther);
+                    }
+
+                    result.At(row, columnOther, s);
+                }
+            }
+        }
     }
 }

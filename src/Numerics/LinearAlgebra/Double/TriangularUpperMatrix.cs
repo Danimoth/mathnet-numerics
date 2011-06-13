@@ -521,7 +521,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
                 for (var rowOther = row; rowOther < other.RowCount; rowOther++)
                 {
                     var s = 0.0;
-                    for (var column = row; column < rowOther; column++)
+                    for (var column = row; column <= rowOther; column++)
                     {
                         s += AtUpper(row, column) * other.AtLower(rowOther, column);
                     }
@@ -575,7 +575,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
                 for (var columnOther = 0; columnOther < other.ColumnCount; columnOther++)
                 {
                     var s = 0.0;
-                    for (var row = 0; row < column; row++)
+                    for (var row = 0; row <= column; row++)
                     {
                         s += AtUpper(row, column) * other.At(row, columnOther);
                     }
@@ -594,10 +594,10 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         {
             for (var column = 0; column < ColumnCount; column++)
             {
-                for (var columnOther = 0; columnOther < column; columnOther++)
+                for (var columnOther = 0; columnOther <= column; columnOther++)
                 {
                     var s = 0.0;
-                    for (var row = columnOther; row < column; row++)
+                    for (var row = columnOther; row <= column; row++)
                     {
                         s += AtUpper(row, column) * other.AtLower(row, columnOther);
                     }
@@ -619,7 +619,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
                 for (var columnOther = 0; columnOther < other.ColumnCount; columnOther++)
                 {
                     var s = 0.0;
-                    for (var row = 0; row < Math.Min(column, columnOther); row++)
+                    for (var row = 0; row <= Math.Min(column, columnOther); row++)
                     {
                         s += AtUpper(row, column) * other.AtUpper(row, columnOther);
                     }
@@ -638,7 +638,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         {
             for (var column = 0; column < ColumnCount; column++)
             {
-                for (var columnOther = 0; columnOther < column; columnOther++)
+                for (var columnOther = 0; columnOther <= column; columnOther++)
                 {
                     result.AtLower(column, columnOther, AtUpper(columnOther, column) * other.AtDiagonal(columnOther));
                 }

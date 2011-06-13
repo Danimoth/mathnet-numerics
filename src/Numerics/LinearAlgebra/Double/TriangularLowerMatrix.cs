@@ -583,5 +583,65 @@ namespace MathNet.Numerics.LinearAlgebra.Double
                 }
             }
         }
+
+        /// <summary>
+        /// Multiplies the transpose of this matrix with another matrix and places the results into the result matrix.
+        /// </summary>
+        /// <param name="other">The matrix to multiply with.</param>
+        /// <param name="result">The result of the multiplication.</param>
+        protected void DoTransposeThisAndMultiply(TriangularLowerMatrix other, Matrix<double> result)
+        {
+            for (var column = 0; column < ColumnCount; column++)
+            {
+                for (var columnOther = 0; columnOther < other.ColumnCount; columnOther++)
+                {
+                    var s = 0.0;
+                    for (var row = Math.Max(column, columnOther); row < RowCount; row++)
+                    {
+                        s += AtLower(row, column) * other.AtLower(row, columnOther);
+                    }
+
+                    result.At(column, columnOther, s);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Multiplies the transpose of this matrix with another matrix and places the results into the result matrix.
+        /// </summary>
+        /// <param name="other">The matrix to multiply with.</param>
+        /// <param name="result">The result of the multiplication.</param>
+        protected void DoTransposeThisAndMultiply(TriangularUpperMatrix other, Matrix<double> result)
+        {
+            for (var column = 0; column < ColumnCount; column++)
+            {
+                for (var columnOther = column; columnOther < other.ColumnCount; columnOther++)
+                {
+                    var s = 0.0;
+                    for (var row = column; row < columnOther; row++)
+                    {
+                        s += AtLower(row, column) * other.AtUpper(row, columnOther);
+                    }
+
+                    result.AtUpper(column, columnOther, s);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Multiplies the transpose of this matrix with another matrix and places the results into the result matrix.
+        /// </summary>
+        /// <param name="other">The matrix to multiply with.</param>
+        /// <param name="result">The result of the multiplication.</param>
+        protected void DoTransposeThisAndMultiply(DiagonalMatrix other, Matrix<double> result)
+        {
+            for (var column = 0; column < ColumnCount; column++)
+            {
+                for (var columnOther = column; columnOther < other.ColumnCount; columnOther++)
+                {
+                    result.AtUpper(column, columnOther, AtLower(columnOther, column) * other.AtDiagonal(columnOther));
+                }
+            }
+        }
     }
 }

@@ -638,7 +638,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         {
             for (var column = 0; column < ColumnCount; column++)
             {
-                for (var columnOther = 0; columnOther < other.ColumnCount; columnOther++)
+                for (var columnOther = 0; columnOther < column; columnOther++)
                 {
                     result.AtLower(column, columnOther, AtUpper(columnOther, column) * other.AtDiagonal(columnOther));
                 }

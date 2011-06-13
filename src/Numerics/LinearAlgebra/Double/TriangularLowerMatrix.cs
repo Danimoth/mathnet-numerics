@@ -384,5 +384,24 @@ namespace MathNet.Numerics.LinearAlgebra.Double
                 }
             }
         }
+
+        /// <summary>
+        /// Multiplies this matrix with a vector and places the results into the result vector.
+        /// </summary>
+        /// <param name="rightSide">The vector to multiply with.</param>
+        /// <param name="result">The result of the multiplication.</param>
+        protected override void DoMultiply(Vector<double> rightSide, Vector<double> result)
+        {
+            for (var row = 0; row < RowCount; row++)
+            {
+                var s = 0.0;
+                for (var column = 0; column <= row; column++)
+                {
+                    s += AtLower(row, column) * rightSide[column];
+                }
+
+                result[row] = s;
+            }
+        }
     }
 }

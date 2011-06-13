@@ -425,5 +425,65 @@ namespace MathNet.Numerics.LinearAlgebra.Double
                 }
             }
         }
+
+        /// <summary>
+        /// Multiplies this matrix with another matrix and places the results into the result matrix.
+        /// </summary>
+        /// <param name="other">The matrix to multiply with.</param>
+        /// <param name="result">The result of the multiplication.</param>
+        protected void DoMultiply(TriangularLowerMatrix other, Matrix<double> result)
+        {
+            for (var row = 0; row < RowCount; row++)
+            {
+                for (var columnOther = 0; columnOther < row; columnOther++)
+                {
+                    var s = 0.0;
+                    for (var column = columnOther; column < row; column++)
+                    {
+                        s += AtLower(row, column) * other.AtLower(column, columnOther);
+                    }
+
+                    result.AtLower(row, columnOther, s);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Multiplies this matrix with another matrix and places the results into the result matrix.
+        /// </summary>
+        /// <param name="other">The matrix to multiply with.</param>
+        /// <param name="result">The result of the multiplication.</param>
+        protected void DoMultiply(TriangularUpperMatrix other, Matrix<double> result)
+        {
+            for (var row = 0; row < RowCount; row++)
+            {
+                for (var columnOther = row; columnOther < other.ColumnCount; columnOther++)
+                {
+                    var s = 0.0;
+                    for (var column = 0; column < Math.Min(row, columnOther); column++)
+                    {
+                        s += AtLower(row, column) * other.AtUpper(column, columnOther);
+                    }
+
+                    result.At(row, columnOther, s);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Multiplies this matrix with another matrix and places the results into the result matrix.
+        /// </summary>
+        /// <param name="other">The matrix to multiply with.</param>
+        /// <param name="result">The result of the multiplication.</param>
+        protected void DoMultiply(DiagonalMatrix other, Matrix<double> result)
+        {
+            for (var row = 0; row < RowCount; row++)
+            {
+                for (var columnOther = 0; columnOther <= row; columnOther++)
+                {
+                    result.AtLower(row, columnOther, AtLower(row, columnOther) * other.AtDiagonal(columnOther));
+                }
+            }
+        }
     }
 }

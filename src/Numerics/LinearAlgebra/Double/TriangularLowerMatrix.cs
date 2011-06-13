@@ -643,5 +643,24 @@ namespace MathNet.Numerics.LinearAlgebra.Double
                 }
             }
         }
+
+        /// <summary>
+        /// Multiplies the transpose of this matrix with a vector and places the results into the result vector.
+        /// </summary>
+        /// <param name="rightSide">The vector to multiply with.</param>
+        /// <param name="result">The result of the multiplication.</param>
+        protected override void DoTransposeThisAndMultiply(Vector<double> rightSide, Vector<double> result)
+        {
+            for (var column = 0; column < ColumnCount; column++)
+            {
+                var s = 0.0;
+                for (var row = column; row < RowCount; row++)
+                {
+                    s += AtLower(row, column) * rightSide[row];
+                }
+
+                result[column] = s;
+            }
+        }
     }
 }

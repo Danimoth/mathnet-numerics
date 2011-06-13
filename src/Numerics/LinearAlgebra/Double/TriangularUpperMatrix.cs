@@ -95,10 +95,10 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         public override double L1Norm()
         {
             var norm = 0.0;
-            for (var column = 0; column < ColumnCount; column++)
+            for (var row = 0; row < RowCount; row++)
             {
                 var s = 0.0;
-                for (var row = 0; row <= column; row++)
+                for (var column = row; column < ColumnCount; column++)
                 {
                     s += Math.Abs(AtUpper(row, column));
                 }

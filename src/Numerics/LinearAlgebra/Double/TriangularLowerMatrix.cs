@@ -100,7 +100,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
                 var s = 0.0;
                 for (var column = 0; column <= row; column++)
                 {
-                    s += Math.Abs(AtUpper(row, column));
+                    s += Math.Abs(AtLower(row, column));
                 }
 
                 norm = Math.Max(norm, s);
@@ -121,7 +121,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
                 var s = 0.0;
                 for (var column = 0; column <= row; column++)
                 {
-                    s += Math.Abs(AtUpper(row, column));
+                    s += Math.Abs(AtLower(row, column));
                 }
 
                 norm = Math.Max(norm, s);

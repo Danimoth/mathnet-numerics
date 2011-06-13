@@ -277,5 +277,92 @@ namespace MathNet.Numerics.LinearAlgebra.Double
                 }
             }
         }
+
+        /// <summary>
+        /// Subtracts another matrix from this matrix.
+        /// </summary>
+        /// <param name="other">
+        /// The matrix to subtract to this matrix.
+        /// </param>
+        /// <param name="result">
+        /// The matrix to store the result of subtraction.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// If the other matrix is <see langword="null"/>.
+        /// </exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// If the two matrices don't have the same dimensions.
+        /// </exception>
+        protected void DoSubtract(TriangularUpperMatrix other, Matrix<double> result)
+        {
+            for (var row = 0; row < RowCount; row++)
+            {
+                for (var column = 0; column < row; column++)
+                {
+                    result.AtLower(row, column, AtLower(row, column));
+                }
+
+                result.AtDiagonal(row, AtDiagonal(row) - other.AtDiagonal(row));
+
+                for (var column = row + 1; column < ColumnCount; column++)
+                {
+                    result.AtUpper(row, column, other.AtUpper(row, column));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Subtracts another matrix from this matrix.
+        /// </summary>
+        /// <param name="other">
+        /// The matrix to subtract to this matrix.
+        /// </param>
+        /// <param name="result">
+        /// The matrix to store the result of subtraction.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// If the other matrix is <see langword="null"/>.
+        /// </exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// If the two matrices don't have the same dimensions.
+        /// </exception>
+        protected void DoSubtract(TriangularLowerMatrix other, Matrix<double> result)
+        {
+            for (var row = 0; row < RowCount; row++)
+            {
+                for (var column = 0; column <= row; column++)
+                {
+                    result.AtLower(row, column, AtLower(row, column) - other.AtLower(row, column));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Subtracts another matrix from this matrix.
+        /// </summary>
+        /// <param name="other">
+        /// The matrix to subtract to this matrix.
+        /// </param>
+        /// <param name="result">
+        /// The matrix to store the result of subtraction.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// If the other matrix is <see langword="null"/>.
+        /// </exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// If the two matrices don't have the same dimensions.
+        /// </exception>
+        protected void DoSubtract(DiagonalMatrix other, Matrix<double> result)
+        {
+            for (var row = 0; row < RowCount; row++)
+            {
+                for (var column = 0; column < row; column++)
+                {
+                    result.AtLower(row, column, AtLower(row, column));
+                }
+
+                result.AtDiagonal(row, AtDiagonal(row) - other.AtDiagonal(row));
+            }
+        }
     }
 }

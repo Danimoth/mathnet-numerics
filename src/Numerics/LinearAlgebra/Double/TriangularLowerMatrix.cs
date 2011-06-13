@@ -27,6 +27,7 @@
 namespace MathNet.Numerics.LinearAlgebra.Double
 {
     using System;
+    using Generic;
 
     /// <summary>
     ///   Class for lower triangular square matrices. 
@@ -126,6 +127,37 @@ namespace MathNet.Numerics.LinearAlgebra.Double
             }
 
             return norm;
+        }
+
+        /// <summary>
+        /// Adds another matrix to this matrix.
+        /// </summary>
+        /// <param name="other">
+        /// The matrix to add to this matrix.
+        /// </param>
+        /// <param name="result">
+        /// The matrix to store the result of the addition.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// If the other matrix is <see langword="null"/>.
+        /// </exception>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// If the two matrices don't have the same dimensions.
+        /// </exception>
+        protected override void DoAdd(Matrix<double> other, Matrix<double> result)
+        {
+            for (var row = 0; row < RowCount; row++)
+            {
+                for (var column = 0; column <= row; column++)
+                {
+                    result.AtLower(row, column, AtLower(row, column) + other.AtLower(row, column));
+                }
+
+                for (var column = row + 1; column < ColumnCount; column++)
+                {
+                    result.AtUpper(row, column, other.AtUpper(row, column));
+                }
+            }
         }
     }
 }

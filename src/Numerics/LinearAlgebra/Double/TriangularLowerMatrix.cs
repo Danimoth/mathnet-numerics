@@ -561,5 +561,27 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         {
             DoMultiply(other, result);
         }
+
+        /// <summary>
+        /// Multiplies the transpose of this matrix with another matrix and places the results into the result matrix.
+        /// </summary>
+        /// <param name="other">The matrix to multiply with.</param>
+        /// <param name="result">The result of the multiplication.</param>
+        protected override void DoTransposeThisAndMultiply(Matrix<double> other, Matrix<double> result)
+        {
+            for (var column = 0; column < ColumnCount; column++)
+            {
+                for (var columnOther = 0; columnOther < other.ColumnCount; columnOther++)
+                {
+                    var s = 0.0;
+                    for (var row = column; row < RowCount; row++)
+                    {
+                        s += AtLower(row, column) * other.At(row, columnOther);
+                    }
+
+                    result.At(column, columnOther, s);
+                }
+            }
+        }
     }
 }

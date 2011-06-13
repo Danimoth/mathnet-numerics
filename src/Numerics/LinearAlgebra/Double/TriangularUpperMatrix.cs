@@ -657,7 +657,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
                 var s = 0.0;
                 for (var row = 0; row <= column; row++)
                 {
-                    s += rightSide[row] * AtUpper(row, column);
+                    s += AtUpper(row, column) * rightSide[row];
                 }
 
                 result[column] = s;

@@ -364,5 +364,25 @@ namespace MathNet.Numerics.LinearAlgebra.Double
                 result.AtDiagonal(row, AtDiagonal(row) - other.AtDiagonal(row));
             }
         }
+
+        /// <summary>
+        /// Multiplies each element of the matrix by a scalar and places results into the result matrix.
+        /// </summary>
+        /// <param name="scalar">
+        /// The scalar to multiply the matrix with.
+        /// </param>
+        /// <param name="result">
+        /// The matrix to store the result of the multiplication.
+        /// </param>
+        protected override void DoMultiply(double scalar, Matrix<double> result)
+        {
+            for (var row = 0; row < RowCount; row++)
+            {
+                for (var column = 0; column <= row; column++)
+                {
+                    result.AtLower(row, column, AtLower(row, column) * scalar);
+                }
+            }
+        }
     }
 }

@@ -662,5 +662,22 @@ namespace MathNet.Numerics.LinearAlgebra.Double
                 result[column] = s;
             }
         }
+
+        /// <summary>
+        /// Negate each element of this matrix and place the results into the result matrix.
+        /// </summary>
+        /// <param name="result">
+        /// The result of the negation.
+        /// </param>
+        protected override void DoNegate(Matrix<double> result)
+        {
+            for (var row = 0; row < RowCount; row++)
+            {
+                for (var column = 0; column <= row; column++)
+                {
+                    result.AtLower(row, column, -AtLower(row, column));
+                }
+            }
+        }
     }
 }

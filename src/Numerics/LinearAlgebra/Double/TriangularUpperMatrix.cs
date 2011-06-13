@@ -406,16 +406,6 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         }
 
         /// <summary>
-        /// Left multiply a matrix with a vector ( = vector * matrix ) and place the result in the result vector.
-        /// </summary>
-        /// <param name="leftSide">The vector to multiply with.</param>
-        /// <param name="result">The result of the multiplication.</param>
-        protected override void DoLeftMultiply(Vector<double> leftSide, Vector<double> result)
-        {
-            DoTransposeThisAndMultiply(leftSide, result);
-        }
-
-        /// <summary>
         /// Multiplies this matrix with another matrix and places the results into the result matrix.
         /// </summary>
         /// <param name="other">The matrix to multiply with.</param>

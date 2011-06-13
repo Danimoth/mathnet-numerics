@@ -733,5 +733,59 @@ namespace MathNet.Numerics.LinearAlgebra.Double
                 result.AtDiagonal(row, AtDiagonal(row) * other.AtDiagonal(row));
             }
         }
+
+        /// <summary>
+        /// Pointwise divide this matrix by another matrix and stores the result into the result matrix.
+        /// </summary>
+        /// <param name="other">
+        /// The matrix to pointwise divide this one by.
+        /// </param>
+        /// <param name="result">
+        /// The matrix to store the result of the pointwise division.
+        /// </param>
+        protected override void DoPointwiseDivide(Matrix<double> other, Matrix<double> result)
+        {
+            for (var row = 0; row < RowCount; row++)
+            {
+                for (var column = 0; column <= row; column++)
+                {
+                    result.AtLower(row, column, AtLower(row, column) / other.AtLower(row, column));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Pointwise divide this matrix by another matrix and stores the result into the result matrix.
+        /// </summary>
+        /// <param name="other">
+        /// The matrix to pointwise divide this one by.
+        /// </param>
+        /// <param name="result">
+        /// The matrix to store the result of the pointwise division.
+        /// </param>
+        protected void DoPointwiseDivide(TriangularUpperMatrix other, Matrix<double> result)
+        {
+            for (var row = 0; row < RowCount; row++)
+            {
+                result.AtDiagonal(row, AtDiagonal(row) / other.AtDiagonal(row));
+            }
+        }
+
+        /// <summary>
+        /// Pointwise divide this matrix by another matrix and stores the result into the result matrix.
+        /// </summary>
+        /// <param name="other">
+        /// The matrix to pointwise divide this one by.
+        /// </param>
+        /// <param name="result">
+        /// The matrix to store the result of the pointwise division.
+        /// </param>
+        protected void DoPointwiseDivide(DiagonalMatrix other, Matrix<double> result)
+        {
+            for (var row = 0; row < RowCount; row++)
+            {
+                result.AtDiagonal(row, AtDiagonal(row) / other.AtDiagonal(row));
+            }
+        }
     }
 }

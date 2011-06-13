@@ -106,5 +106,26 @@ namespace MathNet.Numerics.LinearAlgebra.Double
 
             return norm;
         }
+
+        /// <summary>
+        /// Calculates the infinity norm of this matrix.
+        /// </summary>
+        /// <returns>The infinity norm of this matrix.</returns>   
+        public override double InfinityNorm()
+        {
+            var norm = 0.0;
+            for (var row = 0; row < RowCount; row++)
+            {
+                var s = 0.0;
+                for (var column = 0; column <= row; column++)
+                {
+                    s += Math.Abs(AtUpper(row, column));
+                }
+
+                norm = Math.Max(norm, s);
+            }
+
+            return norm;
+        }
     }
 }

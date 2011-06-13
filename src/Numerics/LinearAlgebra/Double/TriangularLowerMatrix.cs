@@ -787,5 +787,25 @@ namespace MathNet.Numerics.LinearAlgebra.Double
                 result.AtDiagonal(row, AtDiagonal(row) / other.AtDiagonal(row));
             }
         }
+
+        /// <summary>
+        /// Computes the modulus for each element of the matrix.
+        /// </summary>
+        /// <param name="divisor">
+        /// The divisor to use.
+        /// </param>
+        /// <param name="result">
+        /// Matrix to store the results in.
+        /// </param>
+        protected override void DoModulus(double divisor, Matrix<double> result)
+        {
+            for (var row = 0; row < RowCount; row++)
+            {
+                for (var column = 0; column <= row; column++)
+                {
+                    result.AtLower(row, column, AtLower(row, column) % divisor);
+                }
+            }
+        }
     }
 }

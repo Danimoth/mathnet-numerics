@@ -27,6 +27,7 @@
 namespace MathNet.Numerics.LinearAlgebra.Double
 {
     using System;
+    using Distributions;
     using Generic;
 
     /// <summary>
@@ -804,6 +805,46 @@ namespace MathNet.Numerics.LinearAlgebra.Double
                 for (var column = 0; column <= row; column++)
                 {
                     result.AtLower(row, column, AtLower(row, column) % divisor);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Populates a matrix with random elements.
+        /// </summary>
+        /// <param name="matrix">
+        /// The matrix to populate.
+        /// </param>
+        /// <param name="distribution">
+        /// Continuous Random Distribution to generate elements from.
+        /// </param>
+        protected override void DoRandom(Matrix<double> matrix, IContinuousDistribution distribution)
+        {
+            for (var row = 0; row < matrix.RowCount; row++)
+            {
+                for (var column = 0; column <= row; column++)
+                {
+                    matrix.AtLower(row, column, distribution.Sample());
+                }
+            }
+        }
+
+        /// <summary>
+        /// Populates a matrix with random elements.
+        /// </summary>
+        /// <param name="matrix">
+        /// The matrix to populate.
+        /// </param>
+        /// <param name="distribution">
+        /// Continuous Random Distribution to generate elements from.
+        /// </param>
+        protected override void DoRandom(Matrix<double> matrix, IDiscreteDistribution distribution)
+        {
+            for (var row = 0; row < matrix.RowCount; row++)
+            {
+                for (var column = 0; column <= row; column++)
+                {
+                    matrix.AtLower(row, column, distribution.Sample());
                 }
             }
         }

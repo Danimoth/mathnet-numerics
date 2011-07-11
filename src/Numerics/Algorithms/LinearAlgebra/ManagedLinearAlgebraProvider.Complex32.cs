@@ -61,16 +61,37 @@ namespace MathNet.Numerics.Algorithms.LinearAlgebra
 
             if (alpha.IsZero())
             {
-                Array.Copy(y, result, y.Length);
+                y.Copy(result);
             }
             else if (alpha.IsOne())
             {
-                CommonParallel.ElementFor(0, y.Length, y.Length, index => result[index] = y[index] + x[index]);
+                if (Control.ParallelizeOperation(x.Length))
+                {
+                    CommonParallel.For(0, y.Length, index => result[index] = y[index] + x[index]);
+                }
+                else
+                {
+                    for (var index = 0; index < x.Length; index++)
+                    {
+                        result[index] = y[index] + x[index];
+                    }
+                }
             }
             else
             {
-                CommonParallel.ElementFor(0, y.Length, y.Length, index => result[index] = y[index] + (alpha * x[index]));
+                if (Control.ParallelizeOperation(x.Length))
+                {
+                    CommonParallel.For(0, y.Length, index => result[index] = y[index] + (alpha * x[index]));
+                }
+                else
+                {
+                    for (var index = 0; index < x.Length; index++)
+                    {
+                        result[index] = y[index] + (alpha * x[index]);
+                    }
+                }
             }
+ 
         }
 
         /// <summary>
@@ -93,11 +114,21 @@ namespace MathNet.Numerics.Algorithms.LinearAlgebra
             }
             else if (alpha.IsOne())
             {
-                Array.Copy(x, result, x.Length);
+                x.Copy(result);
             }
             else
             {
-                CommonParallel.ElementFor(0, x.Length, x.Length, index => { result[index] = alpha * x[index]; });
+                if (Control.ParallelizeOperation(x.Length))
+                {
+                    CommonParallel.For(0, x.Length, index => { result[index] = alpha * x[index]; });
+                }
+                else
+                {
+                    for (var index = 0; index < x.Length; index++)
+                    {
+                        result[index] = alpha * x[index];
+                    }
+                }
             }
         }
 
@@ -167,7 +198,17 @@ namespace MathNet.Numerics.Algorithms.LinearAlgebra
                 throw new ArgumentException(Resources.ArgumentVectorsSameLength);
             }
 
-            CommonParallel.ElementFor(0, y.Length, y.Length, i => result[i] = x[i] + y[i]);
+            if (Control.ParallelizeOperation(x.Length))
+            {
+                CommonParallel.For(0, y.Length, index => { result[index] = x[index] + y[index]; });
+            }
+            else
+            {
+                for (var index = 0; index < x.Length; index++)
+                {
+                    result[index] = x[index] + y[index];
+                }
+            }
         }
 
         /// <summary>
@@ -202,7 +243,17 @@ namespace MathNet.Numerics.Algorithms.LinearAlgebra
                 throw new ArgumentException(Resources.ArgumentVectorsSameLength);
             }
 
-            CommonParallel.ElementFor(0, y.Length, y.Length, i => result[i] = x[i] - y[i]);
+            if (Control.ParallelizeOperation(x.Length))
+            {
+                CommonParallel.For(0, y.Length, index => { result[index] = x[index] - y[index]; });
+            }
+            else
+            {
+                for (var index = 0; index < x.Length; index++)
+                {
+                    result[index] = x[index] - y[index];
+                }
+            }
         }
 
         /// <summary>
@@ -237,7 +288,17 @@ namespace MathNet.Numerics.Algorithms.LinearAlgebra
                 throw new ArgumentException(Resources.ArgumentVectorsSameLength);
             }
 
-            CommonParallel.ElementFor(0, y.Length, y.Length, i => result[i] = x[i] * y[i]);
+            if (Control.ParallelizeOperation(x.Length))
+            {
+                CommonParallel.For(0, y.Length, index => { result[index] = x[index] * y[index]; });
+            }
+            else
+            {
+                for (var index = 0; index < x.Length; index++)
+                {
+                    result[index] = x[index] * y[index];
+                }
+            }
         }
 
         /// <summary>
@@ -272,7 +333,17 @@ namespace MathNet.Numerics.Algorithms.LinearAlgebra
                 throw new ArgumentException(Resources.ArgumentVectorsSameLength);
             }
 
-            CommonParallel.ElementFor(0, y.Length, y.Length, index => { result[index] = x[index] / y[index]; });
+            if (Control.ParallelizeOperation(x.Length))
+            {
+                CommonParallel.For(0, y.Length, index => { result[index] = x[index] / y[index]; });
+            }
+            else
+            {
+                for (var index = 0; index < x.Length; index++)
+                {
+                    result[index] = x[index] / y[index];
+                }
+            }
         }
 
         /// <summary>
@@ -990,7 +1061,7 @@ namespace MathNet.Numerics.Algorithms.LinearAlgebra
             }
 
             LUSolveFactored(order, a, order, ipiv, inverse);
-            CommonParallel.For(0, a.Length, index => a[index] = inverse[index]);
+            inverse.Copy(a);
         }
 
         /// <summary>
@@ -1059,7 +1130,7 @@ namespace MathNet.Numerics.Algorithms.LinearAlgebra
 
             var ipiv = new int[order];
             var clone = new Complex32[a.Length];
-            Array.Copy(a, 0, clone, 0, a.Length);
+            a.Copy(clone);
             LUFactor(clone, order, ipiv);
             LUSolveFactored(columnsOfB, clone, order, ipiv, b);
         }
@@ -1229,7 +1300,7 @@ namespace MathNet.Numerics.Algorithms.LinearAlgebra
         {
             var tmpColCount = colLimit - firstCol;
 
-            if ((availableCores > 1) && (tmpColCount > 200))
+            if ((availableCores > 1) && (tmpColCount > Control.ParallelizeElements))
             {
                 var tmpSplit = firstCol + (tmpColCount / 3);
                 var tmpCores = availableCores / 2;
@@ -1282,7 +1353,7 @@ namespace MathNet.Numerics.Algorithms.LinearAlgebra
             }
 
             var clone = new Complex32[a.Length];
-            Array.Copy(a, 0, clone, 0, a.Length);
+            a.Copy(clone);
             CholeskyFactor(clone, orderA);
             CholeskySolveFactored(clone, orderA, b, columnsB);
         }
@@ -1317,39 +1388,55 @@ namespace MathNet.Numerics.Algorithms.LinearAlgebra
                 throw new ArgumentException(Resources.ArgumentReferenceDifferent);
             }
 
-            CommonParallel.For(
-                0,
-                columnsB,
-                c =>
+            if (Control.ParallelizeOperation(columnsB * 10))
+            {
+                CommonParallel.For(0, columnsB, c => DoCholeskySolve(a, orderA, b, c));
+            }
+            else
+            {
+                for (var index = 0; index < columnsB; index++)
                 {
-                    var cindex = c * orderA;
+                    DoCholeskySolve(a, orderA, b, index);
+                }
+            }
+        }
 
-                    // Solve L*Y = B;
-                    Complex32 sum;
-                    for (var i = 0; i < orderA; i++)
-                    {
-                        sum = b[cindex + i];
-                        for (var k = i - 1; k >= 0; k--)
-                        {
-                            sum -= a[(k * orderA) + i] * b[cindex + k];
-                        }
+        /// <summary>
+        /// Solves A*X=B for X using a previously factored A matrix.
+        /// </summary>
+        /// <param name="a">The square, positive definite matrix A. Has to be different than <paramref name="b"/>.</param>
+        /// <param name="orderA">The number of rows and columns in A.</param>
+        /// <param name="b">On entry the B matrix; on exit the X matrix.</param>
+        /// <param name="index">The column to solve for.</param>
+        private static void DoCholeskySolve(Complex32[] a, int orderA, Complex32[] b, int index)
+        {
+            var cindex = index * orderA;
 
-                        b[cindex + i] = sum / a[(i * orderA) + i];
-                    }
+            // Solve L*Y = B;
+            Complex32 sum;
+            for (var i = 0; i < orderA; i++)
+            {
+                sum = b[cindex + i];
+                for (var k = i - 1; k >= 0; k--)
+                {
+                    sum -= a[(k * orderA) + i] * b[cindex + k];
+                }
 
-                    // Solve L'*X = Y;
-                    for (var i = orderA - 1; i >= 0; i--)
-                    {
-                        sum = b[cindex + i];
-                        var iindex = i * orderA;
-                        for (var k = i + 1; k < orderA; k++)
-                        {
-                            sum -= a[iindex + k].Conjugate() * b[cindex + k];
-                        }
+                b[cindex + i] = sum / a[(i * orderA) + i];
+            }
 
-                        b[cindex + i] = sum / a[iindex + i];
-                    }
-                });
+            // Solve L'*X = Y;
+            for (var i = orderA - 1; i >= 0; i--)
+            {
+                sum = b[cindex + i];
+                var iindex = i * orderA;
+                for (var k = i + 1; k < orderA; k++)
+                {
+                    sum -= a[iindex + k].Conjugate() * b[cindex + k];
+                }
+
+                b[cindex + i] = sum / a[iindex + i];
+            }
         }
 
         /// <summary>

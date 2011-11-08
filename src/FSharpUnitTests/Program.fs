@@ -75,7 +75,9 @@ let VectorTests =
         spec "Vector.mapi"
             (Vector.mapi (fun i x -> float i / 100.0) largev |> should equal largev)
         spec "Vector.fold"
-            (Vector.fold (fun a b -> a + b) 0.0 smallv |> should equal 1.5)
+            (Vector.fold (fun a b -> a - b) 0.0 smallv |> should equal -1.5)
+        spec "Vector.foldBack"
+            (Vector.foldBack (fun a b -> a - b) 0.0 smallv |> should equal 0.0)
         spec "Vector.foldi"
             (Vector.foldi (fun i a b -> a + b) 0.0 smallv |> should equal 1.5)
         spec "Vector.forall"
@@ -90,10 +92,12 @@ let VectorTests =
             (Vector.scan (fun acc x -> acc + x) smallv |> should approximately_vector_equal 14 (new DenseVector( [|0.3;0.6;0.9;1.2;1.5|] ) :> Vector<float>) )
         spec "Vector.scanBack"
             (Vector.scanBack (fun x acc -> acc + x) smallv |> should approximately_vector_equal 14 (new DenseVector( [|1.5;1.2;0.9;0.6;0.3|] ) :> Vector<float>) )
-        spec "Vector.reduce_left"
+        spec "Vector.reduce"
             (Vector.reduce (fun acc x -> acc ** x) smallv |> should approximately_equal 14 0.990295218585507)
-        spec "Vector.reduce_right"
+        spec "Vector.reduceBack"
             (Vector.reduceBack (fun x acc -> x ** acc) smallv |> should approximately_equal 14 0.488911287726319)
+        spec "Vector.insert"
+            (Vector.insert 2 0.5 smallv |> should approximately_vector_equal 14 (new DenseVector ( [|0.3;0.3;0.5;0.3;0.3;0.3|] ) :> Vector<float>) )
     ]
 
 
@@ -108,7 +112,9 @@ let MatrixTests =
     
     specs "Matrix" [
         spec "Matrix.fold"
-            (Matrix.fold (fun a b -> a + b) 0.0 smallM |> should equal 1.2)
+            (Matrix.fold (fun a b -> a - b) 0.0 smallM |> should equal -1.2)
+        spec "Matrix.foldBack"
+            (Matrix.foldBack (fun a b -> a - b) 0.0 smallM |> should equal 0.0)
         spec "Matrix.foldi"
             (Matrix.foldi (fun i j acc x -> acc + x + float (i+j)) 0.0 smallM |> should equal 5.2)
         spec "Matrix.toArray2"
@@ -125,6 +131,10 @@ let MatrixTests =
             (Matrix.map (fun x -> 2.0 * x) smallM |> should equal (2.0 * smallM))
         spec "Matrix.mapi"
             (Matrix.mapi (fun i j x -> float i * 100.0 + float j + x) largeM |> should equal (2.0 * largeM))
+        spec "Matrix.mapCols"
+            (Matrix.mapCols (fun j col -> col.Add(float j)) smallM |> should approximately_matrix_equal 14 (matrix [[0.3;1.3];[0.3;1.3]]))
+        spec "Matrix.mapRows"
+            (Matrix.mapRows (fun i row -> row.Add(float i)) smallM |> should approximately_matrix_equal 14 (matrix [[0.3;0.3];[1.3;1.3]]))
         spec "Matrix.inplaceAssign"
             ( let N = smallM.Clone()
               Matrix.inplaceAssign (fun i j -> 0.0) N
@@ -137,6 +147,10 @@ let MatrixTests =
             (Seq.length (Matrix.nonZeroEntries smallM) |> should equal 4)
         spec "Matrix.sum"
             (Matrix.sum smallM |> should equal 1.2)
+        spec "Matrix.sumColsBy"
+            (Matrix.sumColsBy (fun j col -> col.[0] * col.[1]) (matrix [[1.0; 2.0]; [3.0; 4.0]]) |> should equal 11.0)
+        spec "Matrix.sumRowsBy"
+            (Matrix.sumRowsBy (fun i row -> row.[0] * row.[1]) (matrix [[1.0; 2.0]; [3.0; 4.0]]) |> should equal 14.0)
         spec "Matrix.foldCol"
             (Matrix.foldCol (+) 0.0 largeM 0 |> should equal 495000.0)
         spec "Matrix.foldRow"

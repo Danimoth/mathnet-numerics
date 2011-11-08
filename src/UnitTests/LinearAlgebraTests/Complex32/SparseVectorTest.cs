@@ -3,7 +3,9 @@
 // http://numerics.mathdotnet.com
 // http://github.com/mathnet/mathnet-numerics
 // http://mathnetnumerics.codeplex.com
-// Copyright (c) 2009-2010 Math.NET
+//
+// Copyright (c) 2009-2011 Math.NET
+//
 // Permission is hereby granted, free of charge, to any person
 // obtaining a copy of this software and associated documentation
 // files (the "Software"), to deal in the Software without
@@ -12,8 +14,10 @@
 // copies of the Software, and to permit persons to whom the
 // Software is furnished to do so, subject to the following
 // conditions:
+//
 // The above copyright notice and this permission notice shall be
 // included in all copies or substantial portions of the Software.
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 // EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
 // OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
@@ -174,70 +178,6 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Complex32
             var vector = new SparseVector(array);
             Assert.IsInstanceOf(typeof(SparseVector), vector);
             CollectionAssert.AreEqual(array, array);
-        }
-
-        /// <summary>
-        /// Can call unary plus operator on a vector.
-        /// </summary>
-        [Test]
-        public void CanCallUnaryPlusOperatorOnSparseVector()
-        {
-            var vector = new SparseVector(Data);
-            var other = +vector;
-            for (var i = 0; i < Data.Length; i++)
-            {
-                Assert.AreEqual(vector[i], other[i]);
-            }
-        }
-
-        /// <summary>
-        /// Can add two sparse vectors using "+" operator.
-        /// </summary>
-        [Test]
-        public void CanAddTwoSparseVectorsUsingOperator()
-        {
-            var vector = new SparseVector(Data);
-            var other = new SparseVector(Data);
-            var result = vector + other;
-            CollectionAssert.AreEqual(Data, vector, "Making sure the original vector wasn't modified.");
-            CollectionAssert.AreEqual(Data, other, "Making sure the original vector wasn't modified.");
-
-            for (var i = 0; i < Data.Length; i++)
-            {
-                Assert.AreEqual(Data[i] * 2.0f, result[i]);
-            }
-        }
-
-        /// <summary>
-        /// Can call unary negate operator on a sparse vector.
-        /// </summary>
-        [Test]
-        public void CanCallUnaryNegationOperatorOnSparseVector()
-        {
-            var vector = new SparseVector(Data);
-            var other = -vector;
-            for (var i = 0; i < Data.Length; i++)
-            {
-                Assert.AreEqual(-Data[i], other[i]);
-            }
-        }
-
-        /// <summary>
-        /// Can subtract two sparse vectors using "-" operator.
-        /// </summary>
-        [Test]
-        public void CanSubtractTwoSparseVectorsUsingOperator()
-        {
-            var vector = new SparseVector(Data);
-            var other = new SparseVector(Data);
-            var result = vector - other;
-            CollectionAssert.AreEqual(Data, vector, "Making sure the original vector wasn't modified.");
-            CollectionAssert.AreEqual(Data, other, "Making sure the original vector wasn't modified.");
-
-            for (var i = 0; i < Data.Length; i++)
-            {
-                Assert.AreEqual(Complex32.Zero, result[i]);
-            }
         }
 
         /// <summary>

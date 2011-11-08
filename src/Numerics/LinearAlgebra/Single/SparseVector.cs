@@ -3,7 +3,9 @@
 // http://numerics.mathdotnet.com
 // http://github.com/mathnet/mathnet-numerics
 // http://mathnetnumerics.codeplex.com
-// Copyright (c) 2009-2010 Math.NET
+//
+// Copyright (c) 2009-2011 Math.NET
+//
 // Permission is hereby granted, free of charge, to any person
 // obtaining a copy of this software and associated documentation
 // files (the "Software"), to deal in the Software without
@@ -12,8 +14,10 @@
 // copies of the Software, and to permit persons to whom the
 // Software is furnished to do so, subject to the following
 // conditions:
+//
 // The above copyright notice and this permission notice shall be
 // included in all copies or substantial portions of the Software.
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 // EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
 // OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
@@ -377,18 +381,72 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         /// </param>
         protected override void DoAdd(Vector<float> other, Vector<float> result)
         {
-            if (ReferenceEquals(this, result))
+            var otherSparse = other as SparseVector;
+            if (otherSparse == null)
             {
-                CommonParallel.For(
-                    0,
-                    NonZerosCount,
-                    index => _nonZeroValues[index] += _nonZeroValues[index]);
+                base.DoAdd(other, result);
+                return;
+            }
+
+            var resultSparse = result as SparseVector;
+            if (resultSparse == null)
+            {
+                base.DoAdd(other, result);
+                return;
+            }
+
+            // TODO (ruegg, 2011-10-11): Options to optimize?
+
+            if (ReferenceEquals(this, resultSparse))
+            {
+                int i = 0, j = 0;
+                while (i < NonZerosCount || j < otherSparse.NonZerosCount)
+                {
+                    if (i < NonZerosCount && j < otherSparse.NonZerosCount && _nonZeroIndices[i] == otherSparse._nonZeroIndices[j])
+                    {
+                        _nonZeroValues[i++] += otherSparse._nonZeroValues[j++];
+                    }
+                    else if (j >= otherSparse.NonZerosCount || i < NonZerosCount && _nonZeroIndices[i] < otherSparse._nonZeroIndices[j])
+                    {
+                        i++;
+                    }
+                    else
+                    {
+                        var otherValue = otherSparse._nonZeroValues[j];
+                        if (otherValue != 0.0)
+                        {
+                            InsertAtUnchecked(i++, otherSparse._nonZeroIndices[j], otherValue);
+                        }
+                        j++;
+                    }
+                }
             }
             else
             {
-                for (var index = 0; index < Count; index++)
+                result.Clear();
+                int i = 0, j = 0, last = -1;
+                while (i < NonZerosCount || j < otherSparse.NonZerosCount)
                 {
-                    result.At(index, At(index) + other.At(index));
+                    if (j >= otherSparse.NonZerosCount || i < NonZerosCount && _nonZeroIndices[i] <= otherSparse._nonZeroIndices[j])
+                    {
+                        var next = _nonZeroIndices[i];
+                        if (next != last)
+                        {
+                            last = next;
+                            result.At(next, _nonZeroValues[i] + otherSparse.At(next));
+                        }
+                        i++;
+                    }
+                    else
+                    {
+                        var next = otherSparse._nonZeroIndices[j];
+                        if (next != last)
+                        {
+                            last = next;
+                            result.At(next, At(next) + otherSparse._nonZeroValues[j]);
+                        }
+                        j++;
+                    }
                 }
             }
         }
@@ -469,9 +527,73 @@ namespace MathNet.Numerics.LinearAlgebra.Single
                 return;
             }
 
-            for (var index = 0; index < Count; index++)
+            var otherSparse = other as SparseVector;
+            if (otherSparse == null)
             {
-                result.At(index, At(index) - other.At(index));
+                base.DoSubtract(other, result);
+                return;
+            }
+
+            var resultSparse = result as SparseVector;
+            if (resultSparse == null)
+            {
+                base.DoSubtract(other, result);
+                return;
+            }
+
+            // TODO (ruegg, 2011-10-11): Options to optimize?
+
+            if (ReferenceEquals(this, resultSparse))
+            {
+                int i = 0, j = 0;
+                while (i < NonZerosCount || j < otherSparse.NonZerosCount)
+                {
+                    if (i < NonZerosCount && j < otherSparse.NonZerosCount && _nonZeroIndices[i] == otherSparse._nonZeroIndices[j])
+                    {
+                        _nonZeroValues[i++] -= otherSparse._nonZeroValues[j++];
+                    }
+                    else if (j >= otherSparse.NonZerosCount || i < NonZerosCount && _nonZeroIndices[i] < otherSparse._nonZeroIndices[j])
+                    {
+                        i++;
+                    }
+                    else
+                    {
+                        var otherValue = otherSparse._nonZeroValues[j];
+                        if (otherValue != 0.0)
+                        {
+                            InsertAtUnchecked(i++, otherSparse._nonZeroIndices[j], -otherValue);
+                        }
+                        j++;
+                    }
+                }
+            }
+            else
+            {
+                result.Clear();
+                int i = 0, j = 0, last = -1;
+                while (i < NonZerosCount || j < otherSparse.NonZerosCount)
+                {
+                    if (j >= otherSparse.NonZerosCount || i < NonZerosCount && _nonZeroIndices[i] <= otherSparse._nonZeroIndices[j])
+                    {
+                        var next = _nonZeroIndices[i];
+                        if (next != last)
+                        {
+                            last = next;
+                            result.At(next, _nonZeroValues[i] - otherSparse.At(next));
+                        }
+                        i++;
+                    }
+                    else
+                    {
+                        var next = otherSparse._nonZeroIndices[j];
+                        if (next != last)
+                        {
+                            last = next;
+                            result.At(next, At(next) - otherSparse._nonZeroValues[j]);
+                        }
+                        j++;
+                    }
+                }
             }
         }
 
@@ -1238,22 +1360,7 @@ namespace MathNet.Numerics.LinearAlgebra.Single
                 // Item already exist at itemIndex
                 if (value == 0.0)
                 {
-                    // Value is zero. Let's delete it from Values and Indices array
-                    for (var i = itemIndex + 1; i < NonZerosCount; i++)
-                    {
-                        _nonZeroValues[i - 1] = _nonZeroValues[i];
-                        _nonZeroIndices[i - 1] = _nonZeroIndices[i];
-                    }
-
-                    NonZerosCount -= 1;
-
-                    // Check if the storage needs to be shrink. This is reasonable to do if 
-                    // there are a lot of non-zero elements and storage is two times bigger
-                    if ((NonZerosCount > 1024) && (NonZerosCount < _nonZeroIndices.Length / 2))
-                    {
-                        Array.Resize(ref _nonZeroValues, NonZerosCount);
-                        Array.Resize(ref _nonZeroIndices, NonZerosCount);
-                    }
+                    RemoveAtUnchecked(itemIndex);
                 }
                 else
                 {
@@ -1262,38 +1369,59 @@ namespace MathNet.Numerics.LinearAlgebra.Single
             }
             else
             {
-                if (value == 0.0)
+                if (value != 0.0)
                 {
-                    return;
+                    InsertAtUnchecked(~itemIndex, index, value);
                 }
+            }
+        }
 
-                itemIndex = ~itemIndex; // Index where to put new value
+        private void InsertAtUnchecked(int itemIndex, int index, float value)
+        {
+            // Check if the storage needs to be increased
+            if ((NonZerosCount == _nonZeroValues.Length) && (NonZerosCount < Count))
+            {
+                // Value and Indices arrays are completely full so we increase the size
+                var size = Math.Min(_nonZeroValues.Length + GrowthSize(), Count);
+                Array.Resize(ref _nonZeroValues, size);
+                Array.Resize(ref _nonZeroIndices, size);
+            }
 
-                // Check if the storage needs to be increased
-                if ((NonZerosCount == _nonZeroValues.Length) && (NonZerosCount < Count))
-                {
-                    // Value and Indices arrays are completely full so we increase the size
-                    var size = Math.Min(_nonZeroValues.Length + GrowthSize(), Count);
-                    Array.Resize(ref _nonZeroValues, size);
-                    Array.Resize(ref _nonZeroIndices, size);
-                }
+            // Move all values (with an position larger than index) in the value array
+            // to the next position
+            // Move all values (with an position larger than index) in the columIndices
+            // array to the next position
+            for (var i = NonZerosCount - 1; i > itemIndex - 1; i--)
+            {
+                _nonZeroValues[i + 1] = _nonZeroValues[i];
+                _nonZeroIndices[i + 1] = _nonZeroIndices[i];
+            }
 
-                // Move all values (with an position larger than index) in the value array 
-                // to the next position
-                // move all values (with an position larger than index) in the columIndices 
-                // array to the next position
-                for (var i = NonZerosCount - 1; i > itemIndex - 1; i--)
-                {
-                    _nonZeroValues[i + 1] = _nonZeroValues[i];
-                    _nonZeroIndices[i + 1] = _nonZeroIndices[i];
-                }
+            // Add the value and the column index
+            _nonZeroValues[itemIndex] = value;
+            _nonZeroIndices[itemIndex] = index;
 
-                // Add the value and the column index
-                _nonZeroValues[itemIndex] = value;
-                _nonZeroIndices[itemIndex] = index;
+            // increase the number of non-zero numbers by one
+            NonZerosCount += 1;
+        }
 
-                // increase the number of non-zero numbers by one
-                NonZerosCount += 1;
+        private void RemoveAtUnchecked(int itemIndex)
+        {
+            // Value is zero. Let's delete it from Values and Indices array
+            for (var i = itemIndex + 1; i < NonZerosCount; i++)
+            {
+                _nonZeroValues[i - 1] = _nonZeroValues[i];
+                _nonZeroIndices[i - 1] = _nonZeroIndices[i];
+            }
+
+            NonZerosCount -= 1;
+
+            // Check if the storage needs to be shrink. This is reasonable to do if
+            // there are a lot of non-zero elements and storage is two times bigger
+            if ((NonZerosCount > 1024) && (NonZerosCount < _nonZeroIndices.Length / 2))
+            {
+                Array.Resize(ref _nonZeroValues, NonZerosCount);
+                Array.Resize(ref _nonZeroIndices, NonZerosCount);
             }
         }
 
@@ -1325,6 +1453,16 @@ namespace MathNet.Numerics.LinearAlgebra.Single
         }
 
         #region System.Object override
+
+        public override string ToString(string format, IFormatProvider formatProvider)
+        {
+            if (Count > 20)
+            {
+                return String.Format("SparseVectorOfSingle({0},{1},{2})", Count, NonZerosCount, GetHashCode());
+            }
+
+            return base.ToString(format, formatProvider);
+        }
 
         /// <summary>
         /// Returns a hash code for this instance.
@@ -1378,25 +1516,40 @@ namespace MathNet.Numerics.LinearAlgebra.Single
                 return true;
             }
 
-            var sparseVector = other as SparseVector;
-
-            if (sparseVector == null)
+            var otherSparse = other as SparseVector;
+            if (otherSparse == null)
             {
                 return base.Equals(other);
             }
 
-            if (NonZerosCount != sparseVector.NonZerosCount)
+            int i = 0, j = 0;
+            while (i < NonZerosCount || j < otherSparse.NonZerosCount)
             {
-                return false;
-            }
+                if (j >= otherSparse.NonZerosCount || i < NonZerosCount && _nonZeroIndices[i] < otherSparse._nonZeroIndices[j])
+                {
+                    if (_nonZeroValues[i++] != 0f)
+                    {
+                        return false;
+                    }
+                    continue;
+                }
 
-            // If all else fails, perform element wise comparison.
-            for (var index = 0; index < NonZerosCount; index++)
-            {
-                if (!_nonZeroValues[index].AlmostEqual(sparseVector._nonZeroValues[index]) || (_nonZeroIndices[index] != sparseVector._nonZeroIndices[index]))
+                if (i >= NonZerosCount || j < otherSparse.NonZerosCount && otherSparse._nonZeroIndices[j] < _nonZeroIndices[i])
+                {
+                    if (otherSparse._nonZeroValues[j++] != 0f)
+                    {
+                        return false;
+                    }
+                    continue;
+                }
+
+                if (!_nonZeroValues[i].AlmostEqual(otherSparse._nonZeroValues[j]))
                 {
                     return false;
                 }
+
+                i++;
+                j++;
             }
 
             return true;

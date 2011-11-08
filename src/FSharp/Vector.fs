@@ -32,6 +32,7 @@ namespace MathNet.Numerics.LinearAlgebra.Double
 
 open MathNet.Numerics.LinearAlgebra
 open MathNet.Numerics.LinearAlgebra.Generic
+
 /// A module which implements functional vector operations.
 module Vector =
         
@@ -93,6 +94,13 @@ module Vector =
             acc <- f acc (v.Item(i))
         acc
 
+    /// Fold all entries of a vector in reverse order.
+    let inline foldBack (f: float -> 'a -> 'a) (acc0: 'a) (v: #Vector<float>) =
+        let mutable acc = acc0
+        for i=2 to v.Count do
+            acc <- f (v.Item(v.Count - i)) acc
+        acc
+
     /// Fold all entries of a vector using a position dependent folding function.
     let inline foldi (f: int -> 'a -> float -> 'a) (acc0: 'a) (v: #Vector<float>) =
         let mutable acc = acc0
@@ -145,7 +153,7 @@ module Vector =
             w.[i] <- p
         w
 
-    /// Scans a vector; like fold but returns the intermediate result.
+    /// Scans a vector in reverse order; like foldBack but returns the intermediate result.
     let inline scanBack (f: float -> float -> float) (v: #Vector<float>) =
         let w = v.Clone()
         let mutable p = v.Item(v.Count-1)
@@ -161,9 +169,19 @@ module Vector =
             p <- f p (v.Item(i))
         p
 
-    /// Reduces a vector: the result of this function will be f(v[1], ..., f(v[n-2], f(v[n-1],v[n]))...).
+    /// Reduces a vector in reverse order: the result of this function will be f(v[1], ..., f(v[n-2], f(v[n-1],v[n]))...).
     let inline reduceBack (f: float -> float -> float) (v: #Vector<float>) =
         let mutable p = v.Item(v.Count-1)
         for i=2 to v.Count do
             p <- f (v.Item(v.Count - i)) p
         p
+
+    /// Creates a new vector and inserts the given value at the given index.
+    let inline insert index value (v: #Vector<float>) =        
+        let newV = new DenseVector(v.Count + 1)                
+        for i = 0 to index - 1 do 
+            newV.Item(i) <- v.Item(i)        
+        newV.Item(index) <- value        
+        for i = index + 1 to v.Count do 
+            newV.Item(i) <- v.Item(i - 1)        
+        newV

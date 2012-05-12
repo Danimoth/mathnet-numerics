@@ -181,6 +181,14 @@
     <Compile Include="LinearAlgebra\Double\SparseMatrix.cs" />
     <Compile Include="LinearAlgebra\Double\Vector.cs" />
     <Compile Include="LinearAlgebra\Generic\Common.cs" />
+    <Compile Include="LinearAlgebra\Generic\StorageSchemes\Dynamic\BandStorageScheme.cs" />
+    <Compile Include="LinearAlgebra\Generic\StorageSchemes\Dynamic\DynamicStorageScheme.cs" />
+    <Compile Include="LinearAlgebra\Generic\StorageSchemes\Dynamic\SkylineStorageScheme.cs" />
+    <Compile Include="LinearAlgebra\Generic\StorageSchemes\Static\PackedStorageScheme.cs" />
+    <Compile Include="LinearAlgebra\Generic\StorageSchemes\Static\PackedStorageSchemeLower.cs" />
+    <Compile Include="LinearAlgebra\Generic\StorageSchemes\Static\PackedStorageSchemeUpper.cs" />
+    <Compile Include="LinearAlgebra\Generic\StorageSchemes\Static\StaticStorageScheme.cs" />
+    <Compile Include="LinearAlgebra\Generic\StorageSchemes\StorageScheme.cs" />
     <Compile Include="LinearAlgebra\IO\MatlabReader.cs" />
     <Compile Include="LinearAlgebra\IO\MatlabWriter.cs" />
     <Compile Include="LinearAlgebra\IO\Matlab\ArrayClass.cs" />

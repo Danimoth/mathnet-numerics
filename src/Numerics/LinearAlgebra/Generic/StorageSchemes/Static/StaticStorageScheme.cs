@@ -33,7 +33,7 @@ namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes.Static
     ///   This category of storage scheme does not need to manage the data array. Therefore, for
     ///   efficiency, it only provides indexes of the matrix elements.
     /// </remarks>
-    public abstract class StaticStorageScheme : StorageScheme
+    public abstract class StaticStorageScheme : IStorageScheme
     {
         /// <summary>
         ///   Gets the index of the given element.
@@ -45,7 +45,7 @@ namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes.Static
         ///   The column of the element.
         /// </param>
         /// <remarks>
-        ///   This method is parameter checked. <see cref = "StorageScheme.IndexOf(int,int)" /> and <see cref = "StorageScheme.IndexOfDiagonal(int)" /> to get values without parameter checking.
+        ///   This method is parameter checked. <see cref = "IStorageScheme.IndexOf(int,int)" /> and <see cref = "IStorageScheme.IndexOfDiagonal(int)" /> to get values without parameter checking.
         /// </remarks>
         public abstract int this[int row, int column]
         {

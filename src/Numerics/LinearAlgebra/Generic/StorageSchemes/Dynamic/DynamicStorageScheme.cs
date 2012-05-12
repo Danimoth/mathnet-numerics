@@ -35,7 +35,7 @@ namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes.Dynamic
     ///   every matrix. This category of storage scheme needs to manage the data array.
     /// </remarks>
     /// <typeparam name = "T">Supported data types are double, single, <see cref = "Complex" />, and <see cref = "Complex32" />.</typeparam>
-    public abstract class DynamicStorageScheme<T> : StorageScheme
+    public abstract class DynamicStorageScheme<T> : IStorageScheme
         where T : struct, IEquatable<T>, IFormattable
     {
         /// <summary>

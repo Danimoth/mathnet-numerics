@@ -125,7 +125,7 @@ namespace MathNet.Numerics
         /// <param name="imaginary">
         /// The value for the imaginary component.
         /// </param>
-#if !SILVERLIGHT
+#if !PORTABLE
         [TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")]
 #endif
         public Complex32(float real, float imaginary)
@@ -214,7 +214,7 @@ namespace MathNet.Numerics
         /// <value>The real component of the complex number.</value>
         public float Real
         {
-#if !SILVERLIGHT
+#if !PORTABLE
             [TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")]
 #endif
                 get
@@ -229,7 +229,7 @@ namespace MathNet.Numerics
         /// <value>The real imaginary component of the complex number.</value>
         public float Imaginary
         {
-#if !SILVERLIGHT
+#if !PORTABLE
             [TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")]
 #endif
                 get
@@ -943,7 +943,7 @@ namespace MathNet.Numerics
         /// <returns>
         /// Returns the same complex number.
         /// </returns>
-#if !SILVERLIGHT
+#if !PORTABLE
         [TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")]
 #endif
         public Complex32 Plus()
@@ -957,7 +957,7 @@ namespace MathNet.Numerics
         /// <returns>
         /// The negated value of this complex number.
         /// </returns>
-#if !SILVERLIGHT
+#if !PORTABLE
         [TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")]
 #endif
         public Complex32 Negate()
@@ -974,7 +974,7 @@ namespace MathNet.Numerics
         /// <param name="other">
         /// The other complex number to add.
         /// </param>
-#if !SILVERLIGHT
+#if !PORTABLE
         [TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")]
 #endif
         public Complex32 Add(Complex32 other)
@@ -991,7 +991,7 @@ namespace MathNet.Numerics
         /// <param name="other">
         /// The other complex number to subtract from this one.
         /// </param>
-#if !SILVERLIGHT
+#if !PORTABLE
         [TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")]
 #endif
         public Complex32 Subtract(Complex32 other)
@@ -1008,7 +1008,7 @@ namespace MathNet.Numerics
         /// <param name="multiplier">
         /// The complex number to multiply.
         /// </param>
-#if !SILVERLIGHT
+#if !PORTABLE
         [TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")]
 #endif
         public Complex32 Multiply(Complex32 multiplier)
@@ -1025,7 +1025,7 @@ namespace MathNet.Numerics
         /// <param name="divisor">
         /// The divisor.
         /// </param>
-#if !SILVERLIGHT
+#if !PORTABLE
         [TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")]
 #endif
         public Complex32 Divide(Complex32 divisor)
@@ -1235,7 +1235,7 @@ namespace MathNet.Numerics
                 }
             }
 
-#if SILVERLIGHT
+#if PORTABLE
             var value = GlobalizationHelper.ParseSingle(ref token);
 #else
             var value = GlobalizationHelper.ParseSingle(ref token, format.GetCultureInfo());
@@ -1392,6 +1392,7 @@ namespace MathNet.Numerics
             return new Complex32(value, 0.0f);
         }
 
+#if SYSNUMERICS
         /// <summary>
         /// Implicit conversion of a BigInteger int to a <c>Complex32</c>.
         /// </summary>
@@ -1401,6 +1402,7 @@ namespace MathNet.Numerics
         {
             return new Complex32((long)value, 0.0f);
         }
+#endif
 
         /// <summary>
         /// Implicit conversion of a real long to a <c>Complex32</c>.

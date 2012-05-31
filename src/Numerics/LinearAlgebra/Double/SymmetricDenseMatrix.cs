@@ -694,15 +694,6 @@ namespace MathNet.Numerics.LinearAlgebra.Double
                     index => denseResult.Data[index] %= divisor);
             }
         }
-         
-        /// <summary>
-        /// Returns the conjugate transpose of this matrix.
-        /// </summary>        
-        /// <returns>The conjugate transpose of this matrix.</returns>
-        public override Matrix<double> ConjugateTranspose()
-        {
-            return Transpose();
-        }
 
         /// <summary>
         /// Computes the trace of this matrix.

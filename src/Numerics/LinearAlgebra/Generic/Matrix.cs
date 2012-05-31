@@ -44,7 +44,7 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
 #if SILVERLIGHT
     IFormattable, IEquatable<Matrix<T>>
 #else
-        IFormattable, IEquatable<Matrix<T>>, ICloneable
+        IFormattable, IEquatable<Matrix<T>>, ICloneable, IExtraAccessors<T>
 #endif
         where T : struct, IEquatable<T>, IFormattable
     {
@@ -240,6 +240,113 @@ namespace MathNet.Numerics.LinearAlgebra.Generic
         /// The value to set the element to.
         /// </param>
         public abstract void At(int row, int column, T value);
+
+        /// <summary>
+        /// Retrieves the requested element without range checking. 
+        /// CAUTION:
+        /// This method assumes that you request an element from the upper triangle (row less than or equal to column).  
+        /// If not, the result is completely wrong.  
+        /// </summary>
+        /// <param name="row">
+        /// The row of the element. Must be less than or equal to column. 
+        /// </param>
+        /// <param name="column">
+        /// The column of the element. Must be more than or equal to row. 
+        /// </param>
+        /// <returns>
+        /// The requested element from the upper triangle.
+        /// </returns>
+        public virtual T AtUpper(int row, int column)
+        {
+            return At(row, column);
+        }
+
+        /// <summary>
+        /// Sets the value of the given element.
+        /// CAUTION:
+        /// This method assumes that you set an element from the upper triangle (row less than or equal to column).
+        /// If not, the result is completely wrong. 
+        /// </summary>
+        /// <param name="row">
+        /// The row of the element. Must be less than or equal to column.
+        /// </param>
+        /// <param name="column">
+        /// The column of the element. Must be more than or equal to row. 
+        /// </param>
+        /// <param name="value">
+        /// The value on the upper triangle to set the element to.
+        /// </param>
+        public virtual void AtUpper(int row, int column, T value)
+        {
+            At(row, column, value);
+        }
+
+        /// <summary>
+        /// Retrieves the requested element without range checking. 
+        /// CAUTION:
+        /// This method assumes that you request an element from the lower triangle (row greater than or equal to column).  
+        /// </summary>
+        /// <param name="row">
+        /// The row of the element. Must be more than or equal to column. 
+        /// </param>
+        /// <param name="column">
+        /// The column of the element. Must be less than or equal to row. 
+        /// </param>
+        /// <returns>
+        /// The requested element from the lower triangle.
+        /// </returns>
+        public virtual T AtLower(int row, int column)
+        {
+            return At(row, column);
+        }
+
+        /// <summary>
+        /// Sets the value of the given element.
+        /// CAUTION:
+        /// This method assumes that you set an element from the lower triangle (row greater than or equal to column).
+        /// If not, the result is completely wrong. 
+        /// </summary>
+        /// <param name="row">
+        /// The row of the element. Must be more than or equal to column
+        /// </param>
+        /// <param name="column">
+        /// The column of the element. Must be less than or equal to row. 
+        /// </param>
+        /// <param name="value">
+        /// The value on the lower triangle to set the element to.
+        /// </param>
+        public virtual void AtLower(int row, int column, T value)
+        {
+            At(row, column, value);
+        }
+
+        /// <summary>
+        /// Retrieves the requested element without range checking. 
+        /// </summary>
+        /// <param name="row">
+        /// The row=column of the diagonal element.
+        /// </param>
+        /// <returns>
+        /// The requested element.
+        /// </returns>
+        public virtual T AtDiagonal(int row)
+        {
+            return At(row, row);
+        }
+
+        /// <summary>
+        /// Sets the value of the given element.
+        /// </summary>
+        /// <param name="row">
+        /// The row=column of the diagonal element.
+        /// </param>
+        /// <param name="value">
+        /// The value to set the element to.
+        /// </param>
+        public virtual void AtDiagonal(int row, T value)
+        {
+            At(row, row, value);
+        }
 
         /// <summary>
         /// Creates a clone of this instance.

@@ -91,5 +91,25 @@ namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes.Dynamic
         {
             get;
         }
-    }
+
+        /// <summary>
+        ///  Retrieves the index of the requested element without parameter checking.
+        ///  </summary><param name="row">
+        ///  The row of the element. 
+        ///  </param><param name="column">
+        ///  The column of the element. 
+        ///  </param><returns>
+        ///  The requested index. 
+        ///  </returns>
+        public abstract int IndexOf(int row, int column);
+
+        /// <summary>
+        ///  Retrieves the index of the requested diagonal element without parameter checking.
+        ///  </summary><param name="row">
+        ///  The row=column of the diagonal element. 
+        ///  </param><returns>
+        ///  The requested index. 
+        ///  </returns>
+        public abstract int IndexOfDiagonal(int row);
+    } 
 }

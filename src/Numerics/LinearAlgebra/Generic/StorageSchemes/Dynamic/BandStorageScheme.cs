@@ -54,7 +54,7 @@ namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes.Dynamic
         /// <returns>
         /// The requested index. 
         /// </returns>
-        public virtual int IndexOf(int row, int column)
+        public override int IndexOf(int row, int column)
         {
             throw new NotImplementedException();
         }
@@ -68,7 +68,7 @@ namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes.Dynamic
         /// <returns>
         /// The requested index. 
         /// </returns>
-        public virtual int IndexOfDiagonal(int row)
+        public override int IndexOfDiagonal(int row)
         {
             throw new NotImplementedException();
         }

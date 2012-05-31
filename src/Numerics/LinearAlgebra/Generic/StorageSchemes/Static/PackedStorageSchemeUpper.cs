@@ -95,7 +95,7 @@ namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes.Static
         /// <returns>
         /// The requested index. 
         /// </returns>
-        public virtual int IndexOf(int row, int column)
+        public override int IndexOf(int row, int column)
         {
             return row + ((column * (column + 1)) / 2);
         }
@@ -109,7 +109,7 @@ namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes.Static
         /// <returns>
         /// The requested index. 
         /// </returns>
-        public virtual int IndexOfDiagonal(int row)
+        public override int IndexOfDiagonal(int row)
         {
             return (row * (row + 3)) / 2;
         }

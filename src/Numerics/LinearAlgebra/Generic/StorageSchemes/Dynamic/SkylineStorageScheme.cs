@@ -183,7 +183,7 @@ namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes.Dynamic
         /// <returns>
         /// The requested index. 
         /// </returns>
-        public virtual int IndexOf(int row, int column)
+        public override int IndexOf(int row, int column)
         {
             int columnHeight = _diagonalIndexes[column + 1] - _diagonalIndexes[column] - 1;
             int indexOfHighestStoredRow = column - columnHeight;
@@ -205,7 +205,7 @@ namespace MathNet.Numerics.LinearAlgebra.Generic.StorageSchemes.Dynamic
         /// <returns>
         /// The requested index. 
         /// </returns>
-        public virtual int IndexOfDiagonal(int row)
+        public override int IndexOfDiagonal(int row)
         {
             return _diagonalIndexes[row];
         }

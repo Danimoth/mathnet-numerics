@@ -173,7 +173,7 @@ namespace MathNet.Numerics.LinearAlgebra.Complex32
             var matrix = new DenseMatrix(Count, 1);
             for (var i = 0; i < Data.Length; i++)
             {
-                matrix[i, 0] = Data[i];
+                matrix.At(i, 0, Data[i]);
             }
 
             return matrix;
@@ -188,7 +188,7 @@ namespace MathNet.Numerics.LinearAlgebra.Complex32
             var matrix = new DenseMatrix(1, Count);
             for (var i = 0; i < Data.Length; i++)
             {
-                matrix[0, i] = Data[i];
+                matrix.At(0, i, Data[i]);
             }
 
             return matrix;
@@ -243,6 +243,49 @@ namespace MathNet.Numerics.LinearAlgebra.Complex32
         public override Vector<Complex32> CreateVector(int size)
         {
             return new DenseVector(size);
+        }
+
+        /// <summary>
+        /// Copies the values of this vector into the target vector.
+        /// </summary>
+        /// <param name="target">
+        /// The vector to copy elements into.
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// If <paramref name="target"/> is <see langword="null"/>.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// If <paramref name="target"/> is not the same size as this vector.
+        /// </exception>
+        public override void CopyTo(Vector<Complex32> target)
+        {
+            if (target == null)
+            {
+                throw new ArgumentNullException("target");
+            }
+
+            if (Count != target.Count)
+            {
+                throw new ArgumentException(Resources.ArgumentVectorsSameLength, "target");
+            }
+
+            if (ReferenceEquals(this, target))
+            {
+                return;
+            }
+
+            var otherVector = target as DenseVector;
+            if (otherVector == null)
+            {
+                CommonParallel.For(
+                    0,
+                    Data.Length,
+                    index => target[index] = Data[index]);
+            }
+            else
+            {
+                Array.Copy(Data, 0, otherVector.Data, 0, Data.Length);
+            }
         }
 
         /// <summary>

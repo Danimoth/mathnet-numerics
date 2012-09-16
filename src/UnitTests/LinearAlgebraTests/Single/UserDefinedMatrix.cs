@@ -24,6 +24,9 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
+using System;
+using MathNet.Numerics.LinearAlgebra.Storage;
+
 namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Single
 {
     using LinearAlgebra.Generic;
@@ -34,18 +37,40 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Single
     /// </summary>
     internal class UserDefinedMatrix : Matrix
     {
-        /// <summary>
-        /// Values storage
-        /// </summary>
-        private readonly float[,] _data;
+        class UserDefinedMatrixStorage : MatrixStorage<float>
+        {
+            public readonly float[,] Data;
+
+            public UserDefinedMatrixStorage(int rowCount, int columnCount)
+                : base(rowCount, columnCount)
+            {
+                Data = new float[rowCount, columnCount];
+            }
+
+            public UserDefinedMatrixStorage(int rowCount, int columnCount, float[,] data)
+                : base(rowCount, columnCount)
+            {
+                Data = data;
+            }
+
+            public override float At(int row, int column)
+            {
+                return Data[row, column];
+            }
+
+            public override void At(int row, int column, float value)
+            {
+                Data[row, column] = value;
+            }
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UserDefinedMatrix"/> class. This matrix is square with a given size.
         /// </summary>
         /// <param name="order">the size of the square matrix.</param>
-        public UserDefinedMatrix(int order) : base(order, order)
+        public UserDefinedMatrix(int order)
+            : base(new UserDefinedMatrixStorage(order, order))
         {
-            _data = new float[order, order];
         }
 
         /// <summary>
@@ -53,40 +78,18 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Single
         /// </summary>
         /// <param name="rows">The number of rows.</param>
         /// <param name="columns">The number of columns.</param>
-        public UserDefinedMatrix(int rows, int columns) : base(rows, columns)
+        public UserDefinedMatrix(int rows, int columns)
+            : base(new UserDefinedMatrixStorage(rows, columns))
         {
-            _data = new float[rows, columns];
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UserDefinedMatrix"/> class from a 2D array. 
         /// </summary>
         /// <param name="data">The 2D array to create this matrix from.</param>
-        public UserDefinedMatrix(float[,] data) : base(data.GetLength(0), data.GetLength(1))
+        public UserDefinedMatrix(float[,] data)
+            : base(new UserDefinedMatrixStorage(data.GetLength(0), data.GetLength(1), (float[,])data.Clone()))
         {
-            _data = (float[,])data.Clone();
-        }
-
-        /// <summary>
-        /// Retrieves the requested element without range checking.
-        /// </summary>
-        /// <param name="row">The row of the element.</param>
-        /// <param name="column">The column of the element.</param>
-        /// <returns>The requested element. </returns>
-        public override float At(int row, int column)
-        {
-            return _data[row, column];
-        }
-
-        /// <summary>
-        /// Sets the value of the given element.
-        /// </summary>
-        /// <param name="row">The row of the element.</param>
-        /// <param name="column">The column of the element.</param>
-        /// <param name="value">The value to set the element to. </param>
-        public override void At(int row, int column, float value)
-        {
-            _data[row, column] = value;
         }
 
         /// <summary>
@@ -95,7 +98,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Single
         /// <param name="numberOfRows">The number of rows.</param>
         /// <param name="numberOfColumns">The number of columns.</param>
         /// <returns>A matrix with the given dimensions.</returns>
-        public override Matrix<float> CreateMatrix(int numberOfRows, int numberOfColumns)
+        public override Matrix<float> CreateMatrix(int numberOfRows, int numberOfColumns, bool fullyMutable = false)
         {
             return new UserDefinedMatrix(numberOfRows, numberOfColumns);
         }
@@ -105,7 +108,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Single
         /// </summary>
         /// <param name="size">The size of the vector.</param>
         /// <returns>A vector with the given dimension.</returns>
-        public override Vector<float> CreateVector(int size)
+        public override Vector<float> CreateVector(int size, bool fullyMutable = false)
         {
             return new UserDefinedVector(size);
         }
@@ -120,7 +123,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Single
             var m = new UserDefinedMatrix(order, order);
             for (var i = 0; i < order; i++)
             {
-                m[i, i] = 1.0f;
+                m[i, i] = 1f;
             }
 
             return m;

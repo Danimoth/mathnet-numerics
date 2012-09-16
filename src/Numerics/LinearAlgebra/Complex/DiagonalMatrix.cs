@@ -31,7 +31,7 @@ namespace MathNet.Numerics.LinearAlgebra.Complex
     using System.Numerics;
     using Generic;
     using Properties;
-    using Threading;
+    using Storage;
 
     /// <summary>
     /// A matrix type for diagonal matrices. 
@@ -45,6 +45,21 @@ namespace MathNet.Numerics.LinearAlgebra.Complex
     [Serializable]
     public class DiagonalMatrix : Matrix
     {
+        readonly DiagonalMatrixStorage<Complex> _storage;
+
+        /// <summary>
+        /// Gets the matrix's data.
+        /// </summary>
+        /// <value>The matrix's data.</value>
+        readonly Complex[] _data;
+
+        internal DiagonalMatrix(DiagonalMatrixStorage<Complex> storage)
+            : base(storage)
+        {
+            _storage = storage;
+            _data = _storage.Data;
+        }
+
          /// <summary>
         /// Initializes a new instance of the <see cref="DiagonalMatrix"/> class. This matrix is square with a given size.
         /// </summary>
@@ -52,10 +67,10 @@ namespace MathNet.Numerics.LinearAlgebra.Complex
         /// <exception cref="ArgumentException">
         /// If <paramref name="order"/> is less than one.
         /// </exception>
-        public DiagonalMatrix(int order) : base(order)
-        {
-            Data = new Complex[order * order];
-        }
+        public DiagonalMatrix(int order)
+            : this(new DiagonalMatrixStorage<Complex>(order, order, Complex.Zero))
+         {
+         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DiagonalMatrix"/> class.
@@ -66,13 +81,13 @@ namespace MathNet.Numerics.LinearAlgebra.Complex
         /// <param name="columns">
         /// The number of columns.
         /// </param>
-        public DiagonalMatrix(int rows, int columns) : base(rows, columns)
+        public DiagonalMatrix(int rows, int columns)
+            : this(new DiagonalMatrixStorage<Complex>(rows, columns, Complex.Zero))
         {
-            Data = new Complex[Math.Min(rows, columns)];
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DiagonalMatrix"/> class with all entries set to a particular value.
+        /// Initializes a new instance of the <see cref="DiagonalMatrix"/> class with all diagonal entries set to a particular value.
         /// </summary>
         /// <param name="rows">
         /// The number of rows.
@@ -80,13 +95,13 @@ namespace MathNet.Numerics.LinearAlgebra.Complex
         /// <param name="columns">
         /// The number of columns.
         /// </param>
-        /// <param name="value">The value which we assign to each element of the matrix.</param>
-        public DiagonalMatrix(int rows, int columns, Complex value) : base(rows, columns)
+        /// <param name="value">The value which we assign to each diagonal element of the matrix.</param>
+        public DiagonalMatrix(int rows, int columns, Complex value)
+            : this(rows, columns)
         {
-            Data = new Complex[Math.Min(rows, columns)];
-            for (var i = 0; i < Data.Length; i++)
+            for (var i = 0; i < _data.Length; i++)
             {
-                Data[i] = value;
+                _data[i] = value;
             }
         }
 
@@ -97,9 +112,9 @@ namespace MathNet.Numerics.LinearAlgebra.Complex
         /// <param name="rows">The number of rows.</param>
         /// <param name="columns">The number of columns.</param>
         /// <param name="diagonalArray">The one dimensional array which contain diagonal elements.</param>
-        public DiagonalMatrix(int rows, int columns, Complex[] diagonalArray) : base(rows, columns)
+        public DiagonalMatrix(int rows, int columns, Complex[] diagonalArray)
+            : this(new DiagonalMatrixStorage<Complex>(rows, columns, Complex.Zero, diagonalArray))
         {
-            Data = diagonalArray;
         }
 
         /// <summary>
@@ -109,18 +124,16 @@ namespace MathNet.Numerics.LinearAlgebra.Complex
         /// <exception cref="IndexOutOfRangeException">When <paramref name="array"/> contains an off-diagonal element.</exception>
         /// <exception cref="IndexOutOfRangeException">Depending on the implementation, an <see cref="IndexOutOfRangeException"/>
         /// may be thrown if one of the indices is outside the dimensions of the matrix.</exception>
-        public DiagonalMatrix(Complex[,] array) : this(array.GetLength(0), array.GetLength(1))
+        public DiagonalMatrix(Complex[,] array)
+            : this(array.GetLength(0), array.GetLength(1))
         {
-            var rows = array.GetLength(0);
-            var columns = array.GetLength(1);
-
-            for (var i = 0; i < rows; i++)
+            for (var i = 0; i < RowCount; i++)
             {
-                for (var j = 0; j < columns; j++)
+                for (var j = 0; j < ColumnCount; j++)
                 {
                     if (i == j)
                     {
-                        Data[i] = array[i, j];
+                        _data[i] = array[i, j];
                     }
                     else if (((array[i, j].Real != 0.0) && !double.IsNaN(array[i, j].Real)) || ((array[i, j].Imaginary != 0.0) && !double.IsNaN(array[i, j].Imaginary)))
                     {
@@ -131,76 +144,30 @@ namespace MathNet.Numerics.LinearAlgebra.Complex
         }
 
         /// <summary>
-        /// Gets the matrix's data.
+        /// Initializes a new instance of the <see cref="DiagonalMatrix"/> class, copying
+        /// the values from the given matrix.
         /// </summary>
-        /// <value>The matrix's data.</value>
-        internal Complex[] Data
+        /// <param name="matrix">The matrix to copy.</param>
+        public DiagonalMatrix(Matrix<Complex> matrix)
+            : this(matrix.RowCount, matrix.ColumnCount)
         {
-            get;
-            private set;
-        }
-
-        /// <summary>
-        /// Retrieves the requested element without range checking.
-        /// </summary>
-        /// <param name="row">
-        /// The row of the element.
-        /// </param>
-        /// <param name="column">
-        /// The column of the element.
-        /// </param>
-        /// <returns>
-        /// The requested element.
-        /// </returns>
-        /// <exception cref="IndexOutOfRangeException">Depending on the implementation, an <see cref="IndexOutOfRangeException"/>
-        /// may be thrown if one of the indices is outside the dimensions of the matrix.</exception>
-        public override Complex At(int row, int column)
-        {
-            return row == column ? Data[row] : 0.0;
-        }
-
-        /// <summary>
-        /// Sets the value of the given element.
-        /// </summary>
-        /// <param name="row">
-        /// The row of the element.
-        /// </param>
-        /// <param name="column">
-        /// The column of the element.
-        /// </param>
-        /// <param name="value">
-        /// The value to set the element to.
-        /// </param>
-        /// <exception cref="IndexOutOfRangeException">When trying to set an off diagonal element.</exception>
-        /// <exception cref="IndexOutOfRangeException">Depending on the implementation, an <see cref="IndexOutOfRangeException"/>
-        /// may be thrown if one of the indices is outside the dimensions of the matrix.</exception>
-        public override void At(int row, int column, Complex value)
-        {
-            if (row == column)
-            {
-                Data[row] = value;
-            }
-            else if (((value.Real != 0.0) && !double.IsNaN(value.Real)) || ((value.Imaginary != 0.0) && !double.IsNaN(value.Imaginary)))
-            {
-                throw new IndexOutOfRangeException("Cannot set an off-diagonal element in a diagonal matrix.");
-            }
+            matrix.Storage.CopyTo(Storage, skipClearing: true);
         }
 
         /// <summary>
         /// Creates a <c>DiagonalMatrix</c> for the given number of rows and columns.
         /// </summary>
-        /// <param name="numberOfRows">
-        /// The number of rows.
-        /// </param>
-        /// <param name="numberOfColumns">
-        /// The number of columns.
-        /// </param>
+        /// <param name="numberOfRows">The number of rows.</param>
+        /// <param name="numberOfColumns">The number of columns.</param>
+        /// <param name="fullyMutable">True if all fields must be mutable (e.g. not a diagonal matrix).</param>
         /// <returns>
         /// A <c>DiagonalMatrix</c> with the given dimensions.
         /// </returns>
-        public override Matrix<Complex> CreateMatrix(int numberOfRows, int numberOfColumns)
+        public override Matrix<Complex> CreateMatrix(int numberOfRows, int numberOfColumns, bool fullyMutable = false)
         {
-            return new DiagonalMatrix(numberOfRows, numberOfColumns);
+            return fullyMutable
+                ? (Matrix<Complex>) new SparseMatrix(numberOfRows, numberOfColumns)
+                : new DiagonalMatrix(numberOfRows, numberOfColumns);
         }
 
         /// <summary>
@@ -210,72 +177,9 @@ namespace MathNet.Numerics.LinearAlgebra.Complex
         /// <returns>
         /// A <see cref="Vector{T}"/> with the given dimension.
         /// </returns>
-        public override Vector<Complex> CreateVector(int size)
+        public override Vector<Complex> CreateVector(int size, bool fullyMutable = false)
         {
             return new SparseVector(size);
-        }
-
-        /// <summary>
-        /// Sets all values to zero.
-        /// </summary>
-        public override void Clear()
-        {
-            Array.Clear(Data, 0, Data.Length);
-        }
-
-        /// <summary>
-        /// Indicates whether the current object is equal to another object of the same type.
-        /// </summary>
-        /// <param name="obj">
-        /// An object to compare with this object.
-        /// </param>
-        /// <returns>
-        /// <c>true</c> if the current object is equal to the <paramref name="obj"/> parameter; otherwise, <c>false</c>.
-        /// </returns>
-        public override bool Equals(object obj)
-        {
-            var diagonalMatrix = obj as DiagonalMatrix;
-
-            if (diagonalMatrix == null)
-            {
-                return base.Equals(obj);
-            }
-
-            // Accept if the argument is the same object as this
-            if (ReferenceEquals(this, diagonalMatrix))
-            {
-                return true;
-            }
-
-            if (diagonalMatrix.Data.Length != Data.Length)
-            {
-                return false;
-            }
-
-            // If all else fails, perform element wise comparison.
-            return !Data.Where((t, i) => t != diagonalMatrix.Data[i]).Any();
-        }
-
-        /// <summary>
-        /// Returns a hash code for this instance.
-        /// </summary>
-        /// <returns>
-        /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
-        /// </returns>
-        public override int GetHashCode()
-        {
-            var hashNum = Math.Min(Data.Length, 25);
-            long hash = 0;
-            for (var i = 0; i < hashNum; i++)
-            {
-#if PORTABLE
-                hash ^= Precision.DoubleToInt64Bits(Data[i].GetHashCode());
-#else
-                hash ^= BitConverter.DoubleToInt64Bits(Data[i].GetHashCode());
-#endif
-            }
-
-            return BitConverter.ToInt32(BitConverter.GetBytes(hash), 4);
         }
 
         #region Elementary operations
@@ -351,7 +255,7 @@ namespace MathNet.Numerics.LinearAlgebra.Complex
             }
             else
             {
-                Control.LinearAlgebraProvider.AddArrays(Data, diagOther.Data, diagResult.Data);    
+                Control.LinearAlgebraProvider.AddArrays(_data, diagOther._data, diagResult._data);    
             }
         }
 
@@ -426,7 +330,7 @@ namespace MathNet.Numerics.LinearAlgebra.Complex
             }
             else
             {
-                Control.LinearAlgebraProvider.SubtractArrays(Data, diagOther.Data, diagResult.Data);
+                Control.LinearAlgebraProvider.SubtractArrays(_data, diagOther._data, diagResult._data);
             }
         }
 
@@ -447,12 +351,12 @@ namespace MathNet.Numerics.LinearAlgebra.Complex
                 throw new ArgumentNullException("source");
             }
 
-            if (source.Length != Data.Length)
+            if (source.Length != _data.Length)
             {
                 throw new ArgumentException(Resources.ArgumentArraysSameLength, "source");
             }
         
-            Array.Copy(source, Data, source.Length);
+            Array.Copy(source, _data, source.Length);
         }
 
         /// <summary>
@@ -474,12 +378,12 @@ namespace MathNet.Numerics.LinearAlgebra.Complex
                 return;
             }
 
-            if (Data.Length != denseSource.Data.Length)
+            if (_data.Length != denseSource.Data.Length)
             {
                 throw new ArgumentException(Resources.ArgumentVectorsSameLength, "source");
             }
 
-            Array.Copy(denseSource.Data, Data, denseSource.Data.Length);
+            Array.Copy(denseSource.Data, _data, denseSource.Data.Length);
         }
 
         /// <summary>
@@ -515,7 +419,7 @@ namespace MathNet.Numerics.LinearAlgebra.Complex
                     CopyTo(diagResult);
                 }
 
-                Control.LinearAlgebraProvider.ScaleArray(scalar, Data, diagResult.Data);
+                Control.LinearAlgebraProvider.ScaleArray(scalar, _data, diagResult._data);
             }
         }
 
@@ -559,12 +463,12 @@ namespace MathNet.Numerics.LinearAlgebra.Complex
             }
             else
             {
-                var thisDataCopy = new Complex[r.Data.Length];
-                var otherDataCopy = new Complex[r.Data.Length];
-                Array.Copy(Data, thisDataCopy, (r.Data.Length > Data.Length) ? Data.Length : r.Data.Length);
-                Array.Copy(m.Data, otherDataCopy, (r.Data.Length > m.Data.Length) ? m.Data.Length : r.Data.Length);
+                var thisDataCopy = new Complex[r._data.Length];
+                var otherDataCopy = new Complex[r._data.Length];
+                Array.Copy(_data, thisDataCopy, (r._data.Length > _data.Length) ? _data.Length : r._data.Length);
+                Array.Copy(m._data, otherDataCopy, (r._data.Length > m._data.Length) ? m._data.Length : r._data.Length);
 
-                Control.LinearAlgebraProvider.PointWiseMultiplyArrays(thisDataCopy, otherDataCopy, r.Data);
+                Control.LinearAlgebraProvider.PointWiseMultiplyArrays(thisDataCopy, otherDataCopy, r._data);
             }
         }
 
@@ -587,13 +491,7 @@ namespace MathNet.Numerics.LinearAlgebra.Complex
                 throw DimensionsDontMatch<ArgumentException>(this, other);
             }
 
-            var m = other as DiagonalMatrix;
-            if (m == null)
-            {
-                return base.Multiply(other);
-            }
-
-            var result = (DiagonalMatrix)CreateMatrix(RowCount, other.ColumnCount);
+            var result = other.CreateMatrix(RowCount, other.ColumnCount);
             Multiply(other, result);
             return result;
         }
@@ -641,9 +539,9 @@ namespace MathNet.Numerics.LinearAlgebra.Complex
                 result.Clear();
 
                 // Multiply the elements in the vector with the corresponding diagonal element in this.
-                for (var r = 0; r < Data.Length; r++)
+                for (var r = 0; r < _data.Length; r++)
                 {
-                    result[r] = Data[r] * rightSide[r];
+                    result[r] = _data[r] * rightSide[r];
                 }
             }
         }
@@ -691,9 +589,9 @@ namespace MathNet.Numerics.LinearAlgebra.Complex
                 result.Clear();
 
                 // Multiply the elements in the vector with the corresponding diagonal element in this.
-                for (var r = 0; r < Data.Length; r++)
+                for (var r = 0; r < _data.Length; r++)
                 {
-                    result[r] = Data[r] * leftSide[r];
+                    result[r] = _data[r] * leftSide[r];
                 }
             }
         }
@@ -709,7 +607,7 @@ namespace MathNet.Numerics.LinearAlgebra.Complex
                 throw new ArgumentException(Resources.ArgumentMatrixSquare);
             }
 
-            return Data.Aggregate(Complex.One, (current, t) => current * t);
+            return _data.Aggregate(Complex.One, (current, t) => current * t);
         }
 
         /// <summary>
@@ -722,7 +620,7 @@ namespace MathNet.Numerics.LinearAlgebra.Complex
         {
             // TODO: Should we return reference to array? In current implementation we return copy of array, so changes in DenseVector will
             // not influence onto diagonal elements
-            return new DenseVector((Complex[])Data.Clone());
+            return new DenseVector((Complex[])_data.Clone());
         }
 
         /// <summary>
@@ -768,47 +666,12 @@ namespace MathNet.Numerics.LinearAlgebra.Complex
                 throw DimensionsDontMatch<ArgumentException>(this, otherDiagonal);
             }
 
-            var result = (DiagonalMatrix)CreateMatrix(RowCount, other.RowCount);
+            var result = other.CreateMatrix(RowCount, other.RowCount);
             TransposeAndMultiply(other, result);
             return result;
         }
 
         #endregion
-
-        /// <summary>
-        /// Copies the elements of this matrix to the given matrix.
-        /// </summary>
-        /// <param name="target">
-        /// The matrix to copy values into.
-        /// </param>
-        /// <exception cref="ArgumentNullException">
-        /// If target is <see langword="null"/>.
-        /// </exception>
-        /// <exception cref="ArgumentException">
-        /// If this and the target matrix do not have the same dimensions..
-        /// </exception>
-        public override void CopyTo(Matrix<Complex> target)
-        {
-            var diagonalTarget = target as DiagonalMatrix;
-
-            if (diagonalTarget == null)
-            {
-                base.CopyTo(target);
-                return;
-            }
-
-            if (ReferenceEquals(this, target))
-            {
-                return;
-            }
-
-            if (RowCount != target.RowCount || ColumnCount != target.ColumnCount)
-            {
-                throw DimensionsDontMatch<ArgumentException>(this, target);
-            }
-
-            Array.Copy(Data, diagonalTarget.Data, Data.Length);
-        }
 
         /// <summary>
         /// Returns the transpose of this matrix.
@@ -817,7 +680,7 @@ namespace MathNet.Numerics.LinearAlgebra.Complex
         public override Matrix<Complex> Transpose()
         {
             var ret = new DiagonalMatrix(ColumnCount, RowCount);
-            Array.Copy(Data, ret.Data, Data.Length);
+            Array.Copy(_data, ret._data, _data.Length);
             return ret;
         }
 
@@ -835,7 +698,7 @@ namespace MathNet.Numerics.LinearAlgebra.Complex
         /// or greater than or equal to the number of rows.</exception>        
         /// <exception cref="ArgumentOutOfRangeException">If <paramref name="rowIndex"/> + <paramref name="length"/>  
         /// is greater than or equal to the number of rows.</exception>
-        /// <exception cref="ArgumentException">If <paramref name="length"/> is not positive.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">If <paramref name="length"/> is not positive.</exception>
         /// <exception cref="ArgumentOutOfRangeException">If <strong>result.Count &lt; length</strong>.</exception>
         public override void Column(int columnIndex, int rowIndex, int length, Vector<Complex> result)
         {
@@ -861,19 +724,19 @@ namespace MathNet.Numerics.LinearAlgebra.Complex
 
             if (length < 1)
             {
-                throw new ArgumentException(Resources.ArgumentMustBePositive, "length");
+                throw new ArgumentOutOfRangeException("length", Resources.ArgumentMustBePositive);
             }
 
             if (result.Count < length)
             {
-                throw new ArgumentException(Resources.ArgumentVectorsSameLength, "result");
+                throw new ArgumentOutOfRangeException("result", Resources.ArgumentVectorsSameLength);
             }
 
             // Clear the result and copy the diagonal entry.
             result.Clear();
-            if (columnIndex >= rowIndex && columnIndex < rowIndex + length && columnIndex < Data.Length)
+            if (columnIndex >= rowIndex && columnIndex < rowIndex + length && columnIndex < _data.Length)
             {
-                result[columnIndex - rowIndex] = Data[columnIndex];
+                result[columnIndex - rowIndex] = _data[columnIndex];
             }
         }
 
@@ -891,7 +754,7 @@ namespace MathNet.Numerics.LinearAlgebra.Complex
         /// or greater than or equal to the number of rows.</exception>        
         /// <exception cref="ArgumentOutOfRangeException">If <paramref name="columnIndex"/> + <paramref name="length"/>  
         /// is greater than or equal to the number of rows.</exception>
-        /// <exception cref="ArgumentException">If <paramref name="length"/> is not positive.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">If <paramref name="length"/> is not positive.</exception>
         /// <exception cref="ArgumentOutOfRangeException">If <strong>result.Count &lt; length</strong>.</exception>
         public override void Row(int rowIndex, int columnIndex, int length, Vector<Complex> result)
         {
@@ -917,19 +780,19 @@ namespace MathNet.Numerics.LinearAlgebra.Complex
 
             if (length < 1)
             {
-                throw new ArgumentException(Resources.ArgumentMustBePositive, "length");
+                throw new ArgumentOutOfRangeException("length", Resources.ArgumentMustBePositive);
             }
 
             if (result.Count < length)
             {
-                throw new ArgumentException(Resources.ArgumentVectorsSameLength, "result");
+                throw new ArgumentOutOfRangeException("result", Resources.ArgumentVectorsSameLength);
             }
 
             // Clear the result and copy the diagonal entry.
             result.Clear();
-            if (rowIndex >= columnIndex && rowIndex < columnIndex + length && rowIndex < Data.Length)
+            if (rowIndex >= columnIndex && rowIndex < columnIndex + length && rowIndex < _data.Length)
             {
-                result[rowIndex - columnIndex] = Data[rowIndex];
+                result[rowIndex - columnIndex] = _data[rowIndex];
             }
         }
 
@@ -937,21 +800,21 @@ namespace MathNet.Numerics.LinearAlgebra.Complex
         /// <returns>The L1 norm of the matrix.</returns>
         public override Complex L1Norm()
         {
-            return Data.Aggregate(double.NegativeInfinity, (current, t) => Math.Max(current, t.Magnitude));
+            return _data.Aggregate(double.NegativeInfinity, (current, t) => Math.Max(current, t.Magnitude));
         }
 
         /// <summary>Calculates the L2 norm.</summary>
         /// <returns>The L2 norm of the matrix.</returns>   
         public override Complex L2Norm()
         {
-            return Data.Aggregate(double.NegativeInfinity, (current, t) => Math.Max(current, t.Magnitude));
+            return _data.Aggregate(double.NegativeInfinity, (current, t) => Math.Max(current, t.Magnitude));
         }
 
         /// <summary>Calculates the Frobenius norm of this matrix.</summary>
         /// <returns>The Frobenius norm of this matrix.</returns>
         public override Complex FrobeniusNorm()
         {
-            var norm = Data.Sum(t => t.Magnitude * t.Magnitude);
+            var norm = _data.Sum(t => t.Magnitude * t.Magnitude);
             return Math.Sqrt(norm);
         }
 
@@ -968,7 +831,7 @@ namespace MathNet.Numerics.LinearAlgebra.Complex
         {
             var maxSv = double.NegativeInfinity;
             var minSv = double.PositiveInfinity;
-            foreach (var t in Data)
+            foreach (var t in _data)
             {
                 maxSv = Math.Max(maxSv, t.Magnitude);
                 minSv = Math.Min(minSv, t.Magnitude);
@@ -989,11 +852,11 @@ namespace MathNet.Numerics.LinearAlgebra.Complex
             }
 
             var inverse = (DiagonalMatrix)Clone();
-            for (var i = 0; i < Data.Length; i++)
+            for (var i = 0; i < _data.Length; i++)
             {
-                if (Data[i] != 0.0)
+                if (_data[i] != 0.0)
                 {
-                    inverse.Data[i] = 1.0 / Data[i];
+                    inverse._data[i] = 1.0 / _data[i];
                 }
                 else
                 {
@@ -1037,9 +900,9 @@ namespace MathNet.Numerics.LinearAlgebra.Complex
             }
 
             result.Clear();
-            for (var i = 0; i < Data.Length; i++)
+            for (var i = 0; i < _data.Length; i++)
             {
-                result[i, i] = Data[i];
+                result.At(i, i, _data[i]);
             }
         }
 
@@ -1102,9 +965,9 @@ namespace MathNet.Numerics.LinearAlgebra.Complex
             }
 
             result.Clear();
-            for (var i = 0; i < Data.Length; i++)
+            for (var i = 0; i < _data.Length; i++)
             {
-                result[i, i] = Data[i];
+                result.At(i, i, _data[i]);
             }
         }
 
@@ -1143,9 +1006,9 @@ namespace MathNet.Numerics.LinearAlgebra.Complex
         /// Creates a matrix that contains the values from the requested sub-matrix.
         /// </summary>
         /// <param name="rowIndex">The row to start copying from.</param>
-        /// <param name="rowLength">The number of rows to copy. Must be positive.</param>
+        /// <param name="rowCount">The number of rows to copy. Must be positive.</param>
         /// <param name="columnIndex">The column to start copying from.</param>
-        /// <param name="columnLength">The number of columns to copy. Must be positive.</param>
+        /// <param name="columnCount">The number of columns to copy. Must be positive.</param>
         /// <returns>The requested sub-matrix.</returns>
         /// <exception cref="ArgumentOutOfRangeException">If: <list><item><paramref name="rowIndex"/> is
         /// negative, or greater than or equal to the number of rows.</item>
@@ -1153,68 +1016,16 @@ namespace MathNet.Numerics.LinearAlgebra.Complex
         /// of columns.</item>
         /// <item><c>(columnIndex + columnLength) &gt;= Columns</c></item>
         /// <item><c>(rowIndex + rowLength) &gt;= Rows</c></item></list></exception>        
-        /// <exception cref="ArgumentException">If <paramref name="rowLength"/> or <paramref name="columnLength"/>
+        /// <exception cref="ArgumentOutOfRangeException">If <paramref name="rowCount"/> or <paramref name="columnCount"/>
         /// is not positive.</exception>
-        public override Matrix<Complex> SubMatrix(int rowIndex, int rowLength, int columnIndex, int columnLength)
+        public override Matrix<Complex> SubMatrix(int rowIndex, int rowCount, int columnIndex, int columnCount)
         {
-            if (rowIndex >= RowCount || rowIndex < 0)
-            {
-                throw new ArgumentOutOfRangeException("rowIndex");
-            }
+            var target = rowIndex == columnIndex
+                ? (Matrix<Complex>)new DiagonalMatrix(rowCount, columnCount)
+                : new SparseMatrix(rowCount, columnCount);
 
-            if (columnIndex >= ColumnCount || columnIndex < 0)
-            {
-                throw new ArgumentOutOfRangeException("columnIndex");
-            }
-
-            if (rowLength < 1)
-            {
-                throw new ArgumentException(Resources.ArgumentMustBePositive, "rowLength");
-            }
-
-            if (columnLength < 1)
-            {
-                throw new ArgumentException(Resources.ArgumentMustBePositive, "columnLength");
-            }
-
-            var colMax = columnIndex + columnLength;
-            var rowMax = rowIndex + rowLength;
-
-            if (rowMax > RowCount)
-            {
-                throw new ArgumentOutOfRangeException("rowLength");
-            }
-
-            if (colMax > ColumnCount)
-            {
-                throw new ArgumentOutOfRangeException("columnLength");
-            }
-
-            var result = new SparseMatrix(rowLength, columnLength);
-
-            if (rowIndex > columnIndex && columnIndex + columnLength > rowIndex)
-            {
-                for (var i = 0; rowIndex - columnIndex + i < Math.Min(columnLength, rowLength); i++)
-                {
-                    result[i, rowIndex - columnIndex + i] = Data[rowIndex + i];
-                }
-            }
-            else if (rowIndex < columnIndex && rowIndex + rowLength > columnIndex)
-            {
-                for (var i = 0; rowIndex - columnIndex + i < Math.Min(columnLength, rowLength); i++)
-                {
-                    result[columnIndex - rowIndex + i, i] = Data[columnIndex + i];
-                }
-            }
-            else
-            {
-                for (var i = 0; i < Math.Min(columnLength, rowLength); i++)
-                {
-                    result[i, i] = Data[rowIndex + i];
-                }
-            }
-
-            return result;
+            Storage.CopySubMatrixTo(target.Storage, rowIndex, 0, rowCount, columnIndex, 0, columnCount, skipClearing: true);
+            return target;
         }
 
         /// <summary>
@@ -1224,9 +1035,9 @@ namespace MathNet.Numerics.LinearAlgebra.Complex
         public override Complex[,] ToArray()
         {
             var result = new Complex[RowCount, ColumnCount];
-            for (var i = 0; i < Data.Length; i++)
+            for (var i = 0; i < _data.Length; i++)
             {
-                result[i, i] = Data[i];
+                result[i, i] = _data[i];
             }
 
             return result;
@@ -1305,215 +1116,17 @@ namespace MathNet.Numerics.LinearAlgebra.Complex
 
             for (var i = 0; i < rowIndex; i++)
             {
-                result.SetRow(i, Row(i));
+                result.At(i, i, At(i, i));
             }
 
             result.SetRow(rowIndex, row);
 
-            for (var i = rowIndex + 1; i < RowCount; i++)
+            for (var i = rowIndex + 1; i < result.RowCount; i++)
             {
-                result.SetRow(i, Row(i - 1));
+                result.At(i, i - 1, At(i - 1, i - 1));
             }
 
             return result;
-        }
-
-        /// <summary>
-        /// Stacks this matrix on top of the given matrix and places the result into the result <see cref="SparseMatrix"/>.
-        /// </summary>
-        /// <param name="lower">The matrix to stack this matrix upon.</param>
-        /// <returns>The combined <see cref="SparseMatrix"/>.</returns>
-        /// <exception cref="ArgumentNullException">If lower is <see langword="null" />.</exception>
-        /// <exception cref="ArgumentException">If <strong>upper.Columns != lower.Columns</strong>.</exception>
-        public override Matrix<Complex> Stack(Matrix<Complex> lower)
-        {
-            if (lower == null)
-            {
-                throw new ArgumentNullException("lower");
-            }
-
-            if (lower.ColumnCount != ColumnCount)
-            {
-                throw new ArgumentException(Resources.ArgumentMatrixSameColumnDimension, "lower");
-            }
-
-            var result = new SparseMatrix(RowCount + lower.RowCount, ColumnCount);
-            Stack(lower, result);
-            return result;
-        }
-
-        /// <summary>
-        /// Stacks this matrix on top of the given matrix and places the result into the result <see cref="SparseMatrix"/>.
-        /// </summary>
-        /// <param name="lower">The matrix to stack this matrix upon.</param>
-        /// <param name="result">The combined <see cref="SparseMatrix"/>.</param>
-        /// <exception cref="ArgumentNullException">If lower is <see langword="null" />.</exception>
-        /// <exception cref="ArgumentException">If <strong>upper.Columns != lower.Columns</strong>.</exception>
-        public override void Stack(Matrix<Complex> lower, Matrix<Complex> result)
-        {
-            if (lower == null)
-            {
-                throw new ArgumentNullException("lower");
-            }
-
-            if (lower.ColumnCount != ColumnCount)
-            {
-                throw new ArgumentException(Resources.ArgumentMatrixSameColumnDimension, "lower");
-            }
-
-            if (result == null)
-            {
-                throw new ArgumentNullException("result");
-            }
-
-            if (result.RowCount != (RowCount + lower.RowCount) || result.ColumnCount != ColumnCount)
-            {
-                throw DimensionsDontMatch<ArgumentException>(this, result, "result");
-            }
-
-            // Clear the result matrix
-            result.Clear();
-
-            // Copy the diagonal part into the result matrix.
-            for (var i = 0; i < Data.Length; i++)
-            {
-                result[i, i] = Data[i];
-            }
-
-            // Copy the lower matrix into the result matrix.
-            for (var i = 0; i < lower.RowCount; i++)
-            {
-                for (var j = 0; j < lower.ColumnCount; j++)
-                {
-                    result[i + RowCount, j] = lower[i, j];
-                }
-            }
-        }
-
-        /// <summary>
-        ///  Concatenates this matrix with the given matrix.
-        /// </summary>
-        /// <param name="right">The matrix to concatenate.</param>
-        /// <returns>The combined <see cref="SparseMatrix"/>.</returns>
-        public override Matrix<Complex> Append(Matrix<Complex> right)
-        {
-            if (right == null)
-            {
-                throw new ArgumentNullException("right");
-            }
-
-            if (right.RowCount != RowCount)
-            {
-                throw new ArgumentException(Resources.ArgumentMatrixSameRowDimension);
-            }
-
-            var result = new SparseMatrix(RowCount, ColumnCount + right.ColumnCount);
-            Append(right, result);
-            return result;
-        }
-
-        /// <summary>
-        /// Concatenates this matrix with the given matrix and places the result into the result <see cref="SparseMatrix"/>.
-        /// </summary>
-        /// <param name="right">The matrix to concatenate.</param>
-        /// <param name="result">The combined <see cref="SparseMatrix"/>.</param>
-        public override void Append(Matrix<Complex> right, Matrix<Complex> result)
-        {
-            if (right == null)
-            {
-                throw new ArgumentNullException("right");
-            }
-
-            if (right.RowCount != RowCount)
-            {
-                throw new ArgumentException(Resources.ArgumentMatrixSameRowDimension);
-            }
-
-            if (result == null)
-            {
-                throw new ArgumentNullException("result");
-            }
-
-            if (result.ColumnCount != (ColumnCount + right.ColumnCount) || result.RowCount != RowCount)
-            {
-                throw new ArgumentException(Resources.ArgumentMatrixSameColumnDimension);
-            }
-
-            // Clear the result matrix
-            result.Clear();
-
-            // Copy the diagonal part into the result matrix.
-            for (var i = 0; i < Data.Length; i++)
-            {
-                result[i, i] = Data[i];
-            }
-
-            // Copy the lower matrix into the result matrix.
-            for (var i = 0; i < right.RowCount; i++)
-            {
-                for (var j = 0; j < right.ColumnCount; j++)
-                {
-                    result[i, j + RowCount] = right[i, j];
-                }
-            }
-        }
-
-        /// <summary>
-        /// Diagonally stacks his matrix on top of the given matrix. The new matrix is a M-by-N matrix, 
-        /// where M = this.Rows + lower.Rows and N = this.Columns + lower.Columns.
-        /// The values of off the off diagonal matrices/blocks are set to zero.
-        /// </summary>
-        /// <param name="lower">The lower, right matrix.</param>
-        /// <exception cref="ArgumentNullException">If lower is <see langword="null" />.</exception>
-        /// <returns>the combined matrix</returns>
-        public override Matrix<Complex> DiagonalStack(Matrix<Complex> lower)
-        {
-            if (lower == null)
-            {
-                throw new ArgumentNullException("lower");
-            }
-
-            var result = new SparseMatrix(RowCount + lower.RowCount, ColumnCount + lower.ColumnCount);
-            DiagonalStack(lower, result);
-            return result;
-        }
-
-        /// <summary>
-        /// Diagonally stacks his matrix on top of the given matrix and places the combined matrix into the result matrix.
-        /// </summary>
-        /// <param name="lower">The lower, right matrix.</param>
-        /// <param name="result">The combined matrix</param>
-        /// <exception cref="ArgumentNullException">If lower is <see langword="null" />.</exception>
-        /// <exception cref="ArgumentNullException">If the result matrix is <see langword="null" />.</exception>
-        /// <exception cref="ArgumentException">If the result matrix's dimensions are not (this.Rows + lower.rows) x (this.Columns + lower.Columns).</exception>
-        public override void DiagonalStack(Matrix<Complex> lower, Matrix<Complex> result)
-        {
-            if (lower == null)
-            {
-                throw new ArgumentNullException("lower");
-            }
-
-            if (result == null)
-            {
-                throw new ArgumentNullException("result");
-            }
-
-            if (result.RowCount != RowCount + lower.RowCount || result.ColumnCount != ColumnCount + lower.ColumnCount)
-            {
-                throw DimensionsDontMatch<ArgumentException>(this, result, "result");
-            }
-
-            // Clear the result matrix
-            result.Clear();
-
-            // Copy the diagonal part into the result matrix.
-            for (var i = 0; i < Data.Length; i++)
-            {
-                result[i, i] = Data[i];
-            }
-
-            // Copy the lower matrix into the result matrix.
-            CommonParallel.For(0, lower.RowCount, i => CommonParallel.For(0, lower.ColumnCount, j => result.At(i + RowCount, j + ColumnCount, lower.At(i, j))));
         }
 
         /// <summary>
@@ -1564,7 +1177,7 @@ namespace MathNet.Numerics.LinearAlgebra.Complex
             var m = new DiagonalMatrix(order);
             for (var i = 0; i < order; i++)
             {
-                m.Data[i] = 1.0;
+                m._data[i] = 1.0;
             }
 
             return m;

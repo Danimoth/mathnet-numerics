@@ -24,6 +24,9 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 // </copyright>
 
+using System;
+using MathNet.Numerics.LinearAlgebra.Storage;
+
 namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Complex32
 {
     using LinearAlgebra.Complex32;
@@ -35,18 +38,40 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Complex32
     /// </summary>
     internal class UserDefinedMatrix : Matrix
     {
-        /// <summary>
-        /// Values storage
-        /// </summary>
-        private readonly Complex32[,] _data;
+        class UserDefinedMatrixStorage : MatrixStorage<Complex32>
+        {
+            public readonly Complex32[,] Data;
+
+            public UserDefinedMatrixStorage(int rowCount, int columnCount)
+                : base(rowCount, columnCount)
+            {
+                Data = new Complex32[rowCount, columnCount];
+            }
+
+            public UserDefinedMatrixStorage(int rowCount, int columnCount, Complex32[,] data)
+                : base(rowCount, columnCount)
+            {
+                Data = data;
+            }
+
+            public override Complex32 At(int row, int column)
+            {
+                return Data[row, column];
+            }
+
+            public override void At(int row, int column, Complex32 value)
+            {
+                Data[row, column] = value;
+            }
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UserDefinedMatrix"/> class. This matrix is square with a given size.
         /// </summary>
         /// <param name="order">the size of the square matrix.</param>
-        public UserDefinedMatrix(int order) : base(order, order)
+        public UserDefinedMatrix(int order)
+            : base(new UserDefinedMatrixStorage(order, order))
         {
-            _data = new Complex32[order, order];
         }
 
         /// <summary>
@@ -54,40 +79,18 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Complex32
         /// </summary>
         /// <param name="rows">The number of rows.</param>
         /// <param name="columns">The number of columns.</param>
-        public UserDefinedMatrix(int rows, int columns) : base(rows, columns)
+        public UserDefinedMatrix(int rows, int columns)
+            : base(new UserDefinedMatrixStorage(rows, columns))
         {
-            _data = new Complex32[rows, columns];
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UserDefinedMatrix"/> class from a 2D array. 
         /// </summary>
         /// <param name="data">The 2D array to create this matrix from.</param>
-        public UserDefinedMatrix(Complex32[,] data) : base(data.GetLength(0), data.GetLength(1))
+        public UserDefinedMatrix(Complex32[,] data)
+            : base(new UserDefinedMatrixStorage(data.GetLength(0), data.GetLength(1), (Complex32[,])data.Clone()))
         {
-            _data = (Complex32[,])data.Clone();
-        }
-
-        /// <summary>
-        /// Retrieves the requested element without range checking.
-        /// </summary>
-        /// <param name="row">The row of the element.</param>
-        /// <param name="column">The column of the element.</param>
-        /// <returns>The requested element. </returns>
-        public override Complex32 At(int row, int column)
-        {
-            return _data[row, column];
-        }
-
-        /// <summary>
-        /// Sets the value of the given element.
-        /// </summary>
-        /// <param name="row">The row of the element.</param>
-        /// <param name="column">The column of the element.</param>
-        /// <param name="value">The value to set the element to. </param>
-        public override void At(int row, int column, Complex32 value)
-        {
-            _data[row, column] = value;
         }
 
         /// <summary>
@@ -96,7 +99,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Complex32
         /// <param name="numberOfRows">The number of rows.</param>
         /// <param name="numberOfColumns">The number of columns.</param>
         /// <returns>A matrix with the given dimensions.</returns>
-        public override Matrix<Complex32> CreateMatrix(int numberOfRows, int numberOfColumns)
+        public override Matrix<Complex32> CreateMatrix(int numberOfRows, int numberOfColumns, bool fullyMutable = false)
         {
             return new UserDefinedMatrix(numberOfRows, numberOfColumns);
         }
@@ -106,7 +109,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Complex32
         /// </summary>
         /// <param name="size">The size of the vector.</param>
         /// <returns>A vector with the given dimension.</returns>
-        public override Vector<Complex32> CreateVector(int size)
+        public override Vector<Complex32> CreateVector(int size, bool fullyMutable = false)
         {
             return new UserDefinedVector(size);
         }
@@ -121,7 +124,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Complex32
             var m = new UserDefinedMatrix(order, order);
             for (var i = 0; i < order; i++)
             {
-                m[i, i] = 1.0f;
+                m[i, i] = 1f;
             }
 
             return m;

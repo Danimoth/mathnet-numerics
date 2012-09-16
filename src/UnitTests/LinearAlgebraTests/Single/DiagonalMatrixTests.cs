@@ -115,7 +115,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Single
             var testData = new Dictionary<string, Matrix>
                            {
                                { "Singular3x3", new DiagonalMatrix(3, 3, new[] { 1.0f, 0.0f, 3.0f }) },
-                               { "Square3x3", new DiagonalMatrix(4, 4, new[] { -1.1f, 1.1f, 6.6f }) },
+                               { "Square3x3", new DiagonalMatrix(3, 3, new[] { -1.1f, 1.1f, 6.6f }) },
                                { "Square4x4", new DiagonalMatrix(4, 4, new[] { -1.1f, 1.1f, 6.2f, -7.7f }) },
                                { "Tall3x2", new DiagonalMatrix(3, 2, new[] { -1.1f, 1.1f }) },
                                { "Wide2x3", new DiagonalMatrix(2, 3, new[] { -1.1f, 1.1f }) },
@@ -123,7 +123,7 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Single
 
             foreach (var name in testData.Keys)
             {
-                Assert.AreEqual(TestMatrices[name], testData[name]);
+                Assert.That(testData[name], Is.EqualTo(TestMatrices[name]));
             }
         }
 
@@ -202,38 +202,6 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Single
         }
 
         /// <summary>
-        /// Can diagonally stack matrices into a result matrix.
-        /// </summary>
-        public override void CanDiagonallyStackMatricesIntoResult()
-        {
-            var top = TestMatrices["Tall3x2"];
-            var bottom = TestMatrices["Wide2x3"];
-            var result = new SparseMatrix(top.RowCount + bottom.RowCount, top.ColumnCount + bottom.ColumnCount);
-            top.DiagonalStack(bottom, result);
-            Assert.AreEqual(top.RowCount + bottom.RowCount, result.RowCount);
-            Assert.AreEqual(top.ColumnCount + bottom.ColumnCount, result.ColumnCount);
-
-            for (var i = 0; i < result.RowCount; i++)
-            {
-                for (var j = 0; j < result.ColumnCount; j++)
-                {
-                    if (i < top.RowCount && j < top.ColumnCount)
-                    {
-                        Assert.AreEqual(top[i, j], result[i, j]);
-                    }
-                    else if (i >= top.RowCount && j >= top.ColumnCount)
-                    {
-                        Assert.AreEqual(bottom[i - top.RowCount, j - top.ColumnCount], result[i, j]);
-                    }
-                    else
-                    {
-                        Assert.AreEqual(0, result[i, j]);
-                    }
-                }
-            }
-        }
-
-        /// <summary>
         /// Can multiply a matrix with matrix.
         /// </summary>
         /// <param name="nameA">Matrix A name.</param>
@@ -280,22 +248,6 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Single
         }
 
         /// <summary>
-        /// Can permute matrix rows.
-        /// </summary>
-        /// <param name="name">Matrix name.</param>
-        public override void CanPermuteMatrixRows(string name)
-        {
-        }
-
-        /// <summary>
-        /// Can permute matrix columns.
-        /// </summary>
-        /// <param name="name">Matrix name.</param>
-        public override void CanPermuteMatrixColumns(string name)
-        {
-        }
-
-        /// <summary>
         /// Can pointwise divide matrices into a result matrix.
         /// </summary>
         public override void CanPointwiseDivideIntoResult()
@@ -315,118 +267,6 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Single
                 for (var i = 0; i < min; i++)
                 {
                     Assert.AreEqual(data[i, i] / other[i, i], result[i, i]);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Can set a column with an array.
-        /// </summary>
-        /// <param name="name">Matrix name.</param>
-        /// <param name="column">Column array.</param>
-        public override void CanSetColumnWithArray(string name, float[] column)
-        {
-            try
-            {
-                // Pass all invoke to base
-                base.CanSetColumnWithArray(name, column);
-            }
-            catch (AggregateException ex)
-            {
-                // Supress only IndexOutOfRangeException exceptions due to Diagonal matrix nature
-                if (ex.InnerExceptions.Any(innerException => !(innerException is IndexOutOfRangeException)))
-                {
-                    throw;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Can set a column with a vector.
-        /// </summary>
-        /// <param name="name">Matrix name.</param>
-        /// <param name="column">Column values.</param>
-        public override void CanSetColumnWithVector(string name, float[] column)
-        {
-            try
-            {
-                // Pass all invoke to base
-                base.CanSetColumnWithVector(name, column);
-            }
-            catch (AggregateException ex)
-            {
-                // Supress only IndexOutOfRangeException exceptions due to Diagonal matrix nature
-                if (ex.InnerExceptions.Any(innerException => !(innerException is IndexOutOfRangeException)))
-                {
-                    throw;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Can set a row with an array.
-        /// </summary>
-        /// <param name="name">Matrix name.</param>
-        /// <param name="row">Row index.</param>
-        public override void CanSetRowWithArray(string name, float[] row)
-        {
-            try
-            {
-                // Pass all invoke to base
-                base.CanSetRowWithArray(name, row);
-            }
-            catch (AggregateException ex)
-            {
-                // Supress only IndexOutOfRangeException exceptions due to Diagonal matrix nature
-                if (ex.InnerExceptions.Any(innerException => !(innerException is IndexOutOfRangeException)))
-                {
-                    throw;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Can set a row with a vector.
-        /// </summary>
-        /// <param name="name">Matrix name.</param>
-        /// <param name="row">Row index.</param>
-        public override void CanSetRowWithVector(string name, float[] row)
-        {
-            try
-            {
-                // Pass all invoke to base
-                base.CanSetRowWithVector(name, row);
-            }
-            catch (AggregateException ex)
-            {
-                // Supress only IndexOutOfRangeException exceptions due to Diagonal matrix nature
-                if (ex.InnerExceptions.Any(innerException => !(innerException is IndexOutOfRangeException)))
-                {
-                    throw;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Can set a submatrix.
-        /// </summary>
-        /// <param name="rowStart">The row to start copying to.</param>
-        /// <param name="rowLength">The number of rows to copy.</param>
-        /// <param name="colStart">The column to start copying to.</param>
-        /// <param name="colLength">The number of columns to copy.</param>
-        public override void CanSetSubMatrix(int rowStart, int rowLength, int colStart, int colLength)
-        {
-            try
-            {
-                // Pass all invoke to base
-                base.CanSetSubMatrix(rowStart, rowLength, colStart, colLength);
-            }
-            catch (AggregateException ex)
-            {
-                // Supress only IndexOutOfRangeException exceptions due to Diagonal matrix nature
-                if (ex.InnerExceptions.Any(innerException => !(innerException is IndexOutOfRangeException)))
-                {
-                    throw;
                 }
             }
         }
@@ -529,72 +369,6 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Single
         }
 
         /// <summary>
-        /// Test whether the index enumerator returns the correct values.
-        /// </summary>
-        [Test]
-        public override void CanUseIndexedEnumerator()
-        {
-            var matrix = TestMatrices["Singular3x3"];
-            using (var enumerator = matrix.IndexedEnumerator().GetEnumerator())
-            {
-                enumerator.MoveNext();
-                var item = enumerator.Current;
-                Assert.AreEqual(0, item.Item1);
-                Assert.AreEqual(0, item.Item2);
-                Assert.AreEqual(1.0f, item.Item3);
-
-                enumerator.MoveNext();
-                item = enumerator.Current;
-                Assert.AreEqual(0, item.Item1);
-                Assert.AreEqual(1, item.Item2);
-                Assert.AreEqual(0.0f, item.Item3);
-
-                enumerator.MoveNext();
-                item = enumerator.Current;
-                Assert.AreEqual(0, item.Item1);
-                Assert.AreEqual(2, item.Item2);
-                Assert.AreEqual(0.0f, item.Item3);
-
-                enumerator.MoveNext();
-                item = enumerator.Current;
-                Assert.AreEqual(1, item.Item1);
-                Assert.AreEqual(0, item.Item2);
-                Assert.AreEqual(0.0f, item.Item3);
-
-                enumerator.MoveNext();
-                item = enumerator.Current;
-                Assert.AreEqual(1, item.Item1);
-                Assert.AreEqual(1, item.Item2);
-                Assert.AreEqual(0.0f, item.Item3);
-
-                enumerator.MoveNext();
-                item = enumerator.Current;
-                Assert.AreEqual(1, item.Item1);
-                Assert.AreEqual(2, item.Item2);
-                Assert.AreEqual(0.0f, item.Item3);
-
-                enumerator.MoveNext();
-                item = enumerator.Current;
-                Assert.AreEqual(2, item.Item1);
-                Assert.AreEqual(0, item.Item2);
-                Assert.AreEqual(0.0f, item.Item3);
-
-                enumerator.MoveNext();
-                item = enumerator.Current;
-                Assert.AreEqual(2, item.Item1);
-                Assert.AreEqual(1, item.Item2);
-                Assert.AreEqual(0.0f, item.Item3);
-
-                enumerator.MoveNext();
-                item = enumerator.Current;
-            
-                Assert.AreEqual(2, item.Item1);
-                Assert.AreEqual(2, item.Item2);
-                Assert.AreEqual(3.0f, item.Item3);
-            }
-        }
-
-        /// <summary>
         /// Can check if a matrix is symmetric.
         /// </summary>
         [Test]
@@ -602,44 +376,6 @@ namespace MathNet.Numerics.UnitTests.LinearAlgebraTests.Single
         {
             var matrix = TestMatrices["Square3x3"];
             Assert.IsTrue(matrix.IsSymmetric);
-        }
-
-        /// <summary>
-        /// Can get a sub-matrix.
-        /// </summary>
-        [Test]
-        public override void CanGetASubMatrix()
-        {
-            var matrix = CreateMatrix(10, 10);
-            for (var row = 0; row < matrix.RowCount; row++)
-            {
-                for (var column = 0; column < matrix.ColumnCount; column++)
-                {
-                    if (row == column)
-                    {
-                        matrix[row, column] = 1.0f;
-                    }
-                }
-            }
-
-            var submatrix = matrix.SubMatrix(8, 2, 0, 2);
-            Assert.AreEqual(2, submatrix.RowCount);
-            Assert.AreEqual(2, submatrix.ColumnCount);
-
-            for (var row = 0; row < submatrix.RowCount; row++)
-            {
-                for (var column = 0; column < submatrix.ColumnCount; column++)
-                {
-                    if (row == column)
-                    {
-                        Assert.AreEqual(1.0f, submatrix[row, column]);
-                    }
-                    else
-                    {
-                        Assert.AreEqual(0.0f, submatrix[row, column]);
-                    }
-                }
-            }
         }
     }
 }

@@ -888,6 +888,30 @@
     <Compile Include="..\Numerics\LinearAlgebra\Single\Vector.cs">
       <Link>LinearAlgebra\Single\Vector.cs</Link>
     </Compile>
+    <Compile Include="..\Numerics\LinearAlgebra\Storage\DenseColumnMajorMatrixStorage.cs">
+      <Link>LinearAlgebra\Storage\DenseColumnMajorMatrixStorage.cs</Link>
+    </Compile>
+    <Compile Include="..\Numerics\LinearAlgebra\Storage\DenseVectorStorage.cs">
+      <Link>LinearAlgebra\Storage\DenseVectorStorage.cs</Link>
+    </Compile>
+    <Compile Include="..\Numerics\LinearAlgebra\Storage\DiagonalMatrixStorage.cs">
+      <Link>LinearAlgebra\Storage\DiagonalMatrixStorage.cs</Link>
+    </Compile>
+    <Compile Include="..\Numerics\LinearAlgebra\Storage\MatrixStorage.cs">
+      <Link>LinearAlgebra\Storage\MatrixStorage.cs</Link>
+    </Compile>
+    <Compile Include="..\Numerics\LinearAlgebra\Storage\MatrixStorage.Validation.cs">
+      <Link>LinearAlgebra\Storage\MatrixStorage.Validation.cs</Link>
+    </Compile>
+    <Compile Include="..\Numerics\LinearAlgebra\Storage\SparseCompressedRowMatrixStorage.cs">
+      <Link>LinearAlgebra\Storage\SparseCompressedRowMatrixStorage.cs</Link>
+    </Compile>
+    <Compile Include="..\Numerics\LinearAlgebra\Storage\VectorStorage.cs">
+      <Link>LinearAlgebra\Storage\VectorStorage.cs</Link>
+    </Compile>
+    <Compile Include="..\Numerics\LinearAlgebra\Storage\VectorStorage.Validation.cs">
+      <Link>LinearAlgebra\Storage\VectorStorage.Validation.cs</Link>
+    </Compile>
     <Compile Include="..\Numerics\NumberTheory\IntegerTheory.cs">
       <Link>NumberTheory\IntegerTheory.cs</Link>
     </Compile>

@@ -194,22 +194,5 @@ namespace MathNet.Numerics.LinearAlgebra.Double
         }
 
         #endregion
-
-        /// <summary>
-        /// Creates a Vector with a the given dimension.
-        /// </summary>
-        /// <param name="size">
-        /// The size of the vector.
-        /// </param>
-        /// <returns>
-        /// A Vector with the given dimension.
-        /// </returns>
-        /// <remarks>
-        /// Creates a vector of the same type as the current matrix.
-        /// </remarks>
-        public override Vector<double> CreateVector(int size)
-        {
-            return new DenseVector(size);
-        }
     }
 }
